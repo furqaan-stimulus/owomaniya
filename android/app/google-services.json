@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "805182197596",
+    "firebase_url": "https://owomaniya-29e8a.firebaseio.com",
+    "project_id": "owomaniya-29e8a",
+    "storage_bucket": "owomaniya-29e8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805182197596:android:eb057101b7d5baed23bb99",
+        "android_client_info": {
+          "package_name": "com.stimulus.owomaniya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805182197596-9b9lt81qd0dvb8mdn16ksq88cc4pkj51.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stimulus.owomaniya",
+            "certificate_hash": "44412cdcc72825d4869f69cf7e9a7e5ef857add4"
+          }
+        },
+        {
+          "client_id": "805182197596-2clve879s04kjleabphnn013p8jlludr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw61H7hGUbDRer4JzLA09eZmdrYsDqJP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805182197596-2clve879s04kjleabphnn013p8jlludr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "805182197596-r0ta04k8q3td9gmcq09oalvkmuu83nv3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.stimulus.owomaniya"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>805182197596-r0ta04k8q3td9gmcq09oalvkmuu83nv3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.805182197596-r0ta04k8q3td9gmcq09oalvkmuu83nv3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>805182197596-9b9lt81qd0dvb8mdn16ksq88cc4pkj51.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyADrgnzhYqzAM0JMOixE83OHLTtt4zHODM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>805182197596</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.stimulus.owomaniya</string>
+	<key>PROJECT_ID</key>
+	<string>owomaniya-29e8a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>owomaniya-29e8a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:805182197596:ios:27005bfd9038c95423bb99</string>
+	<key>DATABASE_URL</key>
+	<string>https://owomaniya-29e8a.firebaseio.com</string>
+</dict>
+</plist>
