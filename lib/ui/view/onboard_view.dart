@@ -149,8 +149,7 @@ class _OnBoardViewState extends State<OnBoardView> {
                               Center(
                                 child: Image(
                                   image: AssetImage(
-                                    'assets/images/onboarding2.png',
-                                  ),
+                                      'assets/images/onboarding2.png'),
                                   height: 300.0,
                                   width: 300.0,
                                 ),

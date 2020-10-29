@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:lottie/lottie.dart';
 import 'package:owomaniya/viewmodels/splash_view_model.dart';
 import 'package:stacked/stacked.dart';
@@ -31,10 +30,6 @@ class SplashView extends StatelessWidget {
         ),
       ),
       viewModelBuilder: () => SplashViewModel(),
-      onModelReady: (model) {
-        SchedulerBinding.instance
-            .addPostFrameCallback((timestamp) => timestamp.inMilliseconds);
-      },
     );
   }
 }

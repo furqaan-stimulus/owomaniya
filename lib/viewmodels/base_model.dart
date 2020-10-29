@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:owomaniya/app/locator.dart';
+import 'package:owomaniya/services/network_service.dart';
 
 class BaseModel extends ChangeNotifier {
-  // final AuthenticationService _authenticationService =
-  // getIt<AuthenticationService>();
-  //
-  // Users get currentUser => _authenticationService.currentUser;
 
-  bool _busy = false;
+  final NetworkService _networkService= getIt<NetworkService>();
 
+  bool _busy ;
   bool get busy => _busy;
 
   void setBusy(bool value) {

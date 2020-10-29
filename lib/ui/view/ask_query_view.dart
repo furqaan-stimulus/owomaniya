@@ -15,7 +15,7 @@ class AskQueryView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Center(
-                    child: Text('Ask Query Page'),
+                    child: Text('Ask Your Query'),
                   ),
                   RaisedButton(
                     child: Text(' Sign up'),
