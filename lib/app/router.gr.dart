@@ -14,6 +14,9 @@ import '../ui/view/forgot_password_view.dart';
 import '../ui/view/home_view.dart';
 import '../ui/view/login_view.dart';
 import '../ui/view/onboard_view.dart';
+import '../ui/view/payment_failure_view.dart';
+import '../ui/view/payment_method_view.dart';
+import '../ui/view/payment_successful_view.dart';
 import '../ui/view/reset_password_view.dart';
 import '../ui/view/signup_view.dart';
 import '../ui/view/splash_view.dart';
@@ -31,6 +34,9 @@ class Routes {
   static const String resetPasswordView = '/reset-password-view';
   static const String verifyOtpView = '/verify-otp-view';
   static const String verifyMobileView = '/verify-mobile-view';
+  static const String paymentMethodView = '/payment-method-view';
+  static const String paymentSuccessView = '/payment-success-view';
+  static const String paymentFailureView = '/payment-failure-view';
   static const all = <String>{
     splashView,
     onBoardView,
@@ -42,6 +48,9 @@ class Routes {
     resetPasswordView,
     verifyOtpView,
     verifyMobileView,
+    paymentMethodView,
+    paymentSuccessView,
+    paymentFailureView,
   };
 }
 
@@ -59,6 +68,9 @@ class Router extends RouterBase {
     RouteDef(Routes.resetPasswordView, page: ResetPasswordView),
     RouteDef(Routes.verifyOtpView, page: VerifyOtpView),
     RouteDef(Routes.verifyMobileView, page: VerifyMobileView),
+    RouteDef(Routes.paymentMethodView, page: PaymentMethodView),
+    RouteDef(Routes.paymentSuccessView, page: PaymentSuccessView),
+    RouteDef(Routes.paymentFailureView, page: PaymentFailureView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -120,6 +132,24 @@ class Router extends RouterBase {
     VerifyMobileView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => VerifyMobileView(),
+        settings: data,
+      );
+    },
+    PaymentMethodView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PaymentMethodView(),
+        settings: data,
+      );
+    },
+    PaymentSuccessView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PaymentSuccessView(),
+        settings: data,
+      );
+    },
+    PaymentFailureView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PaymentFailureView(),
         settings: data,
       );
     },

@@ -86,6 +86,42 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                                             ),
                                           ),
                                           SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Center(
+                                                    child: GestureDetector(
+                                                      child: Container(
+                                                        child: Text(
+                                                          'Resend OTP',
+                                                          style: TextStyle(
+                                                              fontSize: 18.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              color:
+                                                                  Colors.pink),
+                                                        ),
+                                                      ),
+                                                      onTap: () {},
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
                                             height: 20,
                                           ),
                                           Container(

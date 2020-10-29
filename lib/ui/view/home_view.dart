@@ -11,18 +11,23 @@ class HomeView extends StatelessWidget {
           title: Text('Home'),
 
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Text('Welcome to Home Screen'),
-            ),
-            RaisedButton(
-              child: Text(' Ask Your Query'),
-              onPressed: () => model.navigateToQueryView(),
-            ),
-          ],
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('Welcome '),
+              RaisedButton(
+                child: Text(' Ask Your Query'),
+                textColor: Colors.white,
+                padding: EdgeInsets.fromLTRB(
+                    30.0, 14.0, 30.0, 14.0),
+                onPressed: () => model.navigateToQueryView(),
+                color: Colors.pink,
+              ),
+            ],
+          ),
         ),
       ),
       viewModelBuilder: () => HomeViewModel(),

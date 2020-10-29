@@ -4,6 +4,9 @@ import 'package:owomaniya/ui/view/forgot_password_view.dart';
 import 'package:owomaniya/ui/view/home_view.dart';
 import 'package:owomaniya/ui/view/login_view.dart';
 import 'package:owomaniya/ui/view/onboard_view.dart';
+import 'package:owomaniya/ui/view/payment_failure_view.dart';
+import 'package:owomaniya/ui/view/payment_method_view.dart';
+import 'package:owomaniya/ui/view/payment_successful_view.dart';
 import 'package:owomaniya/ui/view/reset_password_view.dart';
 import 'package:owomaniya/ui/view/verify_otp_view.dart';
 import 'package:owomaniya/ui/view/verify_mobile_view.dart';
@@ -21,5 +24,8 @@ import 'package:owomaniya/ui/view/splash_view.dart';
   MaterialRoute(page: ResetPasswordView),
   MaterialRoute(page: VerifyOtpView),
   MaterialRoute(page: VerifyMobileView),
+  MaterialRoute(page: PaymentMethodView),
+  MaterialRoute(page: PaymentSuccessView),
+  MaterialRoute(page: PaymentFailureView),
 ])
 class $Router {}

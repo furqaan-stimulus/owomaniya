@@ -8,7 +8,6 @@ import 'package:stacked_services/stacked_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   setUpLocator();
   runApp(
     MyApp(),
