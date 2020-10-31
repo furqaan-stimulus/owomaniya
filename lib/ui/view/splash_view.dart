@@ -3,9 +3,14 @@ import 'package:lottie/lottie.dart';
 import 'package:owomaniya/viewmodels/splash_view_model.dart';
 import 'package:stacked/stacked.dart';
 
-class SplashView extends StatelessWidget {
+class SplashView extends StatefulWidget {
   const SplashView({Key key}) : super(key: key);
 
+  @override
+  _SplashViewState createState() => _SplashViewState();
+}
+
+class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SplashViewModel>.reactive(
@@ -22,14 +27,15 @@ class SplashView extends StatelessWidget {
                 ),
               ),
             ),
-            RaisedButton(
-              child: Text('Walk Through'),
-              onPressed: () => model.navigateToWalkThrough(),
-            ),
           ],
         ),
       ),
       viewModelBuilder: () => SplashViewModel(),
+      onModelReady: (model) {
+        Future.delayed(Duration(seconds: 4), () {
+          model.navigateToWalkThrough();
+        });
+      },
     );
   }
 }

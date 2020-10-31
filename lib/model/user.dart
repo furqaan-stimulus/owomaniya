@@ -1,4 +1,6 @@
 class User {
+  String userId;
+  String token;
   String email;
   String mobileNo;
   String dateOfBirth;
@@ -10,7 +12,9 @@ class User {
   String lastName;
 
   User(
-      {this.email,
+      {this.userId,
+        this.token,
+      this.email,
       this.mobileNo,
       this.gender,
       this.password,
@@ -22,7 +26,9 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> map) {
     return User(
-      email: map['email'],
+      userId: map['user_id'],
+      token: map['device_token'],
+      email: map['email_address'],
       mobileNo: map['mobile_no'],
       dateOfBirth: map['date_of_birth'],
       gender: map['gender'],

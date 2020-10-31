@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:owomaniya/app/locator.dart';
 import 'package:owomaniya/app/router.gr.dart' as route;
@@ -20,20 +20,30 @@ class LoginViewModel extends BaseModel {
     _navigationService.navigateTo(route.Routes.forgotPasswordView);
   }
 
-  Future<Map<String, dynamic>> login(String username, String password) async {
+  Future<Map<String, dynamic>> login(
+    String username,
+    String password,
+  ) async {
     var result;
+    String deviceType = 'mobile';
+    String deviceOs = 'android';
 
     final Map<String, dynamic> login = {
-      'user login': {'username': username, 'password': password}
+      'username': username,
+      'password': password,
+      'device_type': deviceType,
+      'device_os': deviceOs,
+      'device_token': ApiUrls.LOGIN_TOKEN
     };
     setBusy(true);
 
     Response response = await post(
-      ApiUrls.USER_LOGIN,
+      ApiUrls.USER_LOGIN_URL,
       body: jsonEncode(login),
       headers: {'Content-Type': 'application/json'},
     );
-
+    print(ApiUrls.USER_LOGIN_URL);
+    print(login);
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
 
@@ -42,13 +52,18 @@ class LoginViewModel extends BaseModel {
       User authUser = User.fromJson(userData);
 
       SharedPrefs().saveUser(authUser);
-      result = {'status': true, 'message': 'Successful', 'user': authUser};
+      _navigationService.navigateTo(route.Routes.askQueryView);
+      result = {
+        'status': true,
+        'data': {'message': responseData['data'], 'user': authUser}
+      };
     } else {
       setBusy(true);
-      result = {
-        'status': false,
-        'message': json.decode(response.body)['error']
-      };
+      result = {'status': false, 'message': response.toString()};
+
+      Fluttertoast.showToast(msg: 'Error in login');
+
+      print('login fail $result');
     }
     return result;
   }

@@ -70,7 +70,6 @@ class _VerifyMobileViewState extends State<VerifyMobileView> {
                           onPressed: () {
                             final code = _countryCodeController.text.trim();
                             final phone = _mobileNumberController.text.trim();
-                            // model.submitMobileNumber(code, phone, context);
                             print('code $code and phone $phone');
                           },
                           color: Colors.blue,

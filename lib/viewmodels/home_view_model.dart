@@ -6,12 +6,7 @@ import 'package:stacked_services/stacked_services.dart';
 class HomeViewModel extends BaseModel {
   final NavigationService _navigationService = getIt<NavigationService>();
 
-
   Future navigateToQueryView() async {
     _navigationService.navigateTo(route.Routes.askQueryView);
   }
-
-
-
-
 }

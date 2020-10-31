@@ -28,21 +28,20 @@ class SignUpViewModel extends BaseModel {
       String firstName,
       String lastName) async {
     final Map<String, dynamic> registerData = {
-      'User Signup': {
-        'email': email,
-        'mobile_no': mobileNumber,
-        'date_of_birth': dateOfBirth,
-        'gender': gender,
-        'password': password,
-        'device_type': deviceType,
-        'device_os': deviceOs,
-        'first_name': firstName,
-        'last_name': lastName
-      }
+      'email_address': email,
+      'mobile_no': mobileNumber,
+      'date_of_birth': dateOfBirth,
+      'gender': gender,
+      'password': password,
+      'device_type': deviceType,
+      'device_os': deviceOs,
+      'first_name': firstName,
+      'last_name': lastName
     };
     setBusy(true);
+    _navigationService.navigateTo(route.Routes.verifyMobileView);
 
-    return await post(ApiUrls.USER_SIGN_UP,
+    return await post(ApiUrls.USER_SIGN_UP_URL,
             body: json.encode(registerData),
             headers: {'content-Type': 'application/json'})
         .then(onValue)
@@ -52,6 +51,7 @@ class SignUpViewModel extends BaseModel {
   static Future<FutureOr> onValue(Response response) async {
     var result;
     final Map<String, dynamic> responseData = json.decode(response.body);
+    print('signup response $responseData');
 
     if (response.statusCode == 200) {
       var userData = responseData['data'];
@@ -59,19 +59,21 @@ class SignUpViewModel extends BaseModel {
       User authUser = User.fromJson(userData);
 
       SharedPrefs().saveUser(authUser);
+
       result = {
         'status': true,
         'message': 'Successfully registered',
         'data': authUser
       };
+      print('signup success $result');
     } else {
       result = {
         'status': false,
         'message': 'Registration failed',
         'data': responseData
       };
+      print('signup fail $result');
     }
-
     return result;
   }
 
