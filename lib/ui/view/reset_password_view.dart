@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:owomaniya/viewmodels/reset_password_view_model.dart';
 import 'package:stacked/stacked.dart';
@@ -25,142 +26,143 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ResetPasswordViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
-              body: Center(
+              body: Padding(
+                padding: const EdgeInsets.all(26.0),
                 child: Container(
-                  child: Wrap(
-                    runSpacing: 5.0,
+                  child: ListView(
+                    shrinkWrap: true,
                     children: [
-                      ListView(
-                        shrinkWrap: true,
-                        children: <Widget>[
-                          Center(
-                            heightFactor: 1.2,
-                            child: Wrap(
-                              runSpacing: 5,
+                      Container(
+                        child: Wrap(
+                          runSpacing: 10.0,
+                          children: [
+                            Column(
                               children: [
+                                SizedBox(
+                                  height: 60,
+                                ),
                                 Center(
                                   child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          60.0, 30.0, 60.0, 20.0),
-                                      child: Text(
-                                        'Reset Password',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 100,
-                                ),
-                                Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
+                                    padding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 10.0, 5.0),
+                                    child: Row(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10.0),
-                                          child: TextField(
-                                            maxLines: 1,
-                                            obscureText: !this._obscureText,
-                                            controller: _passwordController,
-                                            keyboardType: TextInputType.text,
-                                            decoration: InputDecoration(
-                                              labelText: 'Enter Password',
-                                              hintText: 'Enter Password',
-                                              hintStyle:
-                                                  TextStyle(fontSize: 18.0),
-                                              suffixIcon: IconButton(
-                                                icon: Icon(
-                                                  Icons.remove_red_eye,
-                                                  color: this._obscureText
-                                                      ? Colors.pink
-                                                      : Colors.grey,
-                                                ),
-                                                onPressed: () {
-                                                  toggle();
-                                                },
-                                              ),
-                                            ),
+                                        IconButton(
+                                          icon: SvgPicture.asset(
+                                            'assets/svg/back_home.svg',
+                                            width: 45,
+                                            height: 45,
                                           ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
                                         ),
                                         SizedBox(
-                                          height: 5,
+                                          width: 10.0,
                                         ),
-                                        //Retype password
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10.0),
-                                          child: TextField(
-                                            maxLines: 1,
-                                            onChanged: (val) {
-                                              if (_passwordController.text ==
-                                                  val) {
-                                                _passwordController.text =
-                                                    _rePasswordController
-                                                        .text;
-                                              } else {
-                                                Fluttertoast.showToast(
-                                                    msg:
-                                                        'Password enter not match');
-                                              }
-                                            },
-                                            obscureText: !this._obscureText,
-                                            controller: _rePasswordController,
-                                            keyboardType: TextInputType.text,
-                                            decoration: InputDecoration(
-                                              labelText: 'Re-Type Password',
-                                              hintText: 'Re-Type Password',
-                                              hintStyle:
-                                                  TextStyle(fontSize: 18.0),
-                                              suffixIcon: IconButton(
-                                                icon: Icon(
-                                                  Icons.remove_red_eye,
-                                                  color: this._obscureText
-                                                      ? Colors.pink
-                                                      : Colors.grey,
-                                                ),
-                                                onPressed: () {
-                                                  toggle();
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                          width: double.infinity,
-                                          child: FlatButton(
-                                            child: Text(
-                                              "SAVE PASSWORD",
-                                              style:
-                                                  TextStyle(fontSize: 15.0),
-                                            ),
-                                            textColor: Colors.white,
-                                            padding: EdgeInsets.all(14),
-                                            onPressed: () {
-                                              model.navigateBackToLogin();
-                                            },
-                                            color: Colors.pink,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
+                                        Text(
+                                          'Reset Password',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
+                                Divider(
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  height: 150,
+                                ),
+                                Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextField(
+                                        obscureText: !this._obscureText,
+                                        controller: _passwordController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          labelText: 'Enter Password',
+                                          hintText: 'Enter Password',
+                                          hintStyle: TextStyle(fontSize: 18.0),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              Icons.remove_red_eye,
+                                              color: this._obscureText
+                                                  ? Colors.pink
+                                                  : Colors.grey,
+                                            ),
+                                            onPressed: () {
+                                              toggle();
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      //Retype password
+                                      TextField(
+                                        onChanged: (val) {
+                                          if (_passwordController.text == val) {
+                                            _passwordController.text =
+                                                _rePasswordController.text;
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    'Password enter not match');
+                                          }
+                                        },
+                                        obscureText: !this._obscureText,
+                                        controller: _rePasswordController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          labelText: 'Re-Type Password',
+                                          hintText: 'Re-Type Password',
+                                          hintStyle: TextStyle(fontSize: 18.0),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              Icons.remove_red_eye,
+                                              color: this._obscureText
+                                                  ? Colors.pink
+                                                  : Colors.grey,
+                                            ),
+                                            onPressed: () {
+                                              toggle();
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        child: FlatButton(
+                                          child: Text(
+                                            "SAVE PASSWORD",
+                                            style: TextStyle(fontSize: 15.0),
+                                          ),
+                                          textColor: Colors.white,
+                                          padding: EdgeInsets.all(14),
+                                          onPressed: () {
+                                            model.navigateBackToLogin();
+                                          },
+                                          color: Colors.pink,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),

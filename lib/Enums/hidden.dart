@@ -1,0 +1,4 @@
+enum Hidden {
+  Y,
+  N,
+}

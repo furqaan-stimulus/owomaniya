@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 31">
+    <defs>
+<!--        <style>.cls-1,.cls-2{fill:none;stroke:#d40057;stroke-miterlimit:10;}.cls-2{stroke-width:2px;}</style>-->
+    </defs>
+    <title>back_home</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <circle style="fill:none;stroke:#d40057;stroke-miterlimit:10;" cx="15.5" cy="15.5" r="15"/>
+            <polyline style="fill:none;stroke:#d40057;stroke-miterlimit:10;stroke-width:2px;"
+                      points="16.5 21.45 10.5 15.45 16.5 9.45"/>
+            <line style="fill:none;stroke:#d40057;stroke-miterlimit:10;stroke-width:2px;" x1="11.5" y1="15.45" x2="21.5"
+                  y2="15.45"/>
+        </g>
+    </g>
+</svg>

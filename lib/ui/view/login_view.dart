@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:owomaniya/viewmodels/login_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -14,6 +15,8 @@ class _LoginViewState extends State<LoginView> {
 
   bool _obscureText = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   void toggle() {
     setState(() {
       this._obscureText = !this._obscureText;
@@ -24,220 +27,202 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
-              body: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Container(
-                      child: Wrap(
-                        runSpacing: 5.0,
-                        children: [
-                          ListView(
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              Center(
-                                heightFactor: 1.2,
-                                child: Wrap(
-                                  runSpacing: 5,
+              body: Padding(
+                padding: const EdgeInsets.all(26.0),
+                child: Container(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Container(
+                        child: Wrap(
+                          runSpacing: 10.0,
+                          children: [
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: 60,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      10.0, 10.0, 10.0, 5.0),
+                                  child: Center(
+                                    child: Text(
+                                      'Login',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Divider(
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 200,
+                            ),
+                            Form(
+                              key: _formKey,
+                              child: Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Center(
-                                      child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              60.0, 30.0, 60.0, 20.0),
-                                          child: Text(
-                                            'Login',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 30,
-                                            ),
-                                          )),
+                                    TextFormField(
+                                      controller: emailController,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          hintText: 'Email ID or Phone',
+                                          hintStyle: TextStyle(fontSize: 18.0),
+                                          labelText: 'Email ID or Phone'),
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return 'Enter Email Id or Phone Number';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    TextFormField(
+                                      controller: passwordController,
+                                      obscureText: !this._obscureText,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        hintText: 'Password',
+                                        hintStyle: TextStyle(fontSize: 18.0),
+                                        labelText: 'Password',
+                                        suffixIcon: IconButton(
+                                          icon: SvgPicture.asset(
+                                            'assets/svg/show_password.svg',
+                                            height: 15,
+                                            width: 15,
+                                            color: this._obscureText
+                                                ? Colors.pink
+                                                : Colors.grey,
+                                          ),
+                                          onPressed: () {
+                                            toggle();
+                                          },
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return 'Password is required';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                     SizedBox(
-                                      height: 100,
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10.0),
+                                            child: Center(
+                                              child: GestureDetector(
+                                                child: Container(
+                                                  child: Text(
+                                                    'Forgot Password?',
+                                                    style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        color: Colors.pink),
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  model
+                                                      .navigateToForgotPassword();
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 15,
                                     ),
                                     Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
+                                      width: double.infinity,
+                                      child: FlatButton(
+                                        child: Text(
+                                          "SIGN IN",
+                                          style: TextStyle(fontSize: 15.0),
+                                        ),
+                                        textColor: Colors.white,
+                                        padding: EdgeInsets.all(14),
+                                        onPressed: () {
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            model.login(
+                                              emailController.text,
+                                              passwordController.text,
+                                            );
+                                          }
+                                          // model.navigateToPaymentMethod();
+                                        },
+                                        color: Colors.pink,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10.0),
-                                              child: TextField(
-                                                maxLines: 1,
-                                                controller: emailController,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                decoration: InputDecoration(
-                                                  hintText: 'Enter Email',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 18.0),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
+                                            Text(
+                                              'Don\'t have An Account ?',
+                                              style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 10.0),
-                                              child: TextField(
-                                                maxLines: 1,
-                                                controller:
-                                                    passwordController,
-                                                obscureText:
-                                                    !this._obscureText,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                decoration: InputDecoration(
-                                                  hintText: 'Enter Password',
-                                                  hintStyle: TextStyle(
-                                                      fontSize: 18.0),
-                                                  suffixIcon: IconButton(
-                                                    icon: Icon(
-                                                      Icons.remove_red_eye,
-                                                      color: this._obscureText
-                                                          ? Colors.pink
-                                                          : Colors.grey,
-                                                    ),
-                                                    onPressed: () {
-                                                      toggle();
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: Center(
-                                                      child: GestureDetector(
-                                                        child: Container(
-                                                          child: Text(
-                                                            'Forgot Password?',
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    18.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                color: Colors
-                                                                    .pink),
-                                                          ),
-                                                        ),
-                                                        onTap: () {
-                                                          model
-                                                              .navigateToForgotPassword();
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Container(
-                                              width: double.infinity,
-                                              child: FlatButton(
-                                                child: Text(
-                                                  "SIGN IN",
-                                                  style: TextStyle(
-                                                      fontSize: 15.0),
-                                                ),
-                                                textColor: Colors.white,
-                                                padding: EdgeInsets.all(14),
-                                                onPressed: () {
-                                                  model.login(
-                                                    emailController.text,
-                                                    passwordController.text,
-                                                  );
-                                                },
-                                                color: Colors.pink,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Center(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.only(
-                                                        left: 20.0),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Don\'t have An Account ?',
+                                              child: Center(
+                                                child: GestureDetector(
+                                                  child: Container(
+                                                    child: Text(
+                                                      'Sign Up',
                                                       style: TextStyle(
-                                                          fontSize: 15.0,
+                                                          fontSize: 18.0,
                                                           fontWeight:
-                                                              FontWeight
-                                                                  .bold),
+                                                              FontWeight.bold,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          color: Colors.pink),
                                                     ),
-                                                    Center(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10.0),
-                                                        child: Center(
-                                                          child:
-                                                              GestureDetector(
-                                                            child: Container(
-                                                              child: Text(
-                                                                'Sign Up',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        18.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontStyle:
-                                                                        FontStyle
-                                                                            .normal,
-                                                                    color: Colors
-                                                                        .black),
-                                                              ),
-                                                            ),
-                                                            onTap: () => model
-                                                                .navigateToSignUp(),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  ),
+                                                  onTap: () =>
+                                                      model.navigateToSignUp(),
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

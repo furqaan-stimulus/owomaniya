@@ -3,6 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:owomaniya/app/locator.dart';
 import 'package:owomaniya/app/router.gr.dart' as route;
+import 'package:owomaniya/model/users.dart';
+import 'package:owomaniya/owPreferences/user_preferences.dart';
 import 'package:owomaniya/utils/api_urls.dart';
 import 'package:owomaniya/viewmodels/base_model.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -23,16 +25,20 @@ class VerifyOtpViewModel extends BaseModel {
     };
 
     setBusy(true);
-
     Response response = await post(
       ApiUrls.VERIFY_OTP,
-      body: jsonEncode(verifyMobileNumber),
+      body: json.encode(verifyMobileNumber),
       headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
 
+      var userData = responseData['data'];
+      Users authUser = Users.fromJson(userData);
+      UserPreferences().saveUser(authUser);
+      _navigationService
+          .pushNamedAndRemoveUntil(route.Routes.resetPasswordView);
       result = {
         'status': true,
         'message': 'Successful',

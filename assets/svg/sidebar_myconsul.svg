@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.5 19.5">
+    <defs>
+<!--        <style>-->
+<!--            .cls-1,.cls-2{fill:none;stroke:#d40057;}.cls-1{stroke-miterlimit:10;}.cls-2{stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75px;}-->
+<!--        </style>-->
+    </defs>
+    <title>sidebar_myconsul</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <circle style="stroke-miterlimit:10;fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75px" cx="9.75" cy="9.75" r="9.25"/>
+            <circle style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75px;" cx="9.17" cy="10.33" r="0.34"/>
+            <line style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75px;" x1="9.17" y1="8.29" x2="9.17" y2="9.99"/>
+            <line style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75px;" x1="11.04" y1="10.33" x2="9.51" y2="10.33"/>
+            <path style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75px;" d="M5.32,9.94A4.25,4.25,0,1,0,6.17,7.4"/>
+            <polyline style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.75px;" points="6.17 5.7 6.17 7.4 7.86 7.4"/>
+        </g>
+    </g>
+</svg>

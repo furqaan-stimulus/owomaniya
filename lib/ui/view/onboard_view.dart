@@ -65,7 +65,7 @@ class _OnBoardViewState extends State<OnBoardView> {
                     child: FlatButton(
                       onPressed: () {
                         model.navigateToHomeScreen();
-                        print('Skip');
+                        // print('Skip');
                       },
                       child: Text(
                         'Skip',
@@ -221,7 +221,7 @@ class _OnBoardViewState extends State<OnBoardView> {
                 child: GestureDetector(
                   onTap: () {
                     model.navigateToHomeScreen();
-                    print('Get started');
+                    // print('Get started');
                   },
                   child: Center(
                     child: Padding(

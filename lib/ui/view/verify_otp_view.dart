@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:owomaniya/viewmodels/verify_otp_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -9,143 +10,146 @@ class VerifyOtpView extends StatefulWidget {
 
 class _VerifyOtpViewState extends State<VerifyOtpView> {
   final _otpController = TextEditingController();
+  final _mobileNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<VerifyOtpViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
-              body: Center(
+              body: Padding(
+                padding: const EdgeInsets.all(26.0),
                 child: Container(
-                  child: Wrap(
-                    runSpacing: 5.0,
+                  child: ListView(
+                    shrinkWrap: true,
                     children: [
-                      ListView(
-                        shrinkWrap: true,
-                        children: <Widget>[
-                          Center(
-                            heightFactor: 1.2,
-                            child: Wrap(
-                              runSpacing: 5,
+                      Container(
+                        child: Wrap(
+                          runSpacing: 10.0,
+                          children: [
+                            Column(
                               children: [
+                                SizedBox(
+                                  height: 60,
+                                ),
                                 Center(
                                   child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          60.0, 30.0, 60.0, 20.0),
-                                      child: Text(
-                                        'Enter Your OTP',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 100,
-                                ),
-                                Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
+                                    padding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 10.0, 5.0),
+                                    child: Row(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10.0),
-                                          child: Text(
-                                            'Mobile Number',
-                                            style: TextStyle(
+                                        IconButton(
+                                          icon: SvgPicture.asset(
+                                            'assets/svg/back_home.svg',
+                                            width: 45,
+                                            height: 45,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: 10.0,
+                                        ),
+                                        Text(
+                                          'Reset Password',
+                                          style: TextStyle(
+                                              color: Colors.black,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10.0),
-                                          child: TextField(
-                                            maxLines: 1,
-                                            controller: _otpController,
-                                            keyboardType: TextInputType.text,
-                                            decoration: InputDecoration(
-                                                hintText:
-                                                    'Enter OTP',
-                                                hintStyle:
-                                                    TextStyle(fontSize: 18.0),
-                                                labelText:
-                                                    'Enter OTP'),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Center(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.only(
-                                                        left: 10.0),
-                                                child: Center(
-                                                  child: GestureDetector(
-                                                    child: Container(
-                                                      child: Text(
-                                                        'Resend OTP',
-                                                        style: TextStyle(
-                                                            fontSize: 18.0,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold,
-                                                            fontStyle:
-                                                                FontStyle
-                                                                    .normal,
-                                                            color:
-                                                                Colors.pink),
-                                                      ),
-                                                    ),
-                                                    onTap: () {},
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                          width: double.infinity,
-                                          child: FlatButton(
-                                            child: Text(
-                                              "RESET PASSWORD",
-                                              style:
-                                                  TextStyle(fontSize: 15.0),
-                                            ),
-                                            textColor: Colors.white,
-                                            padding: EdgeInsets.all(14),
-                                            onPressed: () {
-                                              model.navigateToResetPassword();
-                                            },
-                                            color: Colors.pink,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
+                                              fontSize: 20),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
+                                Divider(
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  height: 150,
+                                ),
+                                Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextField(
+                                        controller: _mobileNumberController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                            hintText: 'Your Phone Number',
+                                            hintStyle:
+                                                TextStyle(fontSize: 18.0),
+                                            labelText: 'Your Phone Number'),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      TextField(
+                                        controller: _otpController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                            hintText: 'Enter OTP Number',
+                                            hintStyle:
+                                                TextStyle(fontSize: 18.0),
+                                            labelText: 'Enter OTP'),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10.0),
+                                              child: Center(
+                                                child: GestureDetector(
+                                                  child: Container(
+                                                    child: Text(
+                                                      'Resend OTP',
+                                                      style: TextStyle(
+                                                          fontSize: 16.0,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          color: Colors.black),
+                                                    ),
+                                                  ),
+                                                  onTap: () {},
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        child: FlatButton(
+                                          child: Text(
+                                            "RESET PASSWORD",
+                                            style: TextStyle(fontSize: 15.0),
+                                          ),
+                                          textColor: Colors.white,
+                                          padding: EdgeInsets.all(14),
+                                          onPressed: () {
+                                            model.navigateToResetPassword();
+                                          },
+                                          color: Colors.pink,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),

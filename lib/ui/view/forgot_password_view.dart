@@ -1,96 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:owomaniya/utils/size_config.dart';
 import 'package:owomaniya/viewmodels/forgot_password_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 class ForgotPasswordView extends StatelessWidget {
   final _mobileController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ForgotPasswordViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
-              body: Center(
+              body: Padding(
+                padding: const EdgeInsets.all(26.0),
                 child: Container(
-                  child: Wrap(
-                    runSpacing: 5.0,
+                  child: ListView(
+                    shrinkWrap: true,
                     children: [
-                      ListView(
-                        shrinkWrap: true,
-                        children: <Widget>[
-                          Center(
-                            heightFactor: 1.2,
-                            child: Wrap(
-                              runSpacing: 5,
+                      Container(
+                        child: Wrap(
+                          runSpacing: 10.0,
+                          children: [
+                            Column(
                               children: [
-                                Center(
-                                  child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          60.0, 30.0, 60.0, 20.0),
-                                      child: Text(
-                                        'Forgot Password?',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      )),
-                                ),
                                 SizedBox(
-                                  height: 100,
+                                  height: 60,
                                 ),
-                                Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      10.0, 10.0, 10.0, 5.0),
+                                  child: Center(
+                                    child: Row(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10.0),
-                                          child: TextField(
-                                            maxLines: 1,
-                                            controller: _mobileController,
-                                            keyboardType: TextInputType.text,
-                                            decoration: InputDecoration(
-                                                hintText:
-                                                    'Enter phone Number',
-                                                hintStyle:
-                                                    TextStyle(fontSize: 18.0),
-                                                labelText:
-                                                    'Enter Phone Number'),
+                                        IconButton(
+                                          icon: SvgPicture.asset(
+                                            'assets/svg/back_home.svg',
+                                            width: 40,
+                                            height: 40,
                                           ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
                                         ),
                                         SizedBox(
-                                          height: 20,
+                                          width: 10.0,
                                         ),
-                                        Container(
-                                          width: double.infinity,
-                                          child: FlatButton(
-                                            child: Text(
-                                              "SEND OTP",
-                                              style:
-                                                  TextStyle(fontSize: 15.0),
-                                            ),
-                                            textColor: Colors.white,
-                                            padding: EdgeInsets.all(14),
-                                            onPressed: () {
-                                              model.navigateToVerifyOtp();
-                                            },
-                                            color: Colors.pink,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
+                                        Text(
+                                          'Forgot Password',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
+                                Divider(
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(
+                                  height: 150,
+                                ),
                               ],
                             ),
+                          ],
+                        ),
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: _mobileController,
+                                keyboardType: TextInputType.phone,
+                                decoration: InputDecoration(
+                                    hintText: 'Enter phone Number',
+                                    hintStyle: TextStyle(fontSize: 18.0),
+                                    labelText: 'Enter Phone Number'),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Enter Phone Number to receive OTP';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  child: Text(
+                                    "SEND OTP",
+                                    style: TextStyle(fontSize: 15.0),
+                                  ),
+                                  textColor: Colors.white,
+                                  padding: EdgeInsets.all(14),
+                                  onPressed: () {
+                                    // if (_formKey.currentState.validate()) {
+                                    //   model.forgotPassword(
+                                    //       _mobileController.text);
+                                    // }
+                                    model.navigateToVerifyOtp();
+                                  },
+                                  color: Colors.pink,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),

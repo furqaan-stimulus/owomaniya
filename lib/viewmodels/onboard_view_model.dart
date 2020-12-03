@@ -1,5 +1,6 @@
 import 'package:owomaniya/app/locator.dart';
 import 'package:owomaniya/app/router.gr.dart' as route;
+import 'package:owomaniya/services/network_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 

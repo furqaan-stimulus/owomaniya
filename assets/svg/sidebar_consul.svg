@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 19">
+    <defs>
+<!--        <style>-->
+<!--            .cls-1,.cls-2{fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;}.cls-2{fill-rule:evenodd;}-->
+<!--        </style>-->
+    </defs>
+    <title>sidebar_consul</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <path style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill-rule:evenodd;" d="M8.3,1c.94.94,1.2,3.52,1.2,3.52S6.92,4.24,6,3.3A1.64,1.64,0,0,1,8.3,1Z"/>
+            <path style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill-rule:evenodd;" d="M10.7,1C9.76,1.92,9.5,4.5,9.5,4.5S12.08,4.24,13,3.3A1.64,1.64,0,0,0,10.7,1Z"/>
+            <path style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill-rule:evenodd;" d="M16.5,18.5H2.5a.67.67,0,0,1-.67-.67v-10H17.17v10A.67.67,0,0,1,16.5,18.5Z"/>
+            <rect style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill-rule:evenodd;" x="7.83" y="4.5" width="3.33" height="14"/>
+            <path style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill-rule:evenodd;" d="M18.5,7.83H.5V5.17a.67.67,0,0,1,.67-.67H17.83a.67.67,0,0,1,.67.67Z"/>
+        </g>
+    </g>
+</svg>

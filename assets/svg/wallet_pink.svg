@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12.72 11.83">
+    <defs>
+        <!--        <style>.cls-1{fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72px;}</style>-->
+    </defs>
+    <title>wallet_pink</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <circle style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72px;"
+                    cx="10.36" cy="6.8" r="0.22"/>
+            <path style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72px;"
+                  d="M9.69,7.91a.44.44,0,0,1-.44-.44V6.14a.45.45,0,0,1,.44-.45h2.22V3A.88.88,0,0,0,11,2.14H1.25a.89.89,0,0,1-.89-.89v9.33a.89.89,0,0,0,.89.89H11a.88.88,0,0,0,.88-.89V7.91Z"/>
+            <rect style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72px;"
+                  x="9.25" y="5.69" width="3.11" height="2.22" rx="0.44" ry="0.44"/>
+            <path style="fill:none;stroke:#d40057;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72px;"
+                  d="M11,2.14H1.25a.89.89,0,0,1-.89-.89h0A.89.89,0,0,1,1.25.36h8.89a.89.89,0,0,1,.89.89Z"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,4 @@
+enum IsAnonymous {
+  Y,
+  N,
+}

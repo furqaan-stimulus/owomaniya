@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.85 21">
+    <defs>
+<!--        <style>.cls-1{fill:none;stroke:#d40057;stroke-miterlimit:10;}</style>-->
+    </defs>
+    <title>sidebar_amount</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;" d="M2.76,10.34a2.26,2.26,0,0,1,0-4.52"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;"
+                  d="M20.46,8.08h-.13a3,3,0,0,1-2.42-1.2c-.05-.08-.11-.15-.17-.23,1-.55,2.11-2.68,1.81-3.33-.19-.43-3.09-.23-4.15,1.3l0,0a8.78,8.78,0,0,0-4.32-1.11c-4.58,0-8.29,3.37-8.29,7.53A7,7,0,0,0,4,15a3.31,3.31,0,0,1,.45,2.7l-.29,1c-.41,1.5,4.12,2.51,4.49,1.23l.16-.54a1.07,1.07,0,0,1,1.17-.79,10.2,10.2,0,0,0,1.12.07,8.06,8.06,0,0,0,1-.06,1.1,1.1,0,0,1,1.18.79l.19.56c.42,1.31,5,.18,4.47-1.28l-.26-.82a3.31,3.31,0,0,1,.45-2.72h0a2.24,2.24,0,0,1,1.83-1h.56c1,0,1.89-1.35,1.89-3S21.5,8.08,20.46,8.08Z"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;" d="M5.58,16.75A7.58,7.58,0,0,1,4,15"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;" d="M10.17,18.57a8.16,8.16,0,0,1-1.94-.47"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;" d="M13.68,18.24a8.93,8.93,0,0,1-1.65.33"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;" d="M18.06,15.11a6,6,0,0,1-1.62,1.71"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;" d="M19.11,12.83a7.15,7.15,0,0,1-.89,2"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;"
+                  d="M8.34,3.87a2.91,2.91,0,0,1-.06-.6,2.77,2.77,0,1,1,5.54,0,2.6,2.6,0,0,1-.06.56"/>
+            <line style="fill:none;stroke:#d40057;stroke-miterlimit:10;" x1="11.05" y1="8.08" x2="11.05" y2="14.01"/>
+            <line style="fill:none;stroke:#d40057;stroke-miterlimit:10;" x1="8.08" y1="11.05" x2="14.01" y2="11.05"/>
+        </g>
+    </g>
+</svg>

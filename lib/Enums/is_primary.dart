@@ -1,0 +1,4 @@
+enum IsPrimary {
+  Y,
+  N,
+}

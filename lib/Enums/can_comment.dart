@@ -1,0 +1,4 @@
+enum CanComment {
+  Y,
+  N,
+}

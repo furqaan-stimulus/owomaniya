@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45">
+    <defs>
+<!--        <style>.cls-1{fill:#4caf50;}</style>-->
+    </defs>
+    <title>payment_success</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <path style="fill:#4caf50;"
+                  d="M22.5,0A22.5,22.5,0,1,0,45,22.5,22.5,22.5,0,0,0,22.5,0ZM16.92,33.89,7.39,24.36,9.77,22l7.15,7.15,18-18,2.39,2.38Z"/>
+        </g>
+    </g>
+</svg>

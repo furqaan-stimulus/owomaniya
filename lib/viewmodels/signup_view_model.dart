@@ -1,84 +1,50 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart';
+import 'package:device_info/device_info.dart';
 import 'package:owomaniya/app/locator.dart';
 import 'package:owomaniya/app/router.gr.dart' as route;
-import 'package:owomaniya/model/user.dart';
-import 'package:owomaniya/utils/api_urls.dart';
-import 'package:owomaniya/utils/shared_preferences.dart';
+import 'package:owomaniya/services/api_service.dart';
+import 'package:owomaniya/services/authentication_service.dart';
 import 'package:owomaniya/viewmodels/base_model.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SignUpViewModel extends BaseModel {
   final NavigationService _navigationService = getIt<NavigationService>();
+  final ApiService _apiService = getIt<ApiService>();
+  final AuthenticationService _authenticationService =
+      getIt<AuthenticationService>();
+  final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   Future navigateToLogin() async {
     await _navigationService.navigateTo(route.Routes.loginView);
   }
 
-  String deviceType = 'mobile';
-  String deviceOs = 'android';
-
-  Future<Map<String, dynamic>> signUp(
-      String email,
-      String mobileNumber,
-      String dateOfBirth,
-      String gender,
-      String password,
-      String firstName,
-      String lastName) async {
-    final Map<String, dynamic> registerData = {
-      'email_address': email,
-      'mobile_no': mobileNumber,
-      'date_of_birth': dateOfBirth,
-      'gender': gender,
-      'password': password,
-      'device_type': deviceType,
-      'device_os': deviceOs,
-      'first_name': firstName,
-      'last_name': lastName
-    };
-    setBusy(true);
-    _navigationService.navigateTo(route.Routes.verifyMobileView);
-
-    return await post(ApiUrls.USER_SIGN_UP_URL,
-            body: json.encode(registerData),
-            headers: {'content-Type': 'application/json'})
-        .then(onValue)
-        .catchError(onError);
+  Future navigateToVerifyMobileView() async {
+    await _navigationService.navigateTo(route.Routes.verifyMobileView);
   }
 
-  static Future<FutureOr> onValue(Response response) async {
-    var result;
-    final Map<String, dynamic> responseData = json.decode(response.body);
-    print('signup response $responseData');
+  Future<dynamic> signUp(String email, String mobileNumber, String dateOfBirth,
+      String gender, String password, String firstName, String lastName) async {
+    var signUpResult = await _authenticationService.postSignUp(email,
+        mobileNumber, dateOfBirth, gender, password, firstName, lastName);
 
-    if (response.statusCode == 200) {
-      var userData = responseData['data'];
-
-      User authUser = User.fromJson(userData);
-
-      SharedPrefs().saveUser(authUser);
-
-      result = {
-        'status': true,
-        'message': 'Successfully registered',
-        'data': authUser
-      };
-      print('signup success $result');
-    } else {
-      result = {
-        'status': false,
-        'message': 'Registration failed',
-        'data': responseData
-      };
-      print('signup fail $result');
-    }
-    return result;
+    return await Future.delayed(
+      Duration(seconds: 2),
+      () {
+        if (signUpResult is String) {
+          print(signUpResult);
+        } else {
+          _navigationService.pushNamedAndRemoveUntil(route.Routes.loginView);
+          print(signUpResult);
+        }
+      },
+    );
   }
 
-  static onError(error) {
-    print("the error is $error.detail");
-    return {'status': false, 'message': 'Unsuccessful Request', 'data': error};
+  Future navigateToTerms() async {
+    await _navigationService.navigateTo(route.Routes.termsOfServiceView);
+  }
+
+  Future navigateToPrivacy() async {
+    await _navigationService.navigateTo(route.Routes.privacyPolicyView);
   }
 }

@@ -10,6 +10,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../ui/view/ask_query_view.dart';
+import '../ui/view/bookmark_view.dart';
+import '../ui/view/consultation_view.dart';
 import '../ui/view/forgot_password_view.dart';
 import '../ui/view/home_view.dart';
 import '../ui/view/login_view.dart';
@@ -17,9 +19,14 @@ import '../ui/view/onboard_view.dart';
 import '../ui/view/payment_failure_view.dart';
 import '../ui/view/payment_method_view.dart';
 import '../ui/view/payment_successful_view.dart';
+import '../ui/view/privacy_policy_view.dart';
+import '../ui/view/register_as_expert_view.dart';
 import '../ui/view/reset_password_view.dart';
+import '../ui/view/share_your_voice_view.dart';
 import '../ui/view/signup_view.dart';
 import '../ui/view/splash_view.dart';
+import '../ui/view/terms_of_service_view.dart';
+import '../ui/view/user_profile_view.dart';
 import '../ui/view/verify_mobile_view.dart';
 import '../ui/view/verify_otp_view.dart';
 
@@ -37,6 +44,13 @@ class Routes {
   static const String paymentMethodView = '/payment-method-view';
   static const String paymentSuccessView = '/payment-success-view';
   static const String paymentFailureView = '/payment-failure-view';
+  static const String consultationView = '/consultation-view';
+  static const String shareYourVoiceView = '/share-your-voice-view';
+  static const String userProfileView = '/user-profile-view';
+  static const String privacyPolicyView = '/privacy-policy-view';
+  static const String termsOfServiceView = '/terms-of-service-view';
+  static const String registerAsExpertView = '/register-as-expert-view';
+  static const String bookmarkView = '/bookmark-view';
   static const all = <String>{
     splashView,
     onBoardView,
@@ -51,6 +65,13 @@ class Routes {
     paymentMethodView,
     paymentSuccessView,
     paymentFailureView,
+    consultationView,
+    shareYourVoiceView,
+    userProfileView,
+    privacyPolicyView,
+    termsOfServiceView,
+    registerAsExpertView,
+    bookmarkView,
   };
 }
 
@@ -71,6 +92,13 @@ class Router extends RouterBase {
     RouteDef(Routes.paymentMethodView, page: PaymentMethodView),
     RouteDef(Routes.paymentSuccessView, page: PaymentSuccessView),
     RouteDef(Routes.paymentFailureView, page: PaymentFailureView),
+    RouteDef(Routes.consultationView, page: ConsultationView),
+    RouteDef(Routes.shareYourVoiceView, page: ShareYourVoiceView),
+    RouteDef(Routes.userProfileView, page: UserProfileView),
+    RouteDef(Routes.privacyPolicyView, page: PrivacyPolicyView),
+    RouteDef(Routes.termsOfServiceView, page: TermsOfServiceView),
+    RouteDef(Routes.registerAsExpertView, page: RegisterAsExpertView),
+    RouteDef(Routes.bookmarkView, page: BookmarkView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -88,8 +116,11 @@ class Router extends RouterBase {
       );
     },
     HomeView: (data) {
+      final args = data.getArgs<HomeViewArguments>(
+        orElse: () => HomeViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => HomeView(),
+        builder: (context) => HomeView(key: args.key),
         settings: data,
       );
     },
@@ -153,5 +184,57 @@ class Router extends RouterBase {
         settings: data,
       );
     },
+    ConsultationView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ConsultationView(),
+        settings: data,
+      );
+    },
+    ShareYourVoiceView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ShareYourVoiceView(),
+        settings: data,
+      );
+    },
+    UserProfileView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => UserProfileView(),
+        settings: data,
+      );
+    },
+    PrivacyPolicyView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => PrivacyPolicyView(),
+        settings: data,
+      );
+    },
+    TermsOfServiceView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => TermsOfServiceView(),
+        settings: data,
+      );
+    },
+    RegisterAsExpertView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => RegisterAsExpertView(),
+        settings: data,
+      );
+    },
+    BookmarkView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => BookmarkView(),
+        settings: data,
+      );
+    },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// HomeView arguments holder class
+class HomeViewArguments {
+  final Key key;
+  HomeViewArguments({this.key});
 }

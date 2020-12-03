@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.33 15.67">
+    <defs>
+        <!--        <style>.cls-1{fill:none;stroke:#212121;stroke-miterlimit:10;stroke-width:0.71px;}</style>-->
+    </defs>
+    <title>sidebar_voice</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;stroke-width:0.71px;"
+                  d="M12.53,9A2,2,0,0,0,10,7.71L9.25,8a13.76,13.76,0,0,0,.55,2,13.31,13.31,0,0,0,.8,1.87l.69-.24A2,2,0,0,0,12.53,9Z"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;stroke-width:0.71px;"
+                  d="M10.32,2.66C9.58,2.93,9.15,3.85,9,5.13A6,6,0,0,1,5.38,8.7L2.1,9.85a2.61,2.61,0,1,0,1.73,4.93l3.28-1.16a6.09,6.09,0,0,1,5.09.5c.88.94,1.8,1.38,2.54,1.12,1.51-.53,1.75-3.77.53-7.25S11.83,2.13,10.32,2.66Z"/>
+            <ellipse style="fill:none;stroke:#d40057;stroke-miterlimit:10;stroke-width:0.71px;" cx="12.53" cy="8.95"
+                     rx="2.9" ry="6.67"
+                     transform="translate(-2.26 4.66) rotate(-19.36)"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;stroke-width:0.71px;"
+                  d="M5.24,8.75a4.19,4.19,0,0,0,0,2.75A4.14,4.14,0,0,0,7,13.67"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;stroke-width:0.71px;"
+                  d="M17.82.32A9.3,9.3,0,0,1,22,12.79"/>
+            <path style="fill:none;stroke:#d40057;stroke-miterlimit:10;stroke-width:0.71px;"
+                  d="M16.51,3a6.36,6.36,0,0,1,2.86,8.53"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,4 @@
+enum Flagged {
+  Y,
+  N,
+}

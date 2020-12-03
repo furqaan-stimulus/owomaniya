@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12.4 15.66">
+    <defs>
+<!--        <style>-->
+<!--            .cls-1{fill:none;}.cls-1,.cls-2{stroke:#212121;stroke-linecap:round;stroke-linejoin:round;}.cls-2{fill:#f8bbd0;}-->
+<!--        </style>-->
+    </defs>
+    <title>articles</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <polygon style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill:#f8bbd0" points="11.9 15.16 0.5 15.16 0.5 0.5 9.19 0.5 11.9 0.5 11.9 3.21 11.9 15.16"/>
+            <line style="stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill:#f8bbd0;" x1="2.67" y1="3.23" x2="5.39" y2="3.23"/>
+            <line style="stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill:#f8bbd0;" x1="2.69" y1="5.4" x2="9.75" y2="5.4"/>
+            <line style="stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill:#f8bbd0;" x1="2.69" y1="7.57" x2="9.75" y2="7.57"/>
+            <line style="stroke:#212121;stroke-linecap:round;stroke-linejoin:round;fill:#f8bbd0;" x1="2.71" y1="9.72" x2="9.77" y2="9.72"/>
+        </g>
+    </g>
+</svg>

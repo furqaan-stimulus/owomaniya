@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12.52 14.61">
+    <defs>
+        <!--        <style>.cls-1{fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.52px;}</style>-->
+    </defs>
+    <title>delete</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <path style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.52px;"
+                  d="M10.7,14.35H1.83a.53.53,0,0,1-.53-.52v-12h9.92v12A.53.53,0,0,1,10.7,14.35Z"/>
+            <line style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.52px;"
+                  x1="0.26" y1="1.83" x2="12.26" y2="1.83"/>
+            <path style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.52px;"
+                  d="M8.61,1.83H3.91v-1A.52.52,0,0,1,4.43.26H8.09a.52.52,0,0,1,.52.52Z"/>
+            <line style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.52px;"
+                  x1="6.26" y1="3.91" x2="6.26" y2="12.26"/>
+            <line style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.52px;"
+                  x1="8.61" y1="3.91" x2="8.61" y2="12.26"/>
+            <line style="fill:none;stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.52px;"
+                  x1="3.91" y1="3.91" x2="3.91" y2="12.26"/>
+        </g>
+    </g>
+</svg>

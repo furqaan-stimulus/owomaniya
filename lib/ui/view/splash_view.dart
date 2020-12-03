@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:owomaniya/utils/size_config.dart';
 import 'package:owomaniya/viewmodels/splash_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,6 +14,7 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return ViewModelBuilder<SplashViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         body: Column(
@@ -23,7 +25,9 @@ class _SplashViewState extends State<SplashView> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  child: Lottie.asset('assets/lottie/login.json'),
+                  height: SizeConfig.blockSizeHorizontal * 100,
+                  width: SizeConfig.blockSizeVertical * 100,
+                  child: Image.asset('assets/images/ow_symbol.png'),
                 ),
               ),
             ),
@@ -32,9 +36,15 @@ class _SplashViewState extends State<SplashView> {
       ),
       viewModelBuilder: () => SplashViewModel(),
       onModelReady: (model) {
-        Future.delayed(Duration(seconds: 4), () {
-          model.navigateToWalkThrough();
-        });
+        // SchedulerBinding.instance
+        //     .addPostFrameCallback((_) => model.initialised);
+        // model.isUserSignedIn();
+        Future.delayed(
+          Duration(seconds: 2),
+          () {
+            model.navigateToWalkThrough();
+          },
+        );
       },
     );
   }

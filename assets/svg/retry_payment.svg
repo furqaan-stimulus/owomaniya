@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.58 21.91">
+    <defs>
+<!--        <style>.cls-1{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}</style>-->
+    </defs>
+    <title>retry_payment</title>
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <circle style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;" cx="19.32" cy="12.63"
+                    r="0.42"/>
+            <path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;"
+                  d="M18.06,14.72a.85.85,0,0,1-.84-.84V11.37a.85.85,0,0,1,.84-.84h4.18v-5a1.68,1.68,0,0,0-1.67-1.68H2.17A1.67,1.67,0,0,1,.5,2.17V19.73a1.68,1.68,0,0,0,1.67,1.68h18.4a1.68,1.68,0,0,0,1.67-1.68v-5Z"/>
+            <rect style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;" x="17.22" y="10.53"
+                  width="5.85" height="4.18" rx="0.84" ry="0.84"/>
+            <path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;"
+                  d="M20.57,3.84H2.17A1.67,1.67,0,0,1,.5,2.17h0A1.67,1.67,0,0,1,2.17.5H18.9a1.67,1.67,0,0,1,1.67,1.67Z"/>
+        </g>
+    </g>
+</svg>
