@@ -9,12 +9,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../ui/view/ask_expert_view.dart';
 import '../ui/view/ask_query_view.dart';
 import '../ui/view/bookmark_view.dart';
 import '../ui/view/consultation_view.dart';
 import '../ui/view/forgot_password_view.dart';
+import '../ui/view/full_consultation_view.dart';
 import '../ui/view/home_view.dart';
 import '../ui/view/login_view.dart';
+import '../ui/view/my_consultation_view.dart';
 import '../ui/view/onboard_view.dart';
 import '../ui/view/payment_failure_view.dart';
 import '../ui/view/payment_method_view.dart';
@@ -29,6 +32,7 @@ import '../ui/view/terms_of_service_view.dart';
 import '../ui/view/user_profile_view.dart';
 import '../ui/view/verify_mobile_view.dart';
 import '../ui/view/verify_otp_view.dart';
+import '../ui/view/voices_view.dart';
 
 class Routes {
   static const String splashView = '/';
@@ -51,6 +55,10 @@ class Routes {
   static const String termsOfServiceView = '/terms-of-service-view';
   static const String registerAsExpertView = '/register-as-expert-view';
   static const String bookmarkView = '/bookmark-view';
+  static const String voicesView = '/voices-view';
+  static const String askExpertView = '/ask-expert-view';
+  static const String fullConsultationView = '/full-consultation-view';
+  static const String myConsultationView = '/my-consultation-view';
   static const all = <String>{
     splashView,
     onBoardView,
@@ -72,6 +80,10 @@ class Routes {
     termsOfServiceView,
     registerAsExpertView,
     bookmarkView,
+    voicesView,
+    askExpertView,
+    fullConsultationView,
+    myConsultationView,
   };
 }
 
@@ -99,6 +111,10 @@ class Router extends RouterBase {
     RouteDef(Routes.termsOfServiceView, page: TermsOfServiceView),
     RouteDef(Routes.registerAsExpertView, page: RegisterAsExpertView),
     RouteDef(Routes.bookmarkView, page: BookmarkView),
+    RouteDef(Routes.voicesView, page: VoicesView),
+    RouteDef(Routes.askExpertView, page: AskExpertView),
+    RouteDef(Routes.fullConsultationView, page: FullConsultationView),
+    RouteDef(Routes.myConsultationView, page: MyConsultationView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -223,6 +239,30 @@ class Router extends RouterBase {
     BookmarkView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => BookmarkView(),
+        settings: data,
+      );
+    },
+    VoicesView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => VoicesView(),
+        settings: data,
+      );
+    },
+    AskExpertView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => AskExpertView(),
+        settings: data,
+      );
+    },
+    FullConsultationView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => FullConsultationView(),
+        settings: data,
+      );
+    },
+    MyConsultationView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => MyConsultationView(),
         settings: data,
       );
     },

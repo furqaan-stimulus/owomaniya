@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:owomaniya/model/feed_item_model.dart';
-import 'package:owomaniya/model/feeds.dart';
+import 'package:owomaniya/model/feed.dart';
 import 'package:owomaniya/widget/popup_view.dart';
 
 class BlogPostCard extends StatefulWidget {
-  final List<Feeds> model;
+  final List<Feed> model;
 
   const BlogPostCard({Key key, this.model}) : super(key: key);
 
@@ -15,13 +14,12 @@ class BlogPostCard extends StatefulWidget {
 }
 
 class _BlogPostCardState extends State<BlogPostCard> {
-  final List<Feeds> model;
+  final List<Feed> model;
 
   bool onChecked = false;
   bool isVisible = false;
   bool isProgress = false;
   bool isBookmark = false;
-  int index;
 
   _BlogPostCardState(this.model);
 
@@ -74,11 +72,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
                           //   width: 50,
                           // ),
                           Image.asset(
-                            model[index]
-                                .details
-                                .feedAuthorDetails[index]
-                                .user
-                                .userImage,
+                            model[index].details.authordetails[index].user.userImage,
                             height: 50,
                             width: 50,
                           ),
@@ -89,20 +83,20 @@ class _BlogPostCardState extends State<BlogPostCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text('name',
+                              Text(
+                                'name',
                                 // '${model[index].data[index].details.authordetails[index].user.firstName + model[index].data[index].details.authordetails[index].user.lastName}',
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                               ),
-                              Text('intro',
+                              Text(
+                                'intro',
                                 // '${model[index].data[index].details.authordetails[index].user.authordetails[index].introduction}',
                                 // model.details.introduction,
-                                style: TextStyle(
-                                    fontSize: 16.0, color: Colors.grey),
+                                style: TextStyle(fontSize: 16.0, color: Colors.grey),
                               ),
-                              Text( 'time',
-                                  // '${model[index].data[index].feedDate}'
+                              Text(
+                                'time',
+                                // '${model[index].data[index].feedDate}'
                               ),
                             ],
                           ),
@@ -114,8 +108,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
                       GestureDetector(
                         onTap: () {},
                         child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey)),
+                          decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Column(
@@ -132,22 +125,20 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                 ),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('category',
-                                        // '${model[index].data[index].categorymapping[index].category.category}'
-                                        // model.categoryMapping.category.category
-                                        ),
+                                    Text(
+                                      'category',
+                                      // '${model[index].data[index].categorymapping[index].category.category}'
+                                      // model.categoryMapping.category.category
+                                    ),
                                     Container(
                                       height: 20,
                                       width: 20,
                                       child: GestureDetector(
                                         child: isBookmark == true
-                                            ? SvgPicture.asset(
-                                                "assets/svg/tag_inactive.svg")
-                                            : SvgPicture.asset(
-                                                "assets/svg/tag_active.svg"),
+                                            ? SvgPicture.asset("assets/svg/tag_inactive.svg")
+                                            : SvgPicture.asset("assets/svg/tag_active.svg"),
                                         onTap: () {
                                           toggleBookmark();
                                         },
@@ -158,7 +149,8 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                Text('title',
+                                Text(
+                                  'title',
                                   // '${model[index].data[index].feedTitle}',
                                   textAlign: TextAlign.left,
                                   softWrap: true,
@@ -175,17 +167,14 @@ class _BlogPostCardState extends State<BlogPostCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                            'like'    // '${model[index].data[index].feedLikeCnt} Like this'
-                            ),
+                            Text('like' // '${model[index].data[index].feedLikeCnt} Like this'
+                                ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, right: 8.0),
+                              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                               child: Text('.'),
                             ),
-                            Text(
-                              'comment'// '${model[index].data[index].feedCommentCnt} Comment',
-                            ),
+                            Text('comment' // '${model[index].data[index].feedCommentCnt} Comment',
+                                ),
                           ],
                         ),
                       ),
@@ -223,16 +212,13 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                 onTap: toggleVisibility,
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     SvgPicture.asset(
                                       'assets/svg/comment.svg',
                                       height: 20,
                                       width: 20,
-                                      color: isVisible
-                                          ? Colors.pink
-                                          : Colors.black,
+                                      color: isVisible ? Colors.pink : Colors.black,
                                     ),
                                     SizedBox(
                                       width: 10.0,
@@ -240,9 +226,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                     Text(
                                       'Comment',
                                       style: TextStyle(
-                                        color: isVisible
-                                            ? Colors.pink
-                                            : Colors.black,
+                                        color: isVisible ? Colors.pink : Colors.black,
                                       ),
                                     ),
                                   ],
@@ -285,8 +269,6 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                         )
                                       : Text(
                                           'name',
-                                          // model.details.user.firstName +
-                                          //     model.details.user.lastName,
                                           style: TextStyle(
                                             fontSize: 16,
                                           ),
@@ -329,8 +311,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 6.0, top: 8.0),
+                                    padding: const EdgeInsets.only(right: 6.0, top: 8.0),
                                     child: onChecked
                                         ? SvgPicture.asset(
                                             'assets/svg/anyonmans.svg',
@@ -352,15 +333,12 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                       child: TextField(
                                         maxLines: null,
                                         decoration: InputDecoration(
-                                            hintText:
-                                                'Start typing your comment...',
+                                            hintText: 'Start typing your comment...',
                                             enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey),
+                                              borderSide: BorderSide(color: Colors.grey),
                                             ),
                                             focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.pink))),
+                                                borderSide: BorderSide(color: Colors.pink))),
                                       ),
                                     ),
                                   ),
@@ -408,8 +386,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                           Row(
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 6.0),
+                                                padding: const EdgeInsets.only(right: 6.0),
                                                 child: SvgPicture.asset(
                                                   'assets/svg/anyonmans.svg',
                                                   height: 40,
@@ -419,25 +396,19 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                                 width: 5.0,
                                               ),
                                               Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     'Mirza',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16),
+                                                    style: TextStyle(color: Colors.black, fontSize: 16),
                                                   ),
                                                   SizedBox(
                                                     height: 5.0,
                                                   ),
                                                   Text(
                                                     'comment 1',
-                                                    style: TextStyle(
-                                                        color: Colors.blueGrey,
-                                                        fontSize: 14),
+                                                    style: TextStyle(color: Colors.blueGrey, fontSize: 14),
                                                   ),
                                                 ],
                                               ),
@@ -449,8 +420,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                           Row(
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 6.0),
+                                                padding: const EdgeInsets.only(right: 6.0),
                                                 child: SvgPicture.asset(
                                                   'assets/svg/anyonmans.svg',
                                                   height: 40,
@@ -460,25 +430,19 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                                 width: 5.0,
                                               ),
                                               Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     'Mirza',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16),
+                                                    style: TextStyle(color: Colors.black, fontSize: 16),
                                                   ),
                                                   SizedBox(
                                                     height: 5.0,
                                                   ),
                                                   Text(
                                                     'comment 2',
-                                                    style: TextStyle(
-                                                        color: Colors.blueGrey,
-                                                        fontSize: 14),
+                                                    style: TextStyle(color: Colors.blueGrey, fontSize: 14),
                                                   ),
                                                 ],
                                               ),
@@ -490,8 +454,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                           Row(
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 6.0),
+                                                padding: const EdgeInsets.only(right: 6.0),
                                                 child: SvgPicture.asset(
                                                   'assets/svg/anyonmans.svg',
                                                   height: 40,
@@ -501,25 +464,19 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                                 width: 5.0,
                                               ),
                                               Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     'Mirza',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16),
+                                                    style: TextStyle(color: Colors.black, fontSize: 16),
                                                   ),
                                                   SizedBox(
                                                     height: 5.0,
                                                   ),
                                                   Text(
                                                     'comment 3',
-                                                    style: TextStyle(
-                                                        color: Colors.blueGrey,
-                                                        fontSize: 14),
+                                                    style: TextStyle(color: Colors.blueGrey, fontSize: 14),
                                                   ),
                                                 ],
                                               ),

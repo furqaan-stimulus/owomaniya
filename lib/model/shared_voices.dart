@@ -1,9 +1,9 @@
 import 'package:owomaniya/Enums/story_status.dart';
-import 'package:owomaniya/model/users.dart';
+import 'package:owomaniya/model/user.dart';
 
 class SharedVoices {
   String id;
-  Users usersId;
+  User usersId;
   String shortStory;
   String aboutYou;
   StoryStatus status;

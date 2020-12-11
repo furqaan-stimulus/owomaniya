@@ -12,7 +12,7 @@ void main() async {
   runApp(
     MyApp(),
   );
-}
+} 
 
 class MyApp extends StatelessWidget {
   final NavigationService _navigationService = getIt<NavigationService>();

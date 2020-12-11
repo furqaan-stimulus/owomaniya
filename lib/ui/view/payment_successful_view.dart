@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart';
+import 'package:owomaniya/utils/api_urls.dart';
 import 'package:owomaniya/viewmodels/payment_success_view_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class PaymentSuccessView extends StatefulWidget {
@@ -12,10 +17,14 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PaymentSuccessViewModel>.reactive(
-        builder: (context, model, child) => Scaffold(
-              body: Padding(
-                padding: const EdgeInsets.all(26.0),
-                child: Container(
+      builder: (context, model, child) => Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(26.0),
+          child: FutureBuilder(
+            future: getPaymentId(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Container(
                   child: ListView(
                     shrinkWrap: true,
                     children: [
@@ -27,8 +36,7 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
                             ),
                             Center(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -40,12 +48,15 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
                                         ),
                                         onPressed: () {},
                                       ),
-                                      Text(
-                                        'Back To Home',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
+                                      GestureDetector(
+                                        onTap: () {
+                                          model.navigateToHomeView();
+                                        },
+                                        child: Text(
+                                          'Back To Home',
+                                          style: TextStyle(
+                                              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -58,7 +69,9 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
                                           width: 18.0,
                                         ),
                                         label: Text('My consultation'),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          model.navigateToMyConsultationView();
+                                        },
                                       )
                                     ],
                                   ),
@@ -86,25 +99,21 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
                               children: [
                                 Text(
                                   'Payment Success',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   height: 5.0,
                                 ),
                                 Text(
-                                  'Transaction ID',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.grey),
+                                  snapshot.data,
+                                  style: TextStyle(fontSize: 14, color: Colors.grey),
                                 ),
                                 SizedBox(
                                   height: 5.0,
                                 ),
                                 Text(
                                   'Your query was successfully posted',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.pink),
+                                  style: TextStyle(fontSize: 14, color: Colors.pink),
                                 ),
                                 SizedBox(
                                   height: 5.0,
@@ -128,8 +137,7 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Text(
                               'You (Anonymous)',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
@@ -137,17 +145,34 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.all(14.0),
-                          child: Text(
-                            'Sample Query Part Disclaimer: Information provide by an expert here is for general informational purpose only and it should NOT be considered as substitute for professional expert(medical,psychological or fitness advice) as complete physical assessment of an individual has not been done. Please consult your nearest doctor/expert before acting on it. The advice is also not valid for medico-legal purposes.',
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black12),
-                          color: Colors.black12,
-                        ),
+                      FutureBuilder(
+                        future: _getFeedDetail(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(14.0),
+                                      child: Text(
+                                        snapshot.data,
+                                      ),
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black12),
+                                      color: Colors.black12,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Text('${snapshot.error}');
+                          }
+                        },
                       ),
                       SizedBox(
                         height: 20.0,
@@ -156,14 +181,11 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
                         color: Colors.grey,
                       ),
                       SizedBox(
-                        height: 15.0,
+                        height: 10.0,
                       ),
                       Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                        ),
                         child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: Text(
                             'Your query has been posted successfully. We will assign best suitable expert and your query will answered soon. Thank you for using The OoWomaniya, Women Health First!',
                           ),
@@ -172,30 +194,56 @@ class _PaymentSuccessViewState extends State<PaymentSuccessView> {
                       SizedBox(
                         height: 10.0,
                       ),
-                      Container(
-                        width: double.infinity,
-                        child: FlatButton.icon(
-                          icon: SvgPicture.asset(
-                            'assets/svg/ask_expert_gray.svg',
-                            height: 20.0,
-                            width: 20.0,
-                            color: Colors.white,
+                      GestureDetector(
+                        onTap: () async {},
+                        child: Container(
+                          width: double.infinity,
+                          child: FlatButton.icon(
+                            icon: SvgPicture.asset(
+                              'assets/svg/ask_expert_gray.svg',
+                              height: 20.0,
+                              width: 20.0,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              "Go to Query",
+                              style: TextStyle(fontSize: 15.0),
+                            ),
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(14),
+                            onPressed: () async {
+                              model.navigateToMyConsultationView();
+                            },
+                            color: Colors.pink,
                           ),
-                          label: Text(
-                            "Go to Query",
-                            style: TextStyle(fontSize: 15.0),
-                          ),
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(14),
-                          onPressed: () {},
-                          color: Colors.pink,
                         ),
                       ),
                     ],
                   ),
-                ),
-              ),
-            ),
-        viewModelBuilder: () => PaymentSuccessViewModel());
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
+          ),
+        ),
+      ),
+      viewModelBuilder: () => PaymentSuccessViewModel(),
+      onModelReady: (model) {},
+    );
+  }
+
+  Future<String> getPaymentId() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    var payId = preferences.getString('payment_id');
+    return payId;
+  }
+
+  Future<String> _getFeedDetail() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    var feedDetail = preferences.getString("feed_detail");
+    return feedDetail;
   }
 }

@@ -1,12 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:owomaniya/Enums/is_primary.dart';
-import 'package:owomaniya/model/feeds.dart';
-import 'package:owomaniya/model/users.dart';
-
-part 'feed_authors.g.dart';
-
-@JsonSerializable(
-    explicitToJson: true, includeIfNull: true, nullable: true, anyMap: true)
+import 'package:owomaniya/model/feed.dart';
+import 'package:owomaniya/model/user.dart';
 class FeedAuthors {
   @JsonKey(name: 'id')
   int id;
@@ -36,9 +31,9 @@ class FeedAuthors {
   DateTime deletedAt;
 
   @JsonKey(name: 'user')
-  Users user;
+  User user;
 
-  Feeds feed;
+  Feed feed;
 
   FeedAuthors(
       {this.id,
@@ -53,8 +48,4 @@ class FeedAuthors {
       this.user,
       this.feed,});
 
-  factory FeedAuthors.fromJson(Map<String, dynamic> map) =>
-      _$FeedAuthorsFromJson(map);
-
-  Map<String, dynamic> toJson() => _$FeedAuthorsToJson(this);
 }

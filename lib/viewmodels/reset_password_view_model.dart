@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:owomaniya/app/locator.dart';
 import 'package:owomaniya/app/router.gr.dart' as route;
 import 'package:owomaniya/utils/api_urls.dart';
 import 'package:owomaniya/viewmodels/base_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ResetPasswordViewModel extends BaseModel {
@@ -14,11 +14,12 @@ class ResetPasswordViewModel extends BaseModel {
     _navigationService.pushNamedAndRemoveUntil(route.Routes.loginView);
   }
 
-  Future<Map<String, dynamic>> resetPassword(
-      String mobileNumber, String newPassword, String confirmPassword) async {
+  Future<Map<String, dynamic>> resetPassword(String newPassword, String confirmPassword) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final String mobileNo = preferences.getString("mobile_no");
     var result;
     final Map<String, dynamic> resetPwd = {
-      'mobile_no': mobileNumber,
+      'mobile_no': mobileNo,
       'new_password': newPassword,
       'confirm_password': confirmPassword
     };
@@ -31,20 +32,17 @@ class ResetPasswordViewModel extends BaseModel {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-
       _navigationService.pushNamedAndRemoveUntil(route.Routes.loginView);
-
       result = {
         'status': true,
         'message': 'Successful',
       };
+      print(result);
     } else {
       setBusy(true);
       result = {'status': false, 'message': 'fail'};
-
-      Fluttertoast.showToast(msg: 'Error');
+      print(result);
     }
-    return result;
+    return jsonDecode(response.body);
   }
 }

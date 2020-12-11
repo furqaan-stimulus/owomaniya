@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:owomaniya/utils/size_config.dart';
 import 'package:owomaniya/viewmodels/forgot_password_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -28,8 +27,7 @@ class ForgotPasswordView extends StatelessWidget {
                                   height: 60,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 10.0, 5.0),
+                                  padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
                                   child: Center(
                                     child: Row(
                                       children: [
@@ -49,9 +47,7 @@ class ForgotPasswordView extends StatelessWidget {
                                         Text(
                                           'Forgot Password',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                                         ),
                                       ],
                                     ),
@@ -100,11 +96,9 @@ class ForgotPasswordView extends StatelessWidget {
                                   textColor: Colors.white,
                                   padding: EdgeInsets.all(14),
                                   onPressed: () {
-                                    // if (_formKey.currentState.validate()) {
-                                    //   model.forgotPassword(
-                                    //       _mobileController.text);
-                                    // }
-                                    model.navigateToVerifyOtp();
+                                    if (_formKey.currentState.validate()) {
+                                      model.forgotPassword(_mobileController.text);
+                                    }
                                   },
                                   color: Colors.pink,
                                 ),

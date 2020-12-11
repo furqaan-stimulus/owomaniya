@@ -1,73 +1,26 @@
-import 'package:json_annotation/json_annotation.dart';
 
-part 'category.g.dart';
-
-@JsonSerializable(explicitToJson: true,includeIfNull: true,nullable: true,anyMap: true )
 class Category {
-  @JsonKey(name: 'id')
   int id;
-
-  @JsonKey(name: 'category')
   String category;
-
-  @JsonKey(name: 'feed_category_desc')
-  String feedCategoryDesc;
-
-  @JsonKey(name: 'icon_path')
   String iconPath;
-
-  @JsonKey(name: 'created_at')
+  String feedCategoryDesc;
   DateTime createdAt;
-
-  @JsonKey(name: 'created_by')
   int createdBy;
-
-  @JsonKey(name: 'updated_at')
   DateTime updatedAt;
-
-  @JsonKey(name: 'updated_by')
   int updatedBy;
-
-  @JsonKey(name: 'deleted_at')
   DateTime deletedAt;
-
-  @JsonKey(name: 'category_url')
   String categoryUrl;
-
-  @JsonKey(name: 'banner_image')
   String bannerImage;
-
-  @JsonKey(name: 'banner_title')
   String bannerTitle;
-
-  @JsonKey(name: 'banner_subtitle')
   String bannerSubtitle;
-
-  @JsonKey(name: 'category_info_title')
   String categoryInfoTitle;
-
-  @JsonKey(name: 'category_short_info')
   String categoryShortInfo;
-
-  @JsonKey(name: 'category_long_info')
   String categoryLongInfo;
-
-  @JsonKey(name: 'category_info_img')
   String categoryInfoImg;
-
-  @JsonKey(name: 'meta_title')
   String metaTitle;
-
-  @JsonKey(name: 'meta_desc')
   String metaDesc;
-
-  @JsonKey(name: 'meta_og_image')
   String metaOgImage;
-
-  @JsonKey(name: 'meta_keyword')
   String metaKeyword;
-
-  @JsonKey(name: 'category_snippet')
   String categorySnippet;
 
   Category({
@@ -95,8 +48,50 @@ class Category {
     this.categorySnippet,
   });
 
-  factory Category.fromJson(Map<String, dynamic> map) =>
-      _$CategoryFromJson(map);
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
+        id: json["id"],
+        category: json["category"],
+        iconPath: json["icon_path"],
+        feedCategoryDesc: json["feed_category_desc"],
+        createdAt: json["created_at"],
+        createdBy: json["created_by"],
+        updatedAt: json["updated_at"],
+        updatedBy: json["updated_by"],
+        deletedAt: json["deleted_at"],
+        categoryUrl: json["category_url"],
+        bannerImage: json["banner_image"],
+        bannerTitle: json["banner_title"],
+        bannerSubtitle: json["banner_subtitle"],
+        categoryInfoTitle: json["category_info_title"],
+        categoryLongInfo: json["category_long_info"],
+        categoryInfoImg: json["category_info_img"],
+        metaTitle: json["meta_title"],
+        metaDesc: json["meta_desc"],
+        metaOgImage: json["meta_og_image"],
+        metaKeyword: json["meta_keyword"],
+        categorySnippet: json["category_snippet"],
+      );
 
-  Map<String, dynamic> toJson() => _$CategoryToJson(this);
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "category": category,
+        "icon_path": iconPath,
+        "feed_category_desc": feedCategoryDesc,
+        "created_at": createdAt,
+        "created_by": createdBy,
+        "updated_at": updatedAt,
+        "updated_by": updatedBy,
+        "deleted_at": deletedAt,
+        "category_url": categoryUrl,
+        "banner_image": bannerImage,
+        "banner_subtitle": bannerSubtitle,
+        "category_info_title": categoryInfoTitle,
+        "category_long_info": categoryLongInfo,
+        "category_info_img": categoryInfoImg,
+        "meta_title": metaTitle,
+        "meta_desc": metaDesc,
+        "meta_og_image": metaOgImage,
+        "meta_keyword": metaKeyword,
+        "category_snippet": categorySnippet,
+      };
 }

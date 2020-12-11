@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:owomaniya/model/feed_item_model.dart';
-import 'package:owomaniya/model/feeds.dart';
+
+import 'package:owomaniya/model/feed.dart';
 
 import 'package:owomaniya/widget/blog_post_card.dart';
 
 class FeedItemList extends StatelessWidget {
-  final List<Feeds> feeds;
+  final List<Feed> feeds;
 
   FeedItemList({this.feeds});
 

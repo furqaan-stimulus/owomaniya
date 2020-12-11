@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:owomaniya/viewmodels/payment_failure_view_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class PaymentFailureView extends StatefulWidget {
@@ -27,8 +28,7 @@ class _PaymentFailureViewState extends State<PaymentFailureView> {
                             ),
                             Center(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -43,9 +43,7 @@ class _PaymentFailureViewState extends State<PaymentFailureView> {
                                       Text(
                                         'Back To Home',
                                         style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
+                                            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
                                       ),
                                     ],
                                   ),
@@ -78,31 +76,26 @@ class _PaymentFailureViewState extends State<PaymentFailureView> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Payment Failed',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
                                         height: 5.0,
                                       ),
                                       Text(
                                         'Transaction declined by Bank',
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.grey),
+                                        style: TextStyle(fontSize: 14, color: Colors.grey),
                                       ),
                                       SizedBox(
                                         height: 5.0,
                                       ),
                                       Text(
                                         'Your query was not sent to an expert',
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.pink),
+                                        style: TextStyle(fontSize: 14, color: Colors.pink),
                                       ),
                                       SizedBox(
                                         height: 5.0,
@@ -126,9 +119,7 @@ class _PaymentFailureViewState extends State<PaymentFailureView> {
                                   padding: const EdgeInsets.only(left: 10.0),
                                   child: Text(
                                     'You (Anonymous)',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ],
@@ -136,16 +127,34 @@ class _PaymentFailureViewState extends State<PaymentFailureView> {
                             SizedBox(
                               height: 20.0,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black12),
-                                  color: Colors.black12),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  'Sample Query Part Disclaimer: Information provide by an expert here is for general informational purpose only and it should NOT be considered as substitute for professional expert(medical,psychological or fitness advice) as complete physical assessment of an individual has not been done. Please consult your nearest doctor/expert before acting on it. The advice is also not valid for medico-legal purposes.',
-                                ),
-                              ),
+                            FutureBuilder(
+                              future: _getFeedDetail(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(14.0),
+                                            child: Text(
+                                              snapshot.data,
+                                            ),
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.black12),
+                                            color: Colors.black12,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return Text('${snapshot.error}');
+                                }
+                              },
                             ),
                             SizedBox(
                               height: 15.0,
@@ -174,17 +183,14 @@ class _PaymentFailureViewState extends State<PaymentFailureView> {
                                     ),
                                     Expanded(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Ask an Expert for Proper consultation.',
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontWeight: FontWeight.bold),
                                           ),
                                           SizedBox(
                                             height: 5.0,
@@ -232,5 +238,11 @@ class _PaymentFailureViewState extends State<PaymentFailureView> {
               ),
             ),
         viewModelBuilder: () => PaymentFailureViewModel());
+  }
+
+  Future<String> _getFeedDetail() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    var feedDetail = preferences.getString("feed_detail");
+    return feedDetail;
   }
 }

@@ -36,15 +36,15 @@ class _SplashViewState extends State<SplashView> {
       ),
       viewModelBuilder: () => SplashViewModel(),
       onModelReady: (model) {
-        // SchedulerBinding.instance
-        //     .addPostFrameCallback((_) => model.initialised);
-        // model.isUserSignedIn();
-        Future.delayed(
-          Duration(seconds: 2),
-          () {
-            model.navigateToWalkThrough();
-          },
-        );
+        SchedulerBinding.instance
+            .addPostFrameCallback((_) => model.initialised);
+        model.isUserSignedIn();
+        // Future.delayed(
+        //   Duration(seconds: 2),
+        //   () {
+        //     model.navigateToWalkThrough();
+        //   },
+        // );
       },
     );
   }

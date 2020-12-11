@@ -1,20 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:owomaniya/Enums/engagement_type.dart';
-import 'package:owomaniya/model/feeds.dart';
-import 'package:owomaniya/model/users.dart';
-
-part 'feed_engagement.g.dart';
-
-@JsonSerializable(explicitToJson: true, )
+import 'package:owomaniya/model/feed.dart';
+import 'package:owomaniya/model/user.dart';
 class FeedEngagement {
   @JsonKey(name: 'id')
   int id;
 
   @JsonKey(name: 'feeds_id')
-  List<Feeds> feedsId;
+  List<Feed> feedsId;
 
   @JsonKey(name: 'users_id')
-  List<Users> usersId;
+  List<User> usersId;
 
   @JsonKey(name: 'engagement_type')
   EngagementType engagementType;
@@ -44,9 +40,4 @@ class FeedEngagement {
       this.updatedAt,
       this.updatedBy,
       this.deletedAt});
-
-  factory FeedEngagement.fromJson(Map<String, dynamic> map) =>
-      _$FeedEngagementFromJson(map);
-
-  Map<String, dynamic> toJson() => _$FeedEngagementToJson(this);
 }

@@ -1,19 +1,22 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:owomaniya/model/feed_authors.dart';
+import 'package:owomaniya/model/details_author_detail.dart';
 
-part 'details.g.dart';
-
-@JsonSerializable(explicitToJson: true,includeIfNull: true,nullable: true,anyMap: true)
 class Details {
-  @JsonKey(name: "authordetails")
-  List<FeedAuthors> feedAuthorDetails;
+  Details({
+    this.authordetails,
+    this.otherdetails,
+  });
 
-  // @JsonKey(name: "otherdetails")
-  // List<dynamic> otherDetails;
+  List<DetailsAuthordetail> authordetails;
+  List<dynamic> otherdetails;
 
-  Details(this.feedAuthorDetails,);
+  factory Details.fromJson(Map<String, dynamic> json) => Details(
+        authordetails:
+            List<DetailsAuthordetail>.from(json["authordetails"].map((x) => DetailsAuthordetail.fromJson(x))),
+        otherdetails: List<dynamic>.from(json["otherdetails"].map((x) => x)),
+      );
 
-  factory Details.fromJson(Map<String, dynamic> map) => _$DetailsFromJson(map);
-
-  Map<String, dynamic> toJson() => _$DetailsToJson(this);
+  Map<String, dynamic> toJson() => {
+        "authordetails": List<dynamic>.from(authordetails.map((x) => x.toJson())),
+        "otherdetails": List<dynamic>.from(otherdetails.map((x) => x)),
+      };
 }

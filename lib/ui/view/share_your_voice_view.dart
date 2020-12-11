@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:owomaniya/utils/size_config.dart';
 import 'package:owomaniya/viewmodels/share_your_voice_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,6 +12,8 @@ class _ShareYourVoiceViewState extends State<ShareYourVoiceView> {
   final shortStoryController = TextEditingController();
 
   final aboutYouController = TextEditingController();
+  bool _emptyStory = false;
+  bool _emptyAbout = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +44,8 @@ class _ShareYourVoiceViewState extends State<ShareYourVoiceView> {
                             ),
                             Text(
                               'Share Your Story',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
+                              style:
+                                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                           ],
                         ),
@@ -86,9 +85,7 @@ class _ShareYourVoiceViewState extends State<ShareYourVoiceView> {
                                   ),
                                   Text(
                                     'Share Your Story',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
                                   ),
                                 ],
                               ),
@@ -108,6 +105,7 @@ class _ShareYourVoiceViewState extends State<ShareYourVoiceView> {
                                 controller: shortStoryController,
                                 maxLines: null,
                                 decoration: InputDecoration(
+                                  errorText: _emptyStory ? "Story can\'t be empty" : null,
                                   hintText: 'Start Typing Your Story',
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.grey),
@@ -154,9 +152,7 @@ class _ShareYourVoiceViewState extends State<ShareYourVoiceView> {
                                   ),
                                   Text(
                                     'About You',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0),
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
                                   ),
                                 ],
                               ),
@@ -176,6 +172,7 @@ class _ShareYourVoiceViewState extends State<ShareYourVoiceView> {
                                 controller: aboutYouController,
                                 maxLines: null,
                                 decoration: InputDecoration(
+                                  errorText: _emptyAbout ? "About You can\'t be empty" : null,
                                   hintText: 'Mention Something About You',
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.grey),
@@ -202,11 +199,27 @@ class _ShareYourVoiceViewState extends State<ShareYourVoiceView> {
                               style: TextStyle(fontSize: 15.0),
                             ),
                             textColor: Colors.white,
-                            padding:
-                                EdgeInsets.fromLTRB(20.0, 14.0, 20.0, 14.0),
+                            padding: EdgeInsets.fromLTRB(20.0, 14.0, 20.0, 14.0),
                             onPressed: () {
-                              model.shareVoice(shortStoryController.text,
-                                  aboutYouController.text);
+                              setState(() {
+                                if (shortStoryController.text.isEmpty) {
+                                  _emptyStory = true;
+                                } else if (aboutYouController.text.isEmpty) {
+                                  _emptyAbout = true;
+                                } else if (shortStoryController.text.isNotEmpty &&
+                                    aboutYouController.text.isEmpty) {
+                                  _emptyStory = false;
+                                  _emptyAbout = true;
+                                } else if (shortStoryController.text.isEmpty &&
+                                    aboutYouController.text.isNotEmpty) {
+                                  _emptyStory = true;
+                                  _emptyAbout = false;
+                                } else {
+                                  _emptyAbout = false;
+                                  _emptyStory = false;
+                                  model.shareVoice(shortStoryController.text, aboutYouController.text);
+                                }
+                              });
                             },
                             color: Colors.pink,
                           ),

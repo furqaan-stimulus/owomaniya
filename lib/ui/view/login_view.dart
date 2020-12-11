@@ -12,6 +12,7 @@ class _LoginViewState extends State<LoginView> {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool _obscureText = false;
 
@@ -27,6 +28,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoginViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
+              key: _scaffoldKey,
               body: Padding(
                 padding: const EdgeInsets.all(26.0),
                 child: Container(
@@ -43,8 +45,7 @@ class _LoginViewState extends State<LoginView> {
                                   height: 60,
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 10.0, 5.0),
+                                  padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
                                   child: Center(
                                     child: Text(
                                       'Login',
@@ -98,9 +99,7 @@ class _LoginViewState extends State<LoginView> {
                                             'assets/svg/show_password.svg',
                                             height: 15,
                                             width: 15,
-                                            color: this._obscureText
-                                                ? Colors.pink
-                                                : Colors.grey,
+                                            color: this._obscureText ? Colors.pink : Colors.grey,
                                           ),
                                           onPressed: () {
                                             toggle();
@@ -122,23 +121,18 @@ class _LoginViewState extends State<LoginView> {
                                       children: [
                                         Center(
                                           child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10.0),
+                                            padding: const EdgeInsets.only(left: 10.0),
                                             child: Center(
                                               child: GestureDetector(
                                                 child: Container(
                                                   child: Text(
                                                     'Forgot Password?',
                                                     style: TextStyle(
-                                                        fontSize: 16.0,
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        color: Colors.pink),
+                                                        fontSize: 16.0, fontStyle: FontStyle.normal, color: Colors.pink),
                                                   ),
                                                 ),
                                                 onTap: () {
-                                                  model
-                                                      .navigateToForgotPassword();
+                                                  model.navigateToForgotPassword();
                                                 },
                                               ),
                                             ),
@@ -159,14 +153,12 @@ class _LoginViewState extends State<LoginView> {
                                         textColor: Colors.white,
                                         padding: EdgeInsets.all(14),
                                         onPressed: () {
-                                          if (_formKey.currentState
-                                              .validate()) {
+                                          if (_formKey.currentState.validate()) {
                                             model.login(
                                               emailController.text,
                                               passwordController.text,
                                             );
                                           }
-                                          // model.navigateToPaymentMethod();
                                         },
                                         color: Colors.pink,
                                       ),
@@ -175,22 +167,17 @@ class _LoginViewState extends State<LoginView> {
                                       height: 20,
                                     ),
                                     Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
                                               'Don\'t have An Account ?',
-                                              style: TextStyle(
-                                                  fontSize: 15.0,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10.0),
+                                              padding: const EdgeInsets.only(left: 10.0),
                                               child: Center(
                                                 child: GestureDetector(
                                                   child: Container(
@@ -198,15 +185,12 @@ class _LoginViewState extends State<LoginView> {
                                                       'Sign Up',
                                                       style: TextStyle(
                                                           fontSize: 18.0,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontStyle:
-                                                              FontStyle.normal,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontStyle: FontStyle.normal,
                                                           color: Colors.pink),
                                                     ),
                                                   ),
-                                                  onTap: () =>
-                                                      model.navigateToSignUp(),
+                                                  onTap: () => model.navigateToSignUp(),
                                                 ),
                                               ),
                                             ),

@@ -1,4 +1,11 @@
+import 'package:owomaniya/Enums/enum_values.dart';
+
 enum PaymentStatus {
-  successful,
-  failed,
+  Successfull,
+  Failed,
 }
+
+final mediaTypeValues = EnumValues({
+  "Successfull": PaymentStatus.Successfull,
+  "Failed": PaymentStatus.Failed,
+});

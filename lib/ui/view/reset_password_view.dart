@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:owomaniya/viewmodels/reset_password_view_model.dart';
 import 'package:stacked/stacked.dart';
 
@@ -43,8 +43,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                 ),
                                 Center(
                                   child: Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                        10.0, 10.0, 10.0, 5.0),
+                                    padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
                                     child: Row(
                                       children: [
                                         IconButton(
@@ -63,9 +62,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                         Text(
                                           'Reset Password',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                                         ),
                                       ],
                                     ),
@@ -93,9 +90,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                           suffixIcon: IconButton(
                                             icon: Icon(
                                               Icons.remove_red_eye,
-                                              color: this._obscureText
-                                                  ? Colors.pink
-                                                  : Colors.grey,
+                                              color: this._obscureText ? Colors.pink : Colors.grey,
                                             ),
                                             onPressed: () {
                                               toggle();
@@ -110,13 +105,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                       TextField(
                                         onChanged: (val) {
                                           if (_passwordController.text == val) {
-                                            _passwordController.text =
-                                                _rePasswordController.text;
-                                          } else {
-                                            Fluttertoast.showToast(
-                                                msg:
-                                                    'Password enter not match');
-                                          }
+                                            _passwordController.text = _rePasswordController.text;
+                                          } else {}
                                         },
                                         obscureText: !this._obscureText,
                                         controller: _rePasswordController,
@@ -128,9 +118,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                           suffixIcon: IconButton(
                                             icon: Icon(
                                               Icons.remove_red_eye,
-                                              color: this._obscureText
-                                                  ? Colors.pink
-                                                  : Colors.grey,
+                                              color: this._obscureText ? Colors.pink : Colors.grey,
                                             ),
                                             onPressed: () {
                                               toggle();
@@ -151,7 +139,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                           textColor: Colors.white,
                                           padding: EdgeInsets.all(14),
                                           onPressed: () {
-                                            model.navigateBackToLogin();
+                                            model.resetPassword(
+                                                _passwordController.text, _rePasswordController.text);
                                           },
                                           color: Colors.pink,
                                         ),

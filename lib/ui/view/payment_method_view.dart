@@ -1,9 +1,16 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart';
+import 'package:owomaniya/app/locator.dart';
+import 'package:owomaniya/app/router.gr.dart';
+import 'package:owomaniya/utils/api_urls.dart';
 import 'package:owomaniya/viewmodels/payment_method_view_model.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class PaymentMethodView extends StatefulWidget {
   @override
@@ -51,11 +58,9 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                             ),
                             Center(
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    8.0, 8.0, 8.0, 0.0),
+                                padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -70,19 +75,15 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                                         Text(
                                           'Payment Method',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16),
+                                              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
                                         ),
                                       ],
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                      padding: const EdgeInsets.only(right: 8.0),
                                       child: Text(
                                         'Amount \u20B9 99',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(fontWeight: FontWeight.bold),
                                       ),
                                     )
                                   ],
@@ -98,22 +99,17 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                                 Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, top: 8.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/anyonmans.svg',
-                                        width: 45.0,
-                                        height: 45.0,
-                                      ),
-                                    ),
+                                        padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                                        child: SvgPicture.asset(
+                                          'assets/svg/anyonmans.svg',
+                                          width: 45.0,
+                                          height: 45.0,
+                                        )),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 16.0),
+                                      padding: const EdgeInsets.only(left: 16.0),
                                       child: Text(
                                         'You (Anonymous)',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ],
@@ -121,8 +117,7 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 14.0),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       SvgPicture.asset(
                                         'assets/svg/edit_number.svg',
@@ -140,17 +135,34 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                             SizedBox(
                               height: 20.0,
                             ),
-                            Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Text(
-                                  'Sample Query Part Disclaimer: Information provide by an expert here is for general informational purpose only and it should NOT be considered as substitute for professional expert(medical,psychological or fitness advice) as complete physical assessment of an individual has not been done. Please consult your nearest doctor/expert before acting on it. The advice is also not valid for medico-legal purposes.',
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black12),
-                                color: Colors.black12,
-                              ),
+                            FutureBuilder(
+                              future: _getFeedDetail(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(14.0),
+                                            child: Text(
+                                              snapshot.data,
+                                            ),
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.black12),
+                                            color: Colors.black12,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return Text('${snapshot.error}');
+                                }
+                              },
                             ),
                             SizedBox(
                               height: 10.0,
@@ -173,7 +185,7 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                                       ),
                                       Container(
                                         child: Text(
-                                          'Pay \u20B9 80 online',
+                                          'Pay \u20B9 99 online',
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
                                           style: TextStyle(fontSize: 17.0),
@@ -183,22 +195,19 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                                         width: 10.0,
                                       ),
                                       Container(
-                                        child: SvgPicture.asset(
-                                            'assets/svg/visa.svg'),
+                                        child: SvgPicture.asset('assets/svg/visa.svg'),
                                       ),
                                       SizedBox(
                                         width: 10.0,
                                       ),
                                       Container(
-                                        child: SvgPicture.asset(
-                                            'assets/svg/mastercard.svg'),
+                                        child: SvgPicture.asset('assets/svg/mastercard.svg'),
                                       ),
                                       SizedBox(
                                         width: 10.0,
                                       ),
                                       Container(
-                                        child: SvgPicture.asset(
-                                            'assets/svg/paytm.svg'),
+                                        child: SvgPicture.asset('assets/svg/paytm.svg'),
                                       ),
                                     ],
                                   ),
@@ -224,63 +233,63 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                             SizedBox(
                               height: 30.0,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 30,
-                                        width: 20,
-                                        child: Checkbox(
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              onChecked = !onChecked;
-                                            });
-                                          },
-                                          value: onChecked,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 15.0,
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          'Use \u20B9 19 from Health Piggy',
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 7,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 15.0,
-                                      ),
-                                      Container(
-                                        child: SvgPicture.asset(
-                                            'assets/svg/sidebar_amount.svg'),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 40.0,
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          'Current Balance \u20B9 20',
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 8.0),
+                            //   child: Column(
+                            //     children: [
+                            //       Row(
+                            //         children: [
+                            //           Container(
+                            //             height: 30,
+                            //             width: 20,
+                            //             child: Checkbox(
+                            //               onChanged: (newValue) {
+                            //                 setState(() {
+                            //                   onChecked = !onChecked;
+                            //                 });
+                            //               },
+                            //               value: onChecked,
+                            //             ),
+                            //           ),
+                            //           SizedBox(
+                            //             width: 15.0,
+                            //           ),
+                            //           Container(
+                            //             child: Text(
+                            //               'Use \u20B9 19 from Health Piggy',
+                            //               overflow: TextOverflow.ellipsis,
+                            //               maxLines: 7,
+                            //             ),
+                            //           ),
+                            //           SizedBox(
+                            //             width: 15.0,
+                            //           ),
+                            //           Container(
+                            //             child: SvgPicture.asset(
+                            //                 'assets/svg/sidebar_amount.svg'),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //       SizedBox(
+                            //         height: 10.0,
+                            //       ),
+                            //       Row(
+                            //         children: [
+                            //           SizedBox(
+                            //             width: 40.0,
+                            //           ),
+                            //           Container(
+                            //             child: Text(
+                            //               'Current Balance \u20B9 20',
+                            //               overflow: TextOverflow.ellipsis,
+                            //               maxLines: 2,
+                            //             ),
+                            //           )
+                            //         ],
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             SizedBox(
                               height: 10.0,
                             ),
@@ -294,9 +303,8 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                                 textColor: Colors.white,
                                 padding: EdgeInsets.all(14),
                                 onPressed: () {
-                                  model.navigateToPaymentSuccessView();
-                                  // model.navigateToPaymentFailureView();
-                                  // openCheckout();
+                                  // model.navigateToPaymentSuccessView();
+                                  openCheckout();
                                 },
                                 color: Colors.pink,
                               ),
@@ -317,32 +325,39 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
     );
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    Fluttertoast.showToast(
-        msg: "SUCCESS: " + response.paymentId, timeInSecForIosWeb: 10);
+  final NavigationService _navigationService = getIt<NavigationService>();
+
+  Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    var paymentId = preferences.setString("payment_id", response.paymentId);
+    Fluttertoast.showToast(msg: "SUCCESS: " + response.paymentId, timeInSecForIosWeb: 20);
+    // queryPayment();
+    _navigationService.pushNamedAndRemoveUntil(Routes.paymentSuccessView);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     Fluttertoast.showToast(
-        msg: "ERROR: " + response.code.toString() + " - " + response.message,
-        timeInSecForIosWeb: 10);
+        msg: "ERROR: " + response.code.toString() + " - " + response.message, timeInSecForIosWeb: 10);
+    _navigationService.pushNamedAndRemoveUntil(Routes.paymentFailureView);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    Fluttertoast.showToast(
-        msg: "EXTERNAL_WALLET: " + response.walletName, timeInSecForIosWeb: 10);
+    Fluttertoast.showToast(msg: "EXTERNAL_WALLET: " + response.walletName, timeInSecForIosWeb: 10);
+    _navigationService.pushNamedAndRemoveUntil(Routes.paymentFailureView);
   }
 
-  void openCheckout() async {
+  Future<void> openCheckout() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    var mobileNo = preferences.getString('mobile_no');
+    var email = preferences.getString('email_address');
+    print('pay $email');
+    print('pay $mobileNo');
     var options = {
-      'key': 'rzp_test_7C6vWyX6b57U9i',
+      'key': ApiUrls.razorKey,
       'amount': 9900,
       'name': 'OW Application',
       'description': 'Test OW app',
-      'prefill': {
-        'contact': '9727692148',
-        'email': 'furqaan.stimulus@gmail.com'
-      },
+      'prefill': {'contact': mobileNo, 'email': email},
       'external': {
         'wallets': ['paytm']
       }
@@ -352,5 +367,43 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  Future<String> _getFeedDetail() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    var feedDetail = preferences.getString("feed_detail");
+    return feedDetail;
+  }
+
+  Future<Map<String, dynamic>> queryPayment() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    var orderId = preferences.getInt('order_id');
+    var paymentId = preferences.getString('payment_id');
+    var token = preferences.getString('token');
+
+    print(orderId);
+    print(paymentId);
+    print(99);
+    final Map<String, dynamic> paymentData = {
+      "order_id": orderId,
+      "payment_type": "cc",
+      "payment_status": "Successfull",
+      "payment_id": paymentId,
+      "amount": 99,
+    };
+    Response response = await post(
+      ApiUrls.QUERY_PAYMENT_URL + token,
+      body: json.encode(paymentData),
+    );
+    var result;
+    if (response.statusCode == 200) {
+      // final Map<String, dynamic> responseData = json.decode(response.body);
+      print(' pay body${jsonDecode(response.body)}');
+      result = {'status': true, 'message': 'code ${response.statusCode} '};
+    } else {
+      print(' pay body${jsonDecode(response.body)}');
+      result = {'status': false, 'message': 'code ${response.statusCode} '};
+    }
+    return jsonDecode(response.body);
   }
 }

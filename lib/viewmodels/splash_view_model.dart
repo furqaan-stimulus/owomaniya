@@ -7,20 +7,15 @@ import 'package:stacked_services/stacked_services.dart';
 class SplashViewModel extends BaseViewModel {
   NavigationService _navigationService = getIt<NavigationService>();
 
-  Future navigateToWalkThrough() async {
-    _navigationService.pushNamedAndRemoveUntil(route.Routes.onBoardView);
-  }
-
   Future<bool> isUserSignedIn() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var userId = preferences.getString('user_id');
-    if (userId != null) {
+    var token = preferences.getString('token');
+    if (token == null) {
       setBusy(true);
-      await _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
+      await _navigationService.pushNamedAndRemoveUntil(route.Routes.onBoardView);
     } else {
-      await _navigationService
-          .pushNamedAndRemoveUntil(route.Routes.onBoardView);
+      await _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
     }
-    return true;
+    return token != null;
   }
 }

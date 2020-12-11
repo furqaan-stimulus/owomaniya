@@ -1,13 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:owomaniya/model/category.dart';
-import 'package:owomaniya/model/feeds.dart';
+import 'package:owomaniya/model/feed.dart';
 
-part 'feed_category_mapping.g.dart';
+class Categorymapping {
 
-@JsonSerializable(
-    explicitToJson: true, includeIfNull: true, nullable: true, anyMap: true)
-class FeedCategoryMapping {
-  @JsonKey(name: 'id')
   int id;
 
   @JsonKey(name: 'feeds_id')
@@ -31,12 +27,11 @@ class FeedCategoryMapping {
   @JsonKey(name: 'deleted_at')
   DateTime deletedAt;
 
-  Feeds feed;
+  Feed feed;
 
-  @JsonKey(name: 'category')
   Category category;
 
-  FeedCategoryMapping(
+  Categorymapping(
       {this.id,
       this.feedsId,
       this.categoryId,
@@ -48,8 +43,14 @@ class FeedCategoryMapping {
       this.feed,
       this.category});
 
-  factory FeedCategoryMapping.fromJson(Map<String, dynamic> map) =>
-      _$FeedCategoryMappingFromJson(map);
+  factory Categorymapping.fromJson(Map<String, dynamic> json) => Categorymapping(
+        updatedAt: DateTime.parse(json["updated_at"]),
+        category: Category.fromJson(json["category"]),
+      );
 
-  Map<String, dynamic> toJson() => _$FeedCategoryMappingToJson(this);
+  Map<String, dynamic> toJson() => {
+        "updated_at":
+            "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+        "category": category.toJson(),
+      };
 }

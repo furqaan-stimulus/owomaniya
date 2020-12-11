@@ -102,10 +102,10 @@ class _OnBoardViewState extends State<OnBoardView> {
                                 ),
                               ),
                               SizedBox(height: 30.0),
-                              Text(
-                                'Connect people\naround the world',
-                                style: kTitleStyle,
-                              ),
+                              // Text(
+                              //   'Connect people\naround the world',
+                              //   style: kTitleStyle,
+                              // ),
                               SizedBox(height: 15.0),
                               Text(
                                 'Page 1',
@@ -129,10 +129,10 @@ class _OnBoardViewState extends State<OnBoardView> {
                                 ),
                               ),
                               SizedBox(height: 30.0),
-                              Text(
-                                'Live your life smarter\nwith us!',
-                                style: kTitleStyle,
-                              ),
+                              // Text(
+                              //   'Live your life smarter\nwith us!',
+                              //   style: kTitleStyle,
+                              // ),
                               SizedBox(height: 15.0),
                               Text(
                                 'page 2',
@@ -155,10 +155,10 @@ class _OnBoardViewState extends State<OnBoardView> {
                                 ),
                               ),
                               SizedBox(height: 30.0),
-                              Text(
-                                'Get a new experience\nof imagination',
-                                style: kTitleStyle,
-                              ),
+                              // Text(
+                              //   'Get a new experience\nof imagination',
+                              //   style: kTitleStyle,
+                              // ),
                               SizedBox(height: 15.0),
                               Text(
                                 'Page 3',

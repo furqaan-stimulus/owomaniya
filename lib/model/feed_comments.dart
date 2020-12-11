@@ -1,79 +1,89 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:owomaniya/Enums/flagged.dart';
-import 'package:owomaniya/Enums/hidden.dart';
-import 'package:owomaniya/Enums/is_anonymous.dart';
-import 'package:owomaniya/model/feeds.dart';
-import 'package:owomaniya/model/user_devices.dart';
-import 'package:owomaniya/model/users.dart';
+// To parse this JSON data, do
+//
+//     final feedComments = feedCommentsFromJson(jsonString);
 
-part 'feed_comments.g.dart';
+import 'dart:convert';
 
-@JsonSerializable(explicitToJson: true,includeIfNull: true,nullable: true,anyMap: true)
+FeedComments feedCommentsFromJson(String str) => FeedComments.fromJson(json.decode(str));
+
+String feedCommentsToJson(FeedComments data) => json.encode(data.toJson());
+
 class FeedComments {
-  @JsonKey(name: 'id')
-  int id;
+  FeedComments({
+    this.status,
+    this.data,
+  });
 
-  @JsonKey(name: 'feeds_id')
-  List<Feeds> feedsId;
+  bool status;
+  Data data;
 
-  @JsonKey(name: 'users_id')
-  List<Users> usersId;
+  factory FeedComments.fromJson(Map<String, dynamic> json) => FeedComments(
+    status: json["status"],
+    data: Data.fromJson(json["data"]),
+  );
 
-  @JsonKey(name: 'comment')
-  String comment;
+  Map<String, dynamic> toJson() => {
+    "status": status,
+    "data": data.toJson(),
+  };
+}
 
-  @JsonKey(name: 'feed_comment_id')
-  int feedCommentsId;
+class Data {
+  Data({
+    this.currentPage,
+    this.data,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
+    this.nextPageUrl,
+    this.path,
+    this.perPage,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+  });
 
-  @JsonKey(name: 'is_anonymous')
-  IsAnonymous isAnonymous;
+  int currentPage;
+  List<dynamic> data;
+  String firstPageUrl;
+  dynamic from;
+  int lastPage;
+  String lastPageUrl;
+  dynamic nextPageUrl;
+  String path;
+  int perPage;
+  dynamic prevPageUrl;
+  dynamic to;
+  int total;
 
-  @JsonKey(name: 'created_at')
-  DateTime createdAt;
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+    currentPage: json["current_page"],
+    data: List<dynamic>.from(json["data"].map((x) => x)),
+    firstPageUrl: json["first_page_url"],
+    from: json["from"],
+    lastPage: json["last_page"],
+    lastPageUrl: json["last_page_url"],
+    nextPageUrl: json["next_page_url"],
+    path: json["path"],
+    perPage: json["per_page"],
+    prevPageUrl: json["prev_page_url"],
+    to: json["to"],
+    total: json["total"],
+  );
 
-  @JsonKey(name: 'created_by')
-  int createdBy;
-
-  @JsonKey(name: 'updated_at')
-  DateTime updatedAt;
-
-  @JsonKey(name: 'updated_by')
-  int updatedBy;
-
-  @JsonKey(name: 'deleted_at')
-  DateTime deletedAt;
-
-  @JsonKey(name: 'user_devices_id')
-  List<UserDevices> userDevicesId;
-
-  @JsonKey(name: 'hidden')
-  Hidden hidden;
-
-  @JsonKey(name: 'flagged')
-  Flagged flagged;
-
-  @JsonKey(name: 'flag_note')
-  String flagNote;
-
-  FeedComments(
-      {this.id,
-      this.feedsId,
-      this.usersId,
-      this.comment,
-      this.feedCommentsId,
-      this.isAnonymous,
-      this.createdAt,
-      this.createdBy,
-      this.updatedAt,
-      this.updatedBy,
-      this.deletedAt,
-      this.userDevicesId,
-      this.hidden,
-      this.flagged,
-      this.flagNote});
-
-  factory FeedComments.fromJson(Map<String, dynamic> map) =>
-      _$FeedCommentsFromJson(map);
-
-  Map<String, dynamic> toJson() => _$FeedCommentsToJson(this);
+  Map<String, dynamic> toJson() => {
+    "current_page": currentPage,
+    "data": List<dynamic>.from(data.map((x) => x)),
+    "first_page_url": firstPageUrl,
+    "from": from,
+    "last_page": lastPage,
+    "last_page_url": lastPageUrl,
+    "next_page_url": nextPageUrl,
+    "path": path,
+    "per_page": perPage,
+    "prev_page_url": prevPageUrl,
+    "to": to,
+    "total": total,
+  };
 }

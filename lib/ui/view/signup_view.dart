@@ -55,8 +55,7 @@ class _SignUpViewState extends State<SignUpView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
+                              padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
                               child: Center(
                                 child: Text(
                                   'Sign Up',
@@ -188,9 +187,7 @@ class _SignUpViewState extends State<SignUpView> {
                                     'assets/svg/show_password.svg',
                                     height: 15,
                                     width: 15,
-                                    color: this._obscureText
-                                        ? Colors.pink
-                                        : Colors.grey,
+                                    color: this._obscureText ? Colors.pink : Colors.grey,
                                   ),
                                   onPressed: () {
                                     toggle();
@@ -209,8 +206,7 @@ class _SignUpViewState extends State<SignUpView> {
                             TextFormField(
                               onChanged: (val) {
                                 if (_passwordController.text == val) {
-                                  _passwordController.text =
-                                      _rePasswordController.text;
+                                  _passwordController.text = _rePasswordController.text;
                                 } else {}
                               },
                               obscureText: !this._obscureText,
@@ -225,9 +221,7 @@ class _SignUpViewState extends State<SignUpView> {
                                     'assets/svg/show_password.svg',
                                     height: 15,
                                     width: 15,
-                                    color: this._obscureText
-                                        ? Colors.pink
-                                        : Colors.grey,
+                                    color: this._obscureText ? Colors.pink : Colors.grey,
                                   ),
                                   onPressed: () {
                                     toggle();
@@ -265,9 +259,7 @@ class _SignUpViewState extends State<SignUpView> {
                                           child: Container(
                                             child: Text(
                                               'Terms of service ',
-                                              style: TextStyle(
-                                                  fontSize: 12.0,
-                                                  color: Colors.blue),
+                                              style: TextStyle(fontSize: 12.0, color: Colors.blue),
                                             ),
                                           ),
                                           onTap: () {
@@ -288,9 +280,7 @@ class _SignUpViewState extends State<SignUpView> {
                                           child: Container(
                                             child: Text(
                                               'Privacy Policy',
-                                              style: TextStyle(
-                                                  fontSize: 12.0,
-                                                  color: Colors.blue),
+                                              style: TextStyle(fontSize: 12.0, color: Colors.blue),
                                             ),
                                           ),
                                           onTap: () {
@@ -318,7 +308,7 @@ class _SignUpViewState extends State<SignUpView> {
                                 onPressed: () {
                                   if (_formKey.currentState.validate()) {
                                     _formKey.currentState.save();
-                                    model.signUp(
+                                    model.postSignUp(
                                         _emailController.text,
                                         _mobileController.text,
                                         _birthDate,
@@ -327,7 +317,6 @@ class _SignUpViewState extends State<SignUpView> {
                                         _firstNameController.text,
                                         _lastNameController.text);
                                   }
-                                  model.navigateToVerifyMobileView();
                                 },
                                 color: Colors.pink,
                               ),
@@ -345,13 +334,10 @@ class _SignUpViewState extends State<SignUpView> {
                                     children: [
                                       Text(
                                         'Have An Account ?',
-                                        style: TextStyle(
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold),
+                                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0, right: 8.0),
+                                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                                         child: Center(
                                           child: GestureDetector(
                                             child: Container(

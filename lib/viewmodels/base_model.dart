@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:owomaniya/model/users.dart';
+import 'package:owomaniya/model/user.dart';
 
 class BaseModel extends ChangeNotifier {
   bool _busy;
@@ -11,11 +11,11 @@ class BaseModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Users _user = new Users();
+  User _user = new User();
 
-  Users get user => _user;
+  User get user => _user;
 
-  void setUser(Users user) {
+  void setUser(User user) {
     _user = user;
     notifyListeners();
   }
