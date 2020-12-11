@@ -128,7 +128,9 @@ class _LoginViewState extends State<LoginView> {
                                                   child: Text(
                                                     'Forgot Password?',
                                                     style: TextStyle(
-                                                        fontSize: 16.0, fontStyle: FontStyle.normal, color: Colors.pink),
+                                                        fontSize: 16.0,
+                                                        fontStyle: FontStyle.normal,
+                                                        color: Colors.pink),
                                                   ),
                                                 ),
                                                 onTap: () {
@@ -154,7 +156,7 @@ class _LoginViewState extends State<LoginView> {
                                         padding: EdgeInsets.all(14),
                                         onPressed: () {
                                           if (_formKey.currentState.validate()) {
-                                            model.login(
+                                            model.postLogin(
                                               emailController.text,
                                               passwordController.text,
                                             );
@@ -174,7 +176,8 @@ class _LoginViewState extends State<LoginView> {
                                           children: [
                                             Text(
                                               'Don\'t have An Account ?',
-                                              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                              style: TextStyle(
+                                                  fontSize: 15.0, fontWeight: FontWeight.bold),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 10.0),

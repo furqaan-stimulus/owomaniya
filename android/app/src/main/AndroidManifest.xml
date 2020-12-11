@@ -6,6 +6,7 @@
     <application
             android:label="owomaniya"
             android:icon="@mipmap/ic_launcher">
+
         <activity
                 android:name=".MainActivity"
                 android:launchMode="singleTop"
@@ -14,6 +15,7 @@
                 android:hardwareAccelerated="true"
                 android:windowSoftInputMode="adjustResize"
                 android:usesCleartextTraffic="true"
+                android:networkSecurityConfig="@xml/network_security_config"
         >
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user

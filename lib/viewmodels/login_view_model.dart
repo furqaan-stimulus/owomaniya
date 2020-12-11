@@ -3,12 +3,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:owomaniya/app/locator.dart';
 import 'package:owomaniya/app/router.gr.dart' as route;
-import 'package:owomaniya/model/user.dart';
+import 'package:owomaniya/model/user_login.dart';
 import 'package:owomaniya/owPreferences/user_preferences.dart';
 import 'package:owomaniya/services/authentication_service.dart';
 import 'package:owomaniya/utils/api_urls.dart';
 import 'package:owomaniya/utils/status.dart';
 import 'package:owomaniya/viewmodels/base_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class LoginViewModel extends BaseModel {
@@ -31,29 +32,92 @@ class LoginViewModel extends BaseModel {
     _navigationService.navigateTo(route.Routes.paymentMethodView);
   }
 
-  Future<dynamic> login(
+  //
+  // Future<dynamic> login(
+  //   String username,
+  //   String password,
+  // ) async {
+  //   var loginResult = await _authenticationService.postLogin(username, password);
+  //
+  //   return await Future.delayed(
+  //     Duration(seconds: 2),
+  //     () {
+  //       if (loginResult is bool) {
+  //         _navigationService.pushNamedAndRemoveUntil(route.Routes.loginView);
+  //         print('if $loginResult');
+  //       } else {
+  //         _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
+  //         print('else $loginResult');
+  //       }
+  //     },
+  //   );
+  // }
+
+  Status _loggedInStatus = Status.NotLoggedIn;
+
+  Status get loggedInStatus => _loggedInStatus;
+
+  Future<Map<String, dynamic>> postLogin(
     String username,
     String password,
   ) async {
-    var loginResult = await _authenticationService.postLogin(username, password);
+    var result;
+    String deviceType = 'mobile';
+    String deviceOs = 'android';
 
-    return await Future.delayed(
-      Duration(seconds: 2),
-      () {
-        if (loginResult is bool) {
-          _navigationService.pushNamedAndRemoveUntil(route.Routes.loginView);
-          print('if $loginResult');
-        } else {
-          _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
-          print('else $loginResult');
-        }
-      },
+    final Map<String, dynamic> loginData = {
+      'username': username,
+      'password': password,
+      'device_type': deviceType,
+      'device_os': deviceOs,
+      'device_token': ApiUrls.DEVICE_TOKEN,
+    };
+    _loggedInStatus = Status.Authenticating;
+    setBusy(true);
+
+    http.Response response = await http.post(
+      ApiUrls.USER_LOGIN_URL,
+      body: json.encode(loginData),
+      headers: {'Content-Type': 'application/json', 'accept': 'application/json'},
     );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final SharedPreferences preferences = await SharedPreferences.getInstance();
+
+      var userData = responseData;
+      UserLogin authUser = UserLogin.fromJson(userData);
+      UserPreferences().saveUser(authUser);
+
+      preferences.setString('email_address', authUser.data.user.emailAddress);
+      preferences.setString('mobile_no', authUser.data.user.mobileNo);
+      preferences.setString('token', authUser.data.token);
+      preferences.setString('first_name', authUser.data.user.firstName);
+      preferences.setString('last_name', authUser.data.user.lastName);
+      preferences.setString('user_image', authUser.data.user.userImage);
+
+      _loggedInStatus = Status.LoggedIn;
+      setBusy(true);
+      Fluttertoast.showToast(msg: 'Login successful');
+      result = {'status': true, 'message': 'code ${response.statusCode} '};
+      print('login success $result');
+      var log = preferences.getString('token');
+      print('login token $log');
+      _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
+      setBusy(false);
+    } else {
+      _loggedInStatus = Status.NotLoggedIn;
+      setBusy(true);
+      Fluttertoast.showToast(msg: 'Login Failed');
+      result = {'status': false, 'message': 'code ${response.statusCode} '};
+      print('login fail $result');
+      setBusy(false);
+    }
+    return json.decode(response.body);
   }
 
   void logout() async {
     UserPreferences().removeUser();
-    print('$User');
     _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
   }
 }

@@ -210,10 +210,10 @@ class Feedqueryanswered {
   dynamic intialUserExpertId;
   int totalfollowups;
   DateTime createdAt;
-  dynamic createdBy;
+  int createdBy;
   DateTime updatedAt;
   dynamic latestanswer;
-  Author author;
+  dynamic author;
 
   factory Feedqueryanswered.fromJson(Map<String, dynamic> json) => Feedqueryanswered(
     id: json["id"],
@@ -226,7 +226,7 @@ class Feedqueryanswered {
     createdBy: json["created_by"],
     updatedAt: DateTime.parse(json["updated_at"]),
     latestanswer: json["latestanswer"],
-    author: Author.fromJson(json["author"]),
+    author: json["author"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -240,43 +240,7 @@ class Feedqueryanswered {
     "created_by": createdBy,
     "updated_at": updatedAt.toIso8601String(),
     "latestanswer": latestanswer,
-    "author": author.toJson(),
-  };
-}
-
-class Author {
-  Author({
-    this.id,
-    this.feedsId,
-    this.usersId,
-    this.isPrimary,
-    this.updatedAt,
-    this.user,
-  });
-
-  int id;
-  int feedsId;
-  int usersId;
-  String isPrimary;
-  DateTime updatedAt;
-  dynamic user;
-
-  factory Author.fromJson(Map<String, dynamic> json) => Author(
-    id: json["id"],
-    feedsId: json["feeds_id"],
-    usersId: json["users_id"],
-    isPrimary: json["is_primary"],
-    updatedAt: DateTime.parse(json["updated_at"]),
-    user: json["user"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "feeds_id": feedsId,
-    "users_id": usersId,
-    "is_primary": isPrimary,
-    "updated_at": "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
-    "user": user,
+    "author": author,
   };
 }
 
@@ -290,14 +254,14 @@ class Media {
   });
 
   int id;
-  String mediaType;
+  MediaType mediaType;
   String mediaPath;
   DateTime updatedAt;
   int feedsId;
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
     id: json["id"],
-    mediaType: json["media_type"],
+    mediaType: mediaTypeValues.map[json["media_type"]],
     mediaPath: json["media_path"],
     updatedAt: DateTime.parse(json["updated_at"]),
     feedsId: json["feeds_id"],
@@ -305,9 +269,29 @@ class Media {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "media_type": mediaType,
+    "media_type": mediaTypeValues.reverse[mediaType],
     "media_path": mediaPath,
     "updated_at": "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
     "feeds_id": feedsId,
   };
+}
+
+enum MediaType { COVER_IMAGE }
+
+final mediaTypeValues = EnumValues({
+  "cover_image": MediaType.COVER_IMAGE
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap;
+  }
 }
