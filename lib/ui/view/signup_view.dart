@@ -1,7 +1,10 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:owomaniya/utils/regex.dart';
 import 'package:owomaniya/viewmodels/signup_view_model.dart';
 import 'package:stacked/stacked.dart';
@@ -11,8 +14,9 @@ class SignUpView extends StatefulWidget {
   _SignUpViewState createState() => _SignUpViewState();
 }
 
-class _SignUpViewState extends State<SignUpView> {
+class _SignUpViewState extends State<SignUpView> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _mobileController = TextEditingController();
@@ -21,7 +25,7 @@ class _SignUpViewState extends State<SignUpView> {
   final _passwordController = TextEditingController();
 
   final List<String> gender = ['Male', 'Female'];
-  String _currentGender = 'Male';
+  String _currentGender = 'Female';
 
   bool _obscureText = false;
   String _birthDate;
@@ -33,15 +37,37 @@ class _SignUpViewState extends State<SignUpView> {
     });
   }
 
+  var now = DateTime.now();
+  ValueNotifier<DateTime> _dateTimeNotifier = ValueNotifier<DateTime>(Jiffy(DateTime.now()).subtract(years: 13));
+
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
+    final top = MediaQuery.of(context).viewInsets.top;
     return ViewModelBuilder<SignUpViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          bottomOpacity: 30.0,
+          shadowColor: Colors.grey,
+          title: Padding(
+            padding: const EdgeInsets.only(left: 80.0),
+            child: Text(
+              "Sign Up",
+              style: TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(26.0, 26.0, 26.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 0.0),
           child: Container(
             child: ListView(
+              padding: EdgeInsets.only(bottom: bottom, top: top),
               shrinkWrap: true,
+              reverse: true,
               children: <Widget>[
                 Container(
                   child: Wrap(
@@ -54,24 +80,24 @@ class _SignUpViewState extends State<SignUpView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
-                              child: Center(
-                                child: Text(
-                                  'Sign Up',
-                                  textAlign: TextAlign.center,
-                                  softWrap: true,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Divider(
-                              color: Colors.grey,
-                            ),
+                            // Padding(
+                            //   padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
+                            //   child: Center(
+                            //     child: Text(
+                            //       'Sign Up',
+                            //       textAlign: TextAlign.center,
+                            //       softWrap: true,
+                            //       style: TextStyle(
+                            //         color: Colors.black,
+                            //         fontWeight: FontWeight.bold,
+                            //         fontSize: 20,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            // Divider(
+                            //   color: Colors.grey,
+                            // ),
                             TextFormField(
                               controller: _firstNameController,
                               decoration: InputDecoration(
@@ -106,9 +132,9 @@ class _SignUpViewState extends State<SignUpView> {
                                 child: DateTimePicker(
                                   type: DateTimePickerType.date,
                                   dateMask: 'dd-MM-yyyy',
-                                  initialValue: '',
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(2100),
+                                  initialValue: _dateTimeNotifier.value.toString(),
+                                  firstDate: DateTime(1960),
+                                  lastDate: _dateTimeNotifier.value,
                                   onChanged: (val) {
                                     setState(() {
                                       _birthDate = val;
@@ -161,18 +187,14 @@ class _SignUpViewState extends State<SignUpView> {
                             ),
                             TextFormField(
                               controller: _mobileController,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                               decoration: InputDecoration(
                                 labelText: 'Mobile Number',
                                 hintText: 'Mobile Number',
                                 hintStyle: TextStyle(fontSize: 18.0),
                               ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Your mobile number is Required';
-                                }
-                                return null;
-                              },
+                              validator: validateMobileNumber,
                             ),
                             TextFormField(
                               obscureText: !this._obscureText,

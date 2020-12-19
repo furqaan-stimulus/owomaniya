@@ -12,7 +12,10 @@ import 'package:flutter/material.dart';
 import '../ui/view/ask_expert_view.dart';
 import '../ui/view/ask_query_view.dart';
 import '../ui/view/bookmark_view.dart';
+import '../ui/view/comment_view.dart';
 import '../ui/view/consultation_view.dart';
+import '../ui/view/drawer_view.dart';
+import '../ui/view/feed_card_view.dart';
 import '../ui/view/forgot_password_view.dart';
 import '../ui/view/full_consultation_view.dart';
 import '../ui/view/home_view.dart';
@@ -23,6 +26,7 @@ import '../ui/view/payment_failure_view.dart';
 import '../ui/view/payment_method_view.dart';
 import '../ui/view/payment_successful_view.dart';
 import '../ui/view/privacy_policy_view.dart';
+import '../ui/view/query_card_view.dart';
 import '../ui/view/register_as_expert_view.dart';
 import '../ui/view/reset_password_view.dart';
 import '../ui/view/share_your_voice_view.dart';
@@ -59,6 +63,10 @@ class Routes {
   static const String askExpertView = '/ask-expert-view';
   static const String fullConsultationView = '/full-consultation-view';
   static const String myConsultationView = '/my-consultation-view';
+  static const String drawerView = '/drawer-view';
+  static const String feedCardView = '/feed-card-view';
+  static const String queryCardView = '/query-card-view';
+  static const String commentView = '/comment-view';
   static const all = <String>{
     splashView,
     onBoardView,
@@ -84,6 +92,10 @@ class Routes {
     askExpertView,
     fullConsultationView,
     myConsultationView,
+    drawerView,
+    feedCardView,
+    queryCardView,
+    commentView,
   };
 }
 
@@ -115,6 +127,10 @@ class Router extends RouterBase {
     RouteDef(Routes.askExpertView, page: AskExpertView),
     RouteDef(Routes.fullConsultationView, page: FullConsultationView),
     RouteDef(Routes.myConsultationView, page: MyConsultationView),
+    RouteDef(Routes.drawerView, page: DrawerView),
+    RouteDef(Routes.feedCardView, page: FeedCardView),
+    RouteDef(Routes.queryCardView, page: QueryCardView),
+    RouteDef(Routes.commentView, page: CommentView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -263,6 +279,30 @@ class Router extends RouterBase {
     MyConsultationView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => MyConsultationView(),
+        settings: data,
+      );
+    },
+    DrawerView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => DrawerView(),
+        settings: data,
+      );
+    },
+    FeedCardView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => FeedCardView(),
+        settings: data,
+      );
+    },
+    QueryCardView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => QueryCardView(),
+        settings: data,
+      );
+    },
+    CommentView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => CommentView(),
         settings: data,
       );
     },

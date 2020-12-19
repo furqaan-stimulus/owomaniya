@@ -8,7 +8,7 @@ class LoginView extends StatefulWidget {
   _LoginViewState createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
@@ -26,45 +26,59 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     return ViewModelBuilder<LoginViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
+              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomPadding: false,
               key: _scaffoldKey,
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                bottomOpacity: 30.0,
+                shadowColor: Colors.grey,
+                title: Padding(
+                  padding: const EdgeInsets.only(left: 85.0),
+                  child: Text(
+                    "Login",
+                    style: TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
               body: Padding(
                 padding: const EdgeInsets.all(26.0),
                 child: Container(
                   child: ListView(
                     shrinkWrap: true,
+                    padding: EdgeInsets.only(bottom: bottom),
+                    reverse: true,
                     children: [
                       Container(
                         child: Wrap(
                           runSpacing: 10.0,
                           children: [
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: 60,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
-                                  child: Center(
-                                    child: Text(
-                                      'Login',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 200,
-                            ),
+                            // Column(
+                            //   children: [
+                            //     SizedBox(
+                            //       height: 60,
+                            //     ),
+                            //     Padding(
+                            //       padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
+                            //       child: Center(
+                            //         child: Text(
+                            //           'Login',
+                            //           style: TextStyle(
+                            //             color: Colors.black,
+                            //             fontWeight: FontWeight.bold,
+                            //             fontSize: 20,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     Divider(
+                            //       color: Colors.grey,
+                            //     ),
+                            //   ],
+                            // ),
                             Form(
                               key: _formKey,
                               child: Container(
@@ -72,6 +86,9 @@ class _LoginViewState extends State<LoginView> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
                                     TextFormField(
                                       controller: emailController,
                                       keyboardType: TextInputType.text,
@@ -155,6 +172,7 @@ class _LoginViewState extends State<LoginView> {
                                         textColor: Colors.white,
                                         padding: EdgeInsets.all(14),
                                         onPressed: () {
+                                          FocusManager.instance.primaryFocus.unfocus();
                                           if (_formKey.currentState.validate()) {
                                             model.postLogin(
                                               emailController.text,
@@ -176,25 +194,26 @@ class _LoginViewState extends State<LoginView> {
                                           children: [
                                             Text(
                                               'Don\'t have An Account ?',
-                                              style: TextStyle(
-                                                  fontSize: 15.0, fontWeight: FontWeight.bold),
+                                              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 10.0),
                                               child: Center(
                                                 child: GestureDetector(
-                                                  child: Container(
-                                                    child: Text(
-                                                      'Sign Up',
-                                                      style: TextStyle(
-                                                          fontSize: 18.0,
-                                                          fontWeight: FontWeight.bold,
-                                                          fontStyle: FontStyle.normal,
-                                                          color: Colors.pink),
+                                                    child: Container(
+                                                      child: Text(
+                                                        'Sign Up',
+                                                        style: TextStyle(
+                                                            fontSize: 18.0,
+                                                            fontWeight: FontWeight.bold,
+                                                            fontStyle: FontStyle.normal,
+                                                            color: Colors.pink),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  onTap: () => model.navigateToSignUp(),
-                                                ),
+                                                    onTap: () {
+                                                      FocusManager.instance.primaryFocus.unfocus();
+                                                      model.navigateToSignUp();
+                                                    }),
                                               ),
                                             ),
                                           ],

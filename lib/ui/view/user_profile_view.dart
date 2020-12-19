@@ -209,6 +209,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                                 children: [
                                                   Text('First Name*'),
                                                   TextFormField(
+                                                    keyboardType: TextInputType.name,
                                                     enabled: isEditable,
                                                     decoration: InputDecoration(
                                                       labelText: snapshot.data.data.firstName,
@@ -228,6 +229,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                                   Text('Last Name*'),
                                                   TextFormField(
                                                     enabled: isEditable,
+                                                    keyboardType: TextInputType.name,
                                                     decoration: InputDecoration(
                                                       labelText: snapshot.data.data.lastName,
                                                       hintText: 'Last Name',
@@ -252,6 +254,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                         Container(
                                           width: 310,
                                           child: TextFormField(
+                                            keyboardType: TextInputType.emailAddress,
                                             enabled: isEditable,
                                             decoration: InputDecoration(
                                               labelText: snapshot.data.data.emailAddress,
@@ -280,6 +283,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                                   width: 150,
                                                   child: TextFormField(
                                                     enabled: isEditable,
+                                                    keyboardType: TextInputType.phone,
                                                     decoration: InputDecoration(
                                                       labelText: snapshot.data.data.mobileNo,
                                                       hintText: 'Mobile Number',

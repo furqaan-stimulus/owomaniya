@@ -110,7 +110,7 @@ class Feed {
   String feedTitle;
   String feedUrl;
   DateTime feedDate;
-  FeedType feedType;
+  // FeedType feedType;
   String feedDetail;
   int feedLikeCnt;
   int feedCommentCnt;
@@ -134,7 +134,7 @@ class Feed {
     this.feedTitle,
     this.feedUrl,
     this.feedDate,
-    this.feedType,
+    // this.feedType,
     this.feedDetail,
     this.feedLikeCnt,
     this.feedCommentCnt,
@@ -159,7 +159,7 @@ class Feed {
         feedTitle: json["feed_title"],
         feedUrl: json["feed_url"],
         feedDate: DateTime.parse(json["feed_date"]),
-        feedType: feedTypeValues.map[json["feed_type"]],
+        // feedType: feedTypeValues.map[json["feed_type"]],
         feedDetail: json["feed_detail"],
         feedLikeCnt: json["feed_like_cnt"],
         feedCommentCnt: json["feed_comment_cnt"],
@@ -186,7 +186,7 @@ class Feed {
         "feed_title": feedTitle,
         "feed_url": feedUrl,
         "feed_date": feedDate.toString(),
-        "feed_type": feedTypeValues.reverse[feedType],
+        // "feed_type": feedTypeValues.reverse[feedType],
         "feed_detail": feedDetail,
         "feed_like_cnt": feedLikeCnt,
         "feed_comment_cnt": feedCommentCnt,

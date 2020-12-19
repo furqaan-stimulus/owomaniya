@@ -30,7 +30,7 @@ class _AskExpertViewState extends State<AskExpertView> {
                           child: Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+                                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                                 child: SvgPicture.asset(
                                   'assets/svg/anyonmans.svg',
                                   height: 30,
@@ -64,8 +64,7 @@ class _AskExpertViewState extends State<AskExpertView> {
                                 ),
                                 Text(
                                   'Ask an Expert',
-                                  style: TextStyle(
-                                      color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                                 ),
                               ],
                             ),
@@ -173,8 +172,7 @@ class _AskExpertViewState extends State<AskExpertView> {
                                     decoration: InputDecoration(
                                         errorText: _validate ? "Query can\'t be empty" : null,
                                         hintText: 'Type your query here...',
-                                        border:
-                                            OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+                                        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
                                   ),
                                 ),
                                 Divider(

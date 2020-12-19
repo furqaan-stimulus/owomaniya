@@ -1,70 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:owomaniya/app/locator.dart';
-import 'package:owomaniya/app/router.gr.dart' as route;
 import 'package:owomaniya/model/feed_comments.dart';
 import 'package:owomaniya/model/feed_item_model.dart';
 import 'package:owomaniya/utils/api_urls.dart';
-import 'package:owomaniya/viewmodels/base_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stacked_services/stacked_services.dart';
-import 'package:owomaniya/model/user_profile.dart';
+import 'package:stacked/stacked.dart';
 
-class HomeViewModel extends BaseModel {
-  final NavigationService _navigationService = getIt<NavigationService>();
-  final DialogService _dialogService = getIt<DialogService>();
-
-  Future navigateToQueryView() async {
-    _navigationService.navigateTo(route.Routes.askQueryView);
-  }
-
-  Future navigateToShareYourVoiceView() async {
-    _navigationService.navigateTo(route.Routes.shareYourVoiceView);
-  }
-
-  Future navigateToPaymentMethodView() async {
-    _navigationService.navigateTo(route.Routes.paymentMethodView);
-  }
-
-  Future navigateToUserProfileView() async {
-    _navigationService.navigateTo(route.Routes.userProfileView);
-  }
-
-  Future navigateToRegisterAsExpertView() async {
-    _navigationService.navigateTo(route.Routes.registerAsExpertView);
-  }
-
-  Future navigateToBookmarkView() async {
-    _navigationService.navigateTo(route.Routes.bookmarkView);
-  }
-
-  Future navigateToVoicesView() async {
-    _navigationService.navigateTo(route.Routes.voicesView);
-  }
-
-  Future navigateToLoginView() async {
-    _navigationService.navigateTo(route.Routes.loginView);
-  }
-
-  Future navigateToMyConsultationView() async {
-    _navigationService.navigateTo(route.Routes.myConsultationView);
-  }
-
-  Future logout() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var token = preferences.setString("token", null);
-    var response;
-    response = await _dialogService.showDialog(
-      title: 'Are You Sure',
-      description: 'Do You want to Logout',
-      buttonTitle: 'Logout ',
-      cancelTitle: 'Cancel',
-    );
-    if (token == null) {
-      _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
-    }
-  }
-
+class HomeViewModel extends BaseViewModel {
   Future<String> isUserSignedIn() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
@@ -83,6 +25,7 @@ class HomeViewModel extends BaseModel {
       response = await http.get(ApiUrls.GET_FEEDS_WITHOUT_TOKEN_URL);
       final jsonString = json.decode(response.body);
       FeedItemModel model = FeedItemModel.fromJson(jsonString);
+
       return model;
     } else {
       response = await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO);
@@ -92,12 +35,12 @@ class HomeViewModel extends BaseModel {
     }
   }
 
-  Future<FeedComments> getComments() async {
+  Future<FeedComments> getComments(int feedId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
     http.Response response;
     if (_token != null) {
-      response = await http.get(ApiUrls.GET_FEED_COMMENT_URL + token + ApiUrls.FEED_NO);
+      response = await http.get(ApiUrls.GET_FEED_COMMENT_URL + token + ApiUrls.FEED_NO + feedId.toString());
       final jsonString = json.decode(response.body);
       FeedComments model = FeedComments.fromJson(jsonString);
       return model;
@@ -105,28 +48,41 @@ class HomeViewModel extends BaseModel {
     return jsonDecode(response.body);
   }
 
-  Future<UserProfile> getUserProfile() async {
+  Future<Map<String, dynamic>> postFeedComment(int feedId, String comment, String isAnonymous) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
-    final response = await http.get(
-      ApiUrls.GET_USER_PROFILE_URL + token,
-    );
-    final jsonString = json.decode(response.body);
+    final Map<String, dynamic> postFeedCommentData = {
+      "feed_id": feedId,
+      "comment": comment,
+      "device_type": 'mobile',
+      "device_os": ' android',
+      "is_anonymous": isAnonymous
+    };
 
+    print('feedId$feedId');
+    final response = await http.post(
+      ApiUrls.POST_FEED_COMMENT_URL + token,
+      body: jsonEncode(postFeedCommentData),
+      headers: {'content-Type': 'application/json'},
+    );
+    var result;
     if (response.statusCode == 200) {
-      UserProfile model = UserProfile.fromJson(jsonString);
-      print('${model.data.city}');
-      return model;
+      result = {'status': true, 'message': 'code ${response.body} '};
+      print('comment  $result');
+      setBusy(false);
     } else {
-      throw Exception('Failed to load');
+      result = {'status': false, 'message': 'code ${response.statusCode} '};
+      print('comment fail $result');
+      setBusy(false);
     }
+    return jsonDecode(response.body);
   }
 
   Future<Map<String, dynamic>> postBookmark(int feedId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
     final Map<String, dynamic> postBookmarkData = {"feed_id": feedId};
-
+    notifyListeners();
     print('feedId$feedId');
     final response = await http.post(
       ApiUrls.ADD_BOOKMARK_URL + token,
@@ -137,13 +93,11 @@ class HomeViewModel extends BaseModel {
     if (response.statusCode == 200) {
       result = {'status': true, 'message': 'code ${response.body} '};
       print('bookmark  $result');
-      setBusy(false);
     } else {
-      result = {'status': true, 'message': 'code ${response.statusCode} '};
+      result = {'status': false, 'message': 'code ${response.statusCode} '};
       print('bookmark fail $result');
-      setBusy(false);
     }
-
+    setBusy(false);
     return jsonDecode(response.body);
   }
 
@@ -161,11 +115,11 @@ class HomeViewModel extends BaseModel {
     var result;
     if (response.statusCode == 200) {
       result = {'status': true, 'message': 'code ${response.body} '};
-      print('bookmark  $result');
+      print('like  $result');
       setBusy(false);
     } else {
-      result = {'status': true, 'message': 'code ${response.statusCode} '};
-      print('bookmark fail $result');
+      result = {'status': false, 'message': 'code ${response.statusCode} '};
+      print('like fail $result');
       setBusy(false);
     }
     return jsonDecode(response.body);
@@ -185,46 +139,30 @@ class HomeViewModel extends BaseModel {
     var result;
     if (response.statusCode == 200) {
       result = {'status': true, 'message': 'code ${response.body} '};
-      print('bookmark  $result');
+      print('relate  $result');
       setBusy(false);
     } else {
-      result = {'status': true, 'message': 'code ${response.statusCode} '};
-      print('bookmark fail $result');
+      result = {'status': false, 'message': 'code ${response.statusCode} '};
+      print('relate fail $result');
       setBusy(false);
     }
     return jsonDecode(response.body);
   }
 
-  Future<Map<String, dynamic>> postFeedComment(
-    int feedId,
-    String comment,
-  ) async {
+  Future<Datum> loadFeedItem() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
-    final Map<String, dynamic> postFeedCommentData = {
-      "feed_id": feedId,
-      "comment": comment,
-      "device_type": 'mobile',
-      "device_os": ' android',
-      "is_anonymous": "Y"
-    };
-
-    print('feedId$feedId');
-    final response = await http.post(
-      ApiUrls.POST_FEED_COMMENT_URL + token,
-      body: jsonEncode(postFeedCommentData),
-      headers: {'content-Type': 'application/json'},
-    );
-    var result;
-    if (response.statusCode == 200) {
-      result = {'status': true, 'message': 'code ${response.body} '};
-      print('bookmark  $result');
-      setBusy(false);
+    http.Response response;
+    if (_token == null) {
+      response = await http.get(ApiUrls.GET_FEEDS_WITHOUT_TOKEN_URL);
+      final jsonString = json.decode(response.body);
+      Datum model = Datum.fromJson(jsonString);
+      return model;
     } else {
-      result = {'status': true, 'message': 'code ${response.statusCode} '};
-      print('bookmark fail $result');
-      setBusy(false);
+      response = await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO);
+      final jsonString = json.decode(response.body);
+      Datum model = Datum.fromJson(jsonString);
+      return model;
     }
-    return jsonDecode(response.body);
   }
 }

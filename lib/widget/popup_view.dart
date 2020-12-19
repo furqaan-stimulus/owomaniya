@@ -8,12 +8,9 @@ class PopupView extends StatefulWidget {
 }
 
 List choices = [
-  CustomPopupMenu(
-      title: 'Whatsapp', icon: SvgPicture.asset('assets/svg/whatsapp.svg')),
-  CustomPopupMenu(
-      title: 'Facbook', icon: SvgPicture.asset('assets/svg/facebook.svg')),
-  CustomPopupMenu(
-      title: 'Settings', icon: SvgPicture.asset('assets/svg/share_media.svg')),
+  CustomPopupMenu(title: 'Whatsapp', icon: SvgPicture.asset('assets/svg/whatsapp.svg')),
+  CustomPopupMenu(title: 'Facbook', icon: SvgPicture.asset('assets/svg/facebook.svg')),
+  CustomPopupMenu(title: 'Settings', icon: SvgPicture.asset('assets/svg/share_media.svg')),
 ];
 
 bool isOpen = false;
@@ -30,18 +27,14 @@ class _PopupViewState extends State<PopupView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: 35,
       width: 90,
       child: PopupMenuButton(
         elevation: 4,
-        // onCanceled: () {
-        //   print('You have not choose anything');
-        // },
         onSelected: (value) {
           _select(value);
         },
-        itemBuilder: (context) =>
-        [
+        itemBuilder: (context) => [
           PopupMenuItem(
             value: choices[0],
             child: Row(

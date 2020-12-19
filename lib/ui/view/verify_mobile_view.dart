@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:owomaniya/viewmodels/verify_mobile_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
@@ -12,12 +13,14 @@ class _VerifyMobileViewState extends State<VerifyMobileView> {
   final _otpController = TextEditingController();
   Future<SharedPreferences> preferences = SharedPreferences.getInstance();
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isEditable = false;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<VerifyMobileViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
+              key: _scaffoldKey,
               body: Padding(
                 padding: const EdgeInsets.all(26.0),
                 child: FutureBuilder(
@@ -34,18 +37,13 @@ class _VerifyMobileViewState extends State<VerifyMobileView> {
                                 children: [
                                   Column(
                                     children: [
-                                      SizedBox(
-                                        height: 60,
-                                      ),
                                       Padding(
                                         padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
                                         child: Center(
                                           child: Text(
                                             'Verify Mobile With OTP',
                                             style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
+                                                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                                           ),
                                         ),
                                       ),
@@ -55,7 +53,7 @@ class _VerifyMobileViewState extends State<VerifyMobileView> {
                                     color: Colors.grey,
                                   ),
                                   SizedBox(
-                                    height: 150,
+                                    height: 200,
                                   ),
                                   Form(
                                     key: _formKey,
@@ -68,8 +66,7 @@ class _VerifyMobileViewState extends State<VerifyMobileView> {
                                             enabled: isEditable,
                                             keyboardType: TextInputType.phone,
                                             decoration: InputDecoration(
-                                                hintStyle: TextStyle(fontSize: 18.0),
-                                                labelText: snapshot.data),
+                                                hintStyle: TextStyle(fontSize: 18.0), labelText: snapshot.data),
                                           ),
                                           SizedBox(
                                             height: 10,
@@ -77,6 +74,9 @@ class _VerifyMobileViewState extends State<VerifyMobileView> {
                                           TextFormField(
                                             controller: _otpController,
                                             keyboardType: TextInputType.number,
+                                            inputFormatters: <TextInputFormatter>[
+                                              FilteringTextInputFormatter.digitsOnly
+                                            ],
                                             decoration: InputDecoration(
                                               hintText: 'Enter OTP',
                                               hintStyle: TextStyle(fontSize: 18.0),

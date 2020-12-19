@@ -72,9 +72,11 @@ class ApiUrls {
   static const String DEVICE_TOKEN =
       "eeHQ5ZJQXL4:APA91bE73aEs1_wz9wkyVrJf64K5mcHMZ6NGpvtFvM61pU_oGLk6XVzTfvwm0YDf4ZuVx08t5DdNc9f34blbtB8CCCgX0JVXrIVmXLS0t3k5ai8MHKyj7jqMoeADdHl7w0-R-HDLaUey";
 
-  static const String NEW_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjc1MjIsImlzcyI6Imh0dHA6Ly9kZXYtYXBpLm9vd29tYW5peWEuY29tL2FwaS9hZG1pbi9sb2dpbiIsImlhdCI6MTU4OTU1MjQ2NiwiZXhwIjoxNjIxMDg4NDY2LCJuYmYiOjE1ODk1NTI0NjYsImp0aSI6ImxDVEdDVjFuaWNYYVNtNUIifQ.uVw6uOkch4TcrLTu4mkdAJCEpUTiwZg3O4tXIigtXMM";
-  // static const String localURL = "https://dev-api.oowomaniya.com/api/";
-  static const String localURL = "https://ow.stimulusco.com/api/";
+  static const String NEW_TOKEN =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjc1MjIsImlzcyI6Imh0dHA6Ly9kZXYtYXBpLm9vd29tYW5peWEuY29tL2FwaS9hZG1pbi9sb2dpbiIsImlhdCI6MTU4OTU1MjQ2NiwiZXhwIjoxNjIxMDg4NDY2LCJuYmYiOjE1ODk1NTI0NjYsImp0aSI6ImxDVEdDVjFuaWNYYVNtNUIifQ.uVw6uOkch4TcrLTu4mkdAJCEpUTiwZg3O4tXIigtXMM";
+  static const String localURL = "https://dev-api.oowomaniya.com/api/";
+
+  // static const String localURL = "https://ow.stimulusco.com/api/";
 
   //Query urls
   static const String GET_SEARCH_QUERY_URL = localURL +
@@ -107,15 +109,8 @@ class ApiUrls {
       localURL + QUERY + SLASH + USER_CONSULTATION + QUESTION_MARK + TOKEN + EQUALS; //Add token
   static const String ASK_QUERY_TO_DOCTOR_URL =
       localURL + QUERY + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add token
-  static const String RELATE_QUERY_URL = localURL +
-      FEED +
-      SLASH +
-      ENGAGEMENT +
-      SLASH +
-      ADD +
-      QUESTION_MARK +
-      TOKEN +
-      EQUALS; //Add  steffina token
+  static const String RELATE_QUERY_URL =
+      localURL + FEED + SLASH + ENGAGEMENT + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add  steffina token
   static const String ASK_FOLLOWUP_URL =
       localURL + QUERY + SLASH + FOLLOWUP + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add local token
 
@@ -137,7 +132,7 @@ class ApiUrls {
 
   //  feed urls
   static const String GET_FEEDS_WITHOUT_TOKEN_URL =
-      localURL + FEED + SLASH + TIMELINE + QUESTION_MARK + PAGE + EQUALS + ONE;
+      localURL + FEED + SLASH + TIMELINE + QUESTION_MARK + PAGE + EQUALS ; //Add page number
   static const String GET_FEED_DETAILS_URL = localURL +
       FEED +
       SLASH +
@@ -152,15 +147,14 @@ class ApiUrls {
       "8090"; //change value
   static const String GET_FEEDS_WITH_TOKEN_URL = localURL + FEED + QUESTION_MARK + TOKEN + EQUALS + "token";
 
-  static const String PAGE_NO = AND + PAGE + EQUALS + ONE;
+  static const String PAGE_NO = AND + PAGE + EQUALS ; //Add page number
 
   static const String ADD_BOOKMARK_URL =
       localURL + FEED + SLASH + BOOKMARK + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add steffina token
 
-  static const String GET_FEED_COMMENT_URL =
-      localURL + FEED + SLASH + COMMENT + QUESTION_MARK + TOKEN + EQUALS;
+  static const String GET_FEED_COMMENT_URL = localURL + FEED + SLASH + COMMENT + QUESTION_MARK + TOKEN + EQUALS;
 
-  static const String FEED_NO = AND + FEED_ID + EQUALS + "9";
+  static const String FEED_NO = AND + FEED_ID + EQUALS;
 
   static const String GET_BOOKMARK_URL = localURL + FEED + SLASH + BOOKMARKS + QUESTION_MARK + TOKEN + EQUALS;
 
@@ -257,15 +251,8 @@ class ApiUrls {
       "expert"; //change value
   static const String UPDATE_LAST_SEEN_URL =
       localURL + NOTIFICATION + SLASH + UPDATE + QUESTION_MARK + TOKEN + EQUALS; //Add token
-  static const String REMOVE_FAVOURITE_EXPERTS_URL = localURL +
-      USER +
-      SLASH +
-      FAVOURITE_EXPERT +
-      SLASH +
-      DELETE +
-      QUESTION_MARK +
-      TOKEN +
-      EQUALS; //Add token
+  static const String REMOVE_FAVOURITE_EXPERTS_URL =
+      localURL + USER + SLASH + FAVOURITE_EXPERT + SLASH + DELETE + QUESTION_MARK + TOKEN + EQUALS; //Add token
   static const String ADD_FAVOURITE_EXPERTS_URL =
       localURL + USER + SLASH + FAVOURITE_EXPERT + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add token
   static const String UPDATE_PROFILE_PICTURE_URL =
@@ -282,8 +269,7 @@ class ApiUrls {
       localURL + CONSULTATION + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add token
 
   //Medical url
-  static const String GET_MEDICAL_PACKAGE_URL =
-      localURL + MEDICAL_PACKAGE + QUESTION_MARK + TOKEN + EQUALS; //Add token
+  static const String GET_MEDICAL_PACKAGE_URL = localURL + MEDICAL_PACKAGE + QUESTION_MARK + TOKEN + EQUALS; //Add token
   static const String MEDICAL_TEST_BOOKING_URL =
       localURL + MEDICAL_TEST + SLASH + BOOKING + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add token
 
@@ -291,8 +277,7 @@ class ApiUrls {
   static const String CONSULTATION_PAYMENT_URL =
       localURL + PAYMENT + SLASH + CONSULTATION + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add token
 
-  static const String QUERY_PAYMENT_URL =
-      localURL + PAYMENT + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add token
+  static const String QUERY_PAYMENT_URL = localURL + PAYMENT + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add token
 
   //User login and sign up urls
   static const String VERIFY_EMAIL_URL = localURL + VERIFY_EMAIL;

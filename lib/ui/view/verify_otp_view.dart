@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:owomaniya/viewmodels/verify_otp_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,12 +14,17 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
   bool isEditable = false;
   final _otpController = TextEditingController();
   final _mobileNumberController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Future<SharedPreferences> preferences = SharedPreferences.getInstance();
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     return ViewModelBuilder<VerifyOtpViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
+              key: _scaffoldKey,
+              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomPadding: false,
               body: Padding(
                 padding: const EdgeInsets.all(26.0),
                 child: FutureBuilder(
@@ -27,7 +33,9 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                     if (snapshot.hasData) {
                       return Container(
                         child: ListView(
+                          padding: EdgeInsets.only(bottom: bottom),
                           shrinkWrap: true,
+                          reverse: true,
                           children: [
                             Container(
                               child: Wrap(
@@ -35,9 +43,6 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                                 children: [
                                   Column(
                                     children: [
-                                      SizedBox(
-                                        height: 60,
-                                      ),
                                       Center(
                                         child: Padding(
                                           padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
@@ -46,8 +51,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                                               IconButton(
                                                 icon: SvgPicture.asset(
                                                   'assets/svg/back_home.svg',
-                                                  width: 45,
-                                                  height: 45,
+                                                  width: 40,
+                                                  height: 40,
                                                 ),
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
@@ -59,9 +64,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                                               Text(
                                                 'Reset Password',
                                                 style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20),
+                                                    color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                                               ),
                                             ],
                                           ),
@@ -71,7 +74,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                                         color: Colors.grey,
                                       ),
                                       SizedBox(
-                                        height: 150,
+                                        height: 200,
                                       ),
                                       Container(
                                         child: Column(
@@ -82,7 +85,10 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                                             TextField(
                                               enabled: isEditable,
                                               controller: _mobileNumberController,
-                                              keyboardType: TextInputType.text,
+                                              keyboardType: TextInputType.number,
+                                              inputFormatters: <TextInputFormatter>[
+                                                FilteringTextInputFormatter.digitsOnly
+                                              ],
                                               decoration: InputDecoration(
                                                   hintText: snapshot.data,
                                                   hintStyle: TextStyle(fontSize: 18.0),
@@ -93,7 +99,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                                             ),
                                             TextField(
                                               controller: _otpController,
-                                              keyboardType: TextInputType.text,
+                                              keyboardType: TextInputType.number,
                                               decoration: InputDecoration(
                                                   hintText: 'Enter OTP Number',
                                                   hintStyle: TextStyle(fontSize: 18.0),

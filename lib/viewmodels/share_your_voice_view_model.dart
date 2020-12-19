@@ -16,7 +16,7 @@ class ShareYourVoiceViewModel extends BaseModel {
     var userId = preferences.getInt("user_id");
     var token = preferences.getString("token");
 
-    if (userId == null) {
+    if (token == null) {
       _navigationService.navigateTo(Routes.loginView);
     } else {
       final Map<String, dynamic> shareVoiceData = {

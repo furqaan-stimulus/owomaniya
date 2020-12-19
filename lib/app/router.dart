@@ -3,6 +3,8 @@ import 'package:owomaniya/ui/view/ask_expert_view.dart';
 import 'package:owomaniya/ui/view/ask_query_view.dart';
 import 'package:owomaniya/ui/view/bookmark_view.dart';
 import 'package:owomaniya/ui/view/consultation_view.dart';
+import 'package:owomaniya/ui/view/drawer_view.dart';
+import 'package:owomaniya/ui/view/feed_card_view.dart';
 import 'package:owomaniya/ui/view/forgot_password_view.dart';
 import 'package:owomaniya/ui/view/full_consultation_view.dart';
 import 'package:owomaniya/ui/view/home_view.dart';
@@ -13,6 +15,7 @@ import 'package:owomaniya/ui/view/payment_failure_view.dart';
 import 'package:owomaniya/ui/view/payment_method_view.dart';
 import 'package:owomaniya/ui/view/payment_successful_view.dart';
 import 'package:owomaniya/ui/view/privacy_policy_view.dart';
+import 'package:owomaniya/ui/view/query_card_view.dart';
 import 'package:owomaniya/ui/view/register_as_expert_view.dart';
 import 'package:owomaniya/ui/view/reset_password_view.dart';
 import 'package:owomaniya/ui/view/share_your_voice_view.dart';
@@ -23,6 +26,7 @@ import 'package:owomaniya/ui/view/verify_mobile_view.dart';
 import 'package:owomaniya/ui/view/signup_view.dart';
 import 'package:owomaniya/ui/view/splash_view.dart';
 import 'package:owomaniya/ui/view/voices_view.dart';
+import 'package:owomaniya/ui/view/comment_view.dart';
 
 @MaterialAutoRouter(routes: <AutoRoute>[
   MaterialRoute(page: SplashView, initial: true),
@@ -49,5 +53,9 @@ import 'package:owomaniya/ui/view/voices_view.dart';
   MaterialRoute(page: AskExpertView),
   MaterialRoute(page: FullConsultationView),
   MaterialRoute(page: MyConsultationView),
+  MaterialRoute(page: DrawerView),
+  MaterialRoute(page: FeedCardView),
+  MaterialRoute(page: QueryCardView),
+  MaterialRoute(page: CommentView),
 ])
 class $Router {}

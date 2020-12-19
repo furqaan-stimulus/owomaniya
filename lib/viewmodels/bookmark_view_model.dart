@@ -11,7 +11,6 @@ class BookmarkViewModel extends BaseModel {
   String get token => _token;
 
   Future<Map<String, dynamic>> removeBookmark(int bookmarkId) async {
-
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     _token = preferences.getString('token');
     final Map<String, dynamic> postBookmarkData = {"bookmark_id": bookmarkId};
@@ -23,16 +22,16 @@ class BookmarkViewModel extends BaseModel {
       headers: {'content-Type': 'application/json'},
     );
     var result;
+    setBusy(true);
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       result = {'status': true, 'message': 'code ${response.body} '};
       print('bookmark  $result');
-      setBusy(false);
     } else {
       result = {'status': true, 'message': 'code ${response.body} '};
       print('bookmark fail $result');
-      setBusy(false);
     }
+    setBusy(false);
     return jsonDecode(response.body);
   }
 }

@@ -11,9 +11,9 @@ class ResetPasswordView extends StatefulWidget {
 
 class _ResetPasswordViewState extends State<ResetPasswordView> {
   final _rePasswordController = TextEditingController();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _passwordController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   bool _obscureText = false;
 
   void toggle() {
@@ -24,13 +24,19 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     return ViewModelBuilder<ResetPasswordViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
+              key: _scaffoldKey,
+              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomPadding: false,
               body: Padding(
                 padding: const EdgeInsets.all(26.0),
                 child: Container(
                   child: ListView(
                     shrinkWrap: true,
+                    padding: EdgeInsets.only(bottom: bottom),
+                    reverse: true,
                     children: [
                       Container(
                         child: Wrap(
@@ -38,9 +44,6 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                           children: [
                             Column(
                               children: [
-                                SizedBox(
-                                  height: 60,
-                                ),
                                 Center(
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
@@ -49,8 +52,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                         IconButton(
                                           icon: SvgPicture.asset(
                                             'assets/svg/back_home.svg',
-                                            width: 45,
-                                            height: 45,
+                                            width: 40,
+                                            height: 40,
                                           ),
                                           onPressed: () {
                                             Navigator.of(context).pop();
@@ -61,8 +64,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                         ),
                                         Text(
                                           'Reset Password',
-                                          style: TextStyle(
-                                              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+                                          style:
+                                              TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                                         ),
                                       ],
                                     ),
@@ -72,7 +75,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                   color: Colors.grey,
                                 ),
                                 SizedBox(
-                                  height: 150,
+                                  height: 200,
                                 ),
                                 Container(
                                   child: Column(
@@ -139,8 +142,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                           textColor: Colors.white,
                                           padding: EdgeInsets.all(14),
                                           onPressed: () {
-                                            model.resetPassword(
-                                                _passwordController.text, _rePasswordController.text);
+                                            model.resetPassword(_passwordController.text, _rePasswordController.text);
                                           },
                                           color: Colors.pink,
                                         ),

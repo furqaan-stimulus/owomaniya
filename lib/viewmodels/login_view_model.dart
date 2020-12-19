@@ -97,21 +97,17 @@ class LoginViewModel extends BaseModel {
       preferences.setString('user_image', authUser.data.user.userImage);
 
       _loggedInStatus = Status.LoggedIn;
-      setBusy(true);
       Fluttertoast.showToast(msg: 'Login successful');
       result = {'status': true, 'message': 'code ${response.statusCode} '};
       print('login success $result');
       var log = preferences.getString('token');
       print('login token $log');
       _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
-      setBusy(false);
     } else {
       _loggedInStatus = Status.NotLoggedIn;
-      setBusy(true);
       Fluttertoast.showToast(msg: 'Login Failed');
       result = {'status': false, 'message': 'code ${response.statusCode} '};
       print('login fail $result');
-      setBusy(false);
     }
     return json.decode(response.body);
   }

@@ -28,7 +28,7 @@ class _AskQueryViewState extends State<AskQueryView> {
                           children: [
                             Center(
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
+                                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 0.0),
                                 child: Row(
                                   children: [
                                     SvgPicture.asset(
@@ -60,7 +60,7 @@ class _AskQueryViewState extends State<AskQueryView> {
                                     Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
+                                          padding: const EdgeInsets.only(left: 0.0),
                                           child: SvgPicture.asset(
                                             'assets/svg/check_pink.svg',
                                             height: 15.0,
@@ -79,7 +79,7 @@ class _AskQueryViewState extends State<AskQueryView> {
                                     Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
+                                          padding: const EdgeInsets.only(left: 0.0),
                                           child: SvgPicture.asset(
                                             'assets/svg/check_pink.svg',
                                             height: 15.0,
@@ -98,7 +98,7 @@ class _AskQueryViewState extends State<AskQueryView> {
                                     Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
+                                          padding: const EdgeInsets.only(left: 0.0),
                                           child: SvgPicture.asset(
                                             'assets/svg/check_pink.svg',
                                             height: 15.0,
@@ -120,11 +120,11 @@ class _AskQueryViewState extends State<AskQueryView> {
                                     Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+                                          padding: const EdgeInsets.only(left: 0.0, top: 8.0, bottom: 4.0),
                                           child: SvgPicture.asset(
                                             'assets/svg/anyonmans.svg',
-                                            height: 30,
-                                            width: 30,
+                                            height: 45,
+                                            width: 45,
                                           ),
                                         ),
                                         Padding(
@@ -132,17 +132,14 @@ class _AskQueryViewState extends State<AskQueryView> {
                                           child: Text(
                                             'You (Anonymous)',
                                             style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 20,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 20.0),
+                                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                                       child: TextField(
                                         controller: queryController,
                                         maxLines: null,
@@ -156,7 +153,7 @@ class _AskQueryViewState extends State<AskQueryView> {
                                       color: Colors.grey,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                      padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                                       child: Container(
                                         child: RaisedButton.icon(
                                           icon: SvgPicture.asset(
@@ -169,7 +166,7 @@ class _AskQueryViewState extends State<AskQueryView> {
                                             style: TextStyle(fontSize: 15.0),
                                           ),
                                           textColor: Colors.white,
-                                          padding: EdgeInsets.fromLTRB(20.0, 14.0, 20.0, 14.0),
+                                          padding: EdgeInsets.fromLTRB(20.0, 14.0, 14.0, 14.0),
                                           onPressed: () {
                                             setState(() {
                                               if (queryController.text.isEmpty) {
@@ -183,9 +180,6 @@ class _AskQueryViewState extends State<AskQueryView> {
                                           color: Colors.pink,
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 10.0,
                                     ),
                                     Text(
                                       'Disclaimer: Information provide by an expert here is for general informational purpose only and it should NOT be considered as a substitute for professional expert (medical,psychological or fitness advice) as complete physical assessment of an individual has not been done. Please consult your nearest doctor/expert before acting on it. The advice is also not valid for medico-legal purposes.',
