@@ -1,12 +1,73 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:owomaniya/model/feed_comments.dart';
 import 'package:owomaniya/model/feed_item_model.dart';
+import 'package:owomaniya/app/router.gr.dart' as route;
+import 'package:owomaniya/ui/view/comment_view.dart';
+import 'package:owomaniya/ui/view/ask_expert_view.dart';
 import 'package:owomaniya/utils/api_urls.dart';
+import 'package:owomaniya/app/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeViewModel extends BaseViewModel {
+  final NavigationService _navigationService = getIt<NavigationService>();
+  final DialogService _dialogService = getIt<DialogService>();
+
+  Future navigateToQueryView() async {
+    _navigationService.navigateTo(route.Routes.askQueryView);
+  }
+
+  Future navigateToShareYourVoiceView() async {
+    _navigationService.navigateTo(route.Routes.shareYourVoiceView);
+  }
+
+  Future navigateToPaymentMethodView() async {
+    _navigationService.navigateTo(route.Routes.paymentMethodView);
+  }
+
+  Future navigateToUserProfileView() async {
+    _navigationService.navigateTo(route.Routes.userProfileView);
+  }
+
+  Future navigateToRegisterAsExpertView() async {
+    _navigationService.navigateTo(route.Routes.registerAsExpertView);
+  }
+
+  Future navigateToBookmarkView() async {
+    _navigationService.navigateTo(route.Routes.bookmarkView);
+  }
+
+  Future navigateToVoicesView() async {
+    _navigationService.navigateTo(route.Routes.voicesView);
+  }
+
+  Future navigateToLoginView() async {
+    _navigationService.navigateTo(route.Routes.loginView);
+  }
+
+  Future navigateToMyConsultationView() async {
+    _navigationService.navigateTo(route.Routes.myConsultationView);
+  }
+
+  Future logout() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var token = preferences.setString("token", null);
+    preferences.clear();
+    var response;
+    response = await _dialogService.showDialog(
+      title: 'Are You Sure',
+      description: 'Do You want to Logout',
+      buttonTitle: 'Logout ',
+      cancelTitle: 'Cancel',
+    );
+    if (token == null) {
+      _navigationService.pushNamedAndRemoveUntil(route.Routes.homeView);
+    }
+  }
+
   Future<String> isUserSignedIn() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
@@ -17,65 +78,42 @@ class HomeViewModel extends BaseViewModel {
 
   String get token => _token;
 
+  Future navigateToAskExpertView() async {
+    await _navigationService.navigateTo(route.Routes.askExpertView);
+  }
+
+  navigateToCommentScreen(int item, BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CommentView(itemHolder: item)));
+  }
+
+  navigateToExpertScreen(String doctorName,String expertiseFiled,String image, BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => AskExpertView(doctorName: doctorName,expertiseField: expertiseFiled,doctorImage: image,)));
+  }
+
+  Future navigateToCommentView() async {
+    await _navigationService.navigateTo(route.Routes.commentView);
+  }
+
+  int page = 1;
+
   Future<FeedItemModel> loadFeed() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
     http.Response response;
     if (_token == null) {
-      response = await http.get(ApiUrls.GET_FEEDS_WITHOUT_TOKEN_URL);
-      final jsonString = json.decode(response.body);
-      FeedItemModel model = FeedItemModel.fromJson(jsonString);
-
-      return model;
-    } else {
-      response = await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO);
+      response = await http.get(ApiUrls.GET_FEEDS_WITHOUT_TOKEN_URL + "$page");
       final jsonString = json.decode(response.body);
       FeedItemModel model = FeedItemModel.fromJson(jsonString);
       return model;
-    }
-  }
-
-  Future<FeedComments> getComments(int feedId) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var token = preferences.getString('token');
-    http.Response response;
-    if (_token != null) {
-      response = await http.get(ApiUrls.GET_FEED_COMMENT_URL + token + ApiUrls.FEED_NO + feedId.toString());
+    } else {
+      response = await http.get(
+          ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO + "$page");
       final jsonString = json.decode(response.body);
-      FeedComments model = FeedComments.fromJson(jsonString);
+      FeedItemModel model = FeedItemModel.fromJson(jsonString);
       return model;
     }
-    return jsonDecode(response.body);
-  }
-
-  Future<Map<String, dynamic>> postFeedComment(int feedId, String comment, String isAnonymous) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var token = preferences.getString('token');
-    final Map<String, dynamic> postFeedCommentData = {
-      "feed_id": feedId,
-      "comment": comment,
-      "device_type": 'mobile',
-      "device_os": ' android',
-      "is_anonymous": isAnonymous
-    };
-
-    print('feedId$feedId');
-    final response = await http.post(
-      ApiUrls.POST_FEED_COMMENT_URL + token,
-      body: jsonEncode(postFeedCommentData),
-      headers: {'content-Type': 'application/json'},
-    );
-    var result;
-    if (response.statusCode == 200) {
-      result = {'status': true, 'message': 'code ${response.body} '};
-      print('comment  $result');
-      setBusy(false);
-    } else {
-      result = {'status': false, 'message': 'code ${response.statusCode} '};
-      print('comment fail $result');
-      setBusy(false);
-    }
-    return jsonDecode(response.body);
   }
 
   Future<Map<String, dynamic>> postBookmark(int feedId) async {
@@ -83,7 +121,7 @@ class HomeViewModel extends BaseViewModel {
     var token = preferences.getString('token');
     final Map<String, dynamic> postBookmarkData = {"feed_id": feedId};
     notifyListeners();
-    print('feedId$feedId');
+    print('feedId $feedId');
     final response = await http.post(
       ApiUrls.ADD_BOOKMARK_URL + token,
       body: jsonEncode(postBookmarkData),
@@ -104,7 +142,10 @@ class HomeViewModel extends BaseViewModel {
   Future<Map<String, dynamic>> likeArticle(int feedId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
-    final Map<String, dynamic> postLikeData = {"feed_id": feedId, "engagement_type": "likes"};
+    final Map<String, dynamic> postLikeData = {
+      "feed_id": feedId,
+      "engagement_type": "likes"
+    };
 
     print('feedId$feedId');
     final response = await http.post(
@@ -128,7 +169,10 @@ class HomeViewModel extends BaseViewModel {
   Future<Map<String, dynamic>> relateQuery(int feedId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
-    final Map<String, dynamic> postRelateData = {"feed_id": feedId, "engagement_type": "relate"};
+    final Map<String, dynamic> postRelateData = {
+      "feed_id": feedId,
+      "engagement_type": "relate"
+    };
 
     print('feedId$feedId');
     final response = await http.post(
@@ -149,20 +193,11 @@ class HomeViewModel extends BaseViewModel {
     return jsonDecode(response.body);
   }
 
-  Future<Datum> loadFeedItem() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var token = preferences.getString('token');
-    http.Response response;
-    if (_token == null) {
-      response = await http.get(ApiUrls.GET_FEEDS_WITHOUT_TOKEN_URL);
-      final jsonString = json.decode(response.body);
-      Datum model = Datum.fromJson(jsonString);
-      return model;
+  launchUrl(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      response = await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO);
-      final jsonString = json.decode(response.body);
-      Datum model = Datum.fromJson(jsonString);
-      return model;
+      throw 'Could not launch';
     }
   }
 }

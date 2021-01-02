@@ -2,13 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:owomaniya/viewmodels/ask_expert_view_model.dart';
 import 'package:stacked/stacked.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AskExpertView extends StatefulWidget {
+  final String doctorName;
+  final String expertiseField;
+  final String doctorImage;
+
+  const AskExpertView({Key key, this.doctorName, this.expertiseField, this.doctorImage})
+      : super(key: key);
+
   @override
-  _AskExpertViewState createState() => _AskExpertViewState();
+  _AskExpertViewState createState() => _AskExpertViewState(doctorName, expertiseField, doctorImage);
 }
 
 class _AskExpertViewState extends State<AskExpertView> {
+  final String doctorName;
+  final String expertiseField;
+  final String doctorImage;
+
+  Future<SharedPreferences> preferences = SharedPreferences.getInstance();
+
+  _AskExpertViewState(this.doctorName, this.expertiseField, this.doctorImage);
+
   @override
   Widget build(BuildContext context) {
     final queryController = TextEditingController();
@@ -16,59 +32,100 @@ class _AskExpertViewState extends State<AskExpertView> {
     return ViewModelBuilder<AskExpertViewModel>.reactive(
       builder: (context, model, child) {
         return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: Container(
+              child: IconButton(
+                icon: SvgPicture.asset(
+                  'assets/svg/ask_expert_pink.svg',
+                  width: 45,
+                  height: 45,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+            title: Text(
+              "Ask $doctorName Query",
+              style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+          ),
           body: Container(
             child: ListView(
               shrinkWrap: true,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(26.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,20,10.0,0.0),
                   child: Container(
                     child: Wrap(
-                      runSpacing: 10.0,
+                      runSpacing: 5.0,
                       children: [
-                        Center(
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                child: SvgPicture.asset(
-                                  'assets/svg/anyonmans.svg',
-                                  height: 30,
-                                  width: 30,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16.0),
-                                child: Text(
-                                  'You (Anonymous)',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/svg/ask_expert_pink.svg',
-                                  width: 45,
-                                  height: 45,
-                                ),
-                                SizedBox(
-                                  width: 10.0,
-                                ),
-                                Text(
-                                  'Ask an Expert',
-                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
-                                ),
-                              ],
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage("$doctorImage"),
+                              radius: 40,
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    doctorName,
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/svg/sidebar_query.svg',
+                                          height: 14,
+                                          width: 14,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          expertiseField,
+                                          style: TextStyle(color: Colors.black, fontSize: 14.0),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8.0),
+                                        child: SvgPicture.asset(
+                                          'assets/svg/wallet_blk.svg',
+                                          height: 14,
+                                          width: 14,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4.0),
+                                        child: Text(
+                                          "Consultation Fees \u20B9 99",
+                                          style: TextStyle(color: Colors.black, fontSize: 14.0),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                         Divider(
                           color: Colors.grey,
@@ -82,17 +139,19 @@ class _AskExpertViewState extends State<AskExpertView> {
                               children: <Widget>[
                                 Row(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/check_pink.svg',
-                                        height: 15.0,
-                                        width: 15.0,
-                                      ),
+                                    SvgPicture.asset(
+                                      'assets/svg/check_pink.svg',
+                                      height: 20.0,
+                                      width: 20.0,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 16.0),
-                                      child: Text('100% Anonymous.Your identity is hidden.'),
+                                      child: Text(
+                                        '100% Anonymous.Your identity is hidden.',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -101,17 +160,19 @@ class _AskExpertViewState extends State<AskExpertView> {
                                 ),
                                 Row(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/check_pink.svg',
-                                        height: 15.0,
-                                        width: 15.0,
-                                      ),
+                                    SvgPicture.asset(
+                                      'assets/svg/check_pink.svg',
+                                      height: 20.0,
+                                      width: 20.0,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 16.0),
-                                      child: Text('Get a free follow-up with the expert.'),
+                                      child: Text(
+                                        'Get a free follow-up with the expert.',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -120,17 +181,19 @@ class _AskExpertViewState extends State<AskExpertView> {
                                 ),
                                 Row(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/check_pink.svg',
-                                        height: 15.0,
-                                        width: 15.0,
-                                      ),
+                                    SvgPicture.asset(
+                                      'assets/svg/check_pink.svg',
+                                      height: 20.0,
+                                      width: 20.0,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 16.0),
-                                      child: Text('Private and safe chat. Stay healthy'),
+                                      child: Text(
+                                        'Private and safe chat. Stay healthy',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -140,30 +203,6 @@ class _AskExpertViewState extends State<AskExpertView> {
                                 Divider(
                                   color: Colors.grey,
                                 ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/anyonmans.svg',
-                                        height: 30,
-                                        width: 30,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 16.0),
-                                      child: Text(
-                                        'You (Anonymous)',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 20.0),
                                   child: TextField(
@@ -172,7 +211,11 @@ class _AskExpertViewState extends State<AskExpertView> {
                                     decoration: InputDecoration(
                                         errorText: _validate ? "Query can\'t be empty" : null,
                                         hintText: 'Type your query here...',
-                                        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.grey))),
                                   ),
                                 ),
                                 Divider(

@@ -1,14 +1,33 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:owomaniya/model/feed_comments.dart';
 import 'package:owomaniya/utils/api_urls.dart';
 import 'package:owomaniya/viewmodels/base_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommentViewModel extends BaseModel {
-  Future<Map<String, dynamic>> postFeedComment(
-    int feedId,
-    String comment,
-  ) async {
+  String _token;
+
+  String get token => _token;
+  Future<FeedComments> getComments(
+      int index,
+      int feedId,
+      ) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    var token = preferences.getString('token');
+    http.Response response;
+    if (_token != null) {
+      response = await http.get(ApiUrls.GET_FEED_COMMENT_URL + token + ApiUrls.FEED_NO + "${3113}");
+      final jsonString = json.decode(response.body);
+      FeedComments model = FeedComments.fromJson(jsonString);
+      print(" page :${model.data.currentPage}");
+      return model;
+    }
+    return jsonDecode(response.body);
+  }
+
+  Future<Map<String, dynamic>> postFeedComment(int feedId, String comment, String isAnonymous) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
     final Map<String, dynamic> postFeedCommentData = {
@@ -16,7 +35,7 @@ class CommentViewModel extends BaseModel {
       "comment": comment,
       "device_type": 'mobile',
       "device_os": ' android',
-      "is_anonymous": "Y"
+      "is_anonymous": isAnonymous
     };
 
     print('feedId$feedId');
@@ -28,11 +47,11 @@ class CommentViewModel extends BaseModel {
     var result;
     if (response.statusCode == 200) {
       result = {'status': true, 'message': 'code ${response.body} '};
-      print('bookmark  $result');
+      print('comment  $result');
       setBusy(false);
     } else {
-      result = {'status': true, 'message': 'code ${response.statusCode} '};
-      print('bookmark fail $result');
+      result = {'status': false, 'message': 'code ${response.statusCode} '};
+      print('comment fail $result');
       setBusy(false);
     }
     return jsonDecode(response.body);

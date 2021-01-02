@@ -35,7 +35,10 @@ dependencies:
   flutter_html: ^1.1.1
   date_time_picker: ^1.1.0
   jiffy: ^3.0.1
-  animated_widgets: ^1.0.6
+  url_launcher: ^5.7.10
+  lazy_load_scrollview: ^1.2.0
+  image: ^2.1.19
+
 
 
 dependency_overrides:

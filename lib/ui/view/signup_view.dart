@@ -40,6 +40,44 @@ class _SignUpViewState extends State<SignUpView> with SingleTickerProviderStateM
   var now = DateTime.now();
   ValueNotifier<DateTime> _dateTimeNotifier = ValueNotifier<DateTime>(Jiffy(DateTime.now()).subtract(years: 13));
 
+  FocusNode fName;
+  FocusNode lName;
+  FocusNode dob;
+  FocusNode genderFocus;
+  FocusNode emailFocus;
+  FocusNode mNumber;
+  FocusNode pwd;
+  FocusNode rPwd;
+  FocusNode submitFocus;
+
+  @override
+  void initState() {
+    super.initState();
+    fName = FocusNode();
+    lName = FocusNode();
+    dob = FocusNode();
+    genderFocus = FocusNode();
+    emailFocus = FocusNode();
+    mNumber = FocusNode();
+    pwd = FocusNode();
+    rPwd = FocusNode();
+    submitFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    fName.dispose();
+    lName.dispose();
+    genderFocus.dispose();
+    dob.dispose();
+    emailFocus.dispose();
+    mNumber.dispose();
+    pwd.dispose();
+    rPwd.dispose();
+    submitFocus.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
@@ -61,335 +99,392 @@ class _SignUpViewState extends State<SignUpView> with SingleTickerProviderStateM
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 0.0),
-          child: Container(
-            child: ListView(
-              padding: EdgeInsets.only(bottom: bottom, top: top),
-              shrinkWrap: true,
-              reverse: true,
-              children: <Widget>[
-                Container(
-                  child: Wrap(
-                    runSpacing: 10.0,
-                    children: [
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Padding(
-                            //   padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
-                            //   child: Center(
-                            //     child: Text(
-                            //       'Sign Up',
-                            //       textAlign: TextAlign.center,
-                            //       softWrap: true,
-                            //       style: TextStyle(
-                            //         color: Colors.black,
-                            //         fontWeight: FontWeight.bold,
-                            //         fontSize: 20,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // Divider(
-                            //   color: Colors.grey,
-                            // ),
-                            TextFormField(
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                labelText: 'First Name',
-                                hintText: 'First Name',
-                                hintStyle: TextStyle(fontSize: 18.0),
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Your First Name is Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                labelText: 'Last Name',
-                                hintText: 'Last Name',
-                                hintStyle: TextStyle(fontSize: 18.0),
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Your Last Name is Required';
-                                }
-                                return null;
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Container(
-                                child: DateTimePicker(
-                                  type: DateTimePickerType.date,
-                                  dateMask: 'dd-MM-yyyy',
-                                  initialValue: _dateTimeNotifier.value.toString(),
-                                  firstDate: DateTime(1960),
-                                  lastDate: _dateTimeNotifier.value,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      _birthDate = val;
-                                    });
-                                  },
-                                  validator: (val) {
-                                    if (val.isEmpty) {
-                                      return 'Your date of birth is Empty';
-                                    }
-                                    return null;
-                                  },
-                                  onSaved: (val) {
-                                    _birthDate = val;
-                                  },
-                                  decoration: InputDecoration(
-                                    hintText: 'Date of Birth',
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Container(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  onChanged: (String value) {
-                                    setState(() {
-                                      _currentGender = value;
-                                    });
-                                  },
-                                  items: gender.map((gender) {
-                                    return DropdownMenuItem(
-                                      value: gender,
-                                      child: Text('$gender'),
-                                    );
-                                  }).toList(),
-                                  value: _currentGender,
-                                ),
-                              ),
-                            ),
-                            TextFormField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                labelText: 'Email',
-                                hintText: 'Email',
-                                hintStyle: TextStyle(fontSize: 18.0),
-                              ),
-                              validator: validateEmail,
-                            ),
-                            TextFormField(
-                              controller: _mobileController,
-                              keyboardType: TextInputType.phone,
-                              inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                              decoration: InputDecoration(
-                                labelText: 'Mobile Number',
-                                hintText: 'Mobile Number',
-                                hintStyle: TextStyle(fontSize: 18.0),
-                              ),
-                              validator: validateMobileNumber,
-                            ),
-                            TextFormField(
-                              obscureText: !this._obscureText,
-                              controller: _passwordController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                hintText: 'Enter Password',
-                                hintStyle: TextStyle(fontSize: 18.0),
-                                suffixIcon: IconButton(
-                                  icon: SvgPicture.asset(
-                                    'assets/svg/show_password.svg',
-                                    height: 15,
-                                    width: 15,
-                                    color: this._obscureText ? Colors.pink : Colors.grey,
-                                  ),
-                                  onPressed: () {
-                                    toggle();
-                                  },
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Your Password is Required';
-                                } else if (value.length < 6) {
-                                  return 'Your password length should be more than 6 characters';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              onChanged: (val) {
-                                if (_passwordController.text == val) {
-                                  _passwordController.text = _rePasswordController.text;
-                                } else {}
-                              },
-                              obscureText: !this._obscureText,
-                              controller: _rePasswordController,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                labelText: 'Re-Type Password',
-                                hintText: 'Re-Type Password',
-                                hintStyle: TextStyle(fontSize: 18.0),
-                                suffixIcon: IconButton(
-                                  icon: SvgPicture.asset(
-                                    'assets/svg/show_password.svg',
-                                    height: 15,
-                                    width: 15,
-                                    color: this._obscureText ? Colors.pink : Colors.grey,
-                                  ),
-                                  onPressed: () {
-                                    toggle();
-                                  },
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Your must retype the Password';
-                                } else if (value.length < 6) {
-                                  return 'Your password length should be more than 6 characters';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'By signing up you accept our ',
-                                          style: TextStyle(
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          child: Container(
-                                            child: Text(
-                                              'Terms of service ',
-                                              style: TextStyle(fontSize: 12.0, color: Colors.blue),
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            model.navigateToTerms();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          'and ',
-                                          style: TextStyle(
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          child: Container(
-                                            child: Text(
-                                              'Privacy Policy',
-                                              style: TextStyle(fontSize: 12.0, color: Colors.blue),
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            model.navigateToPrivacy();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              width: double.infinity,
-                              child: FlatButton(
-                                child: Text(
-                                  "SIGN UP",
-                                  style: TextStyle(fontSize: 15.0),
-                                ),
-                                textColor: Colors.white,
-                                padding: EdgeInsets.all(14),
-                                onPressed: () {
-                                  if (_formKey.currentState.validate()) {
-                                    _formKey.currentState.save();
-                                    model.postSignUp(
-                                        _emailController.text,
-                                        _mobileController.text,
-                                        _birthDate,
-                                        _currentGender,
-                                        _passwordController.text,
-                                        _firstNameController.text,
-                                        _lastNameController.text);
-                                  }
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(26.0, 0.0, 26.0, 0.0),
+            child: Container(
+              child: ListView(
+                padding: EdgeInsets.only(bottom: bottom, top: top),
+                shrinkWrap: true,
+                reverse: true,
+                children: <Widget>[
+                  Container(
+                    child: Wrap(
+                      runSpacing: 10.0,
+                      children: [
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Padding(
+                              //   padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
+                              //   child: Center(
+                              //     child: Text(
+                              //       'Sign Up',
+                              //       textAlign: TextAlign.center,
+                              //       softWrap: true,
+                              //       style: TextStyle(
+                              //         color: Colors.black,
+                              //         fontWeight: FontWeight.bold,
+                              //         fontSize: 20,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              // Divider(
+                              //   color: Colors.grey,
+                              // ),
+                              TextFormField(
+                                focusNode: fName,
+                                enabled: true,
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (term) {
+                                  fName.unfocus();
+                                  FocusScope.of(context).requestFocus(lName);
                                 },
-                                color: Colors.pink,
+                                controller: _firstNameController,
+                                decoration: InputDecoration(
+                                  labelText: 'First Name',
+                                  hintText: 'First Name',
+                                  hintStyle: TextStyle(fontSize: 18.0),
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Your First Name is Required';
+                                  }
+                                  return null;
+                                },
                               ),
-                            ),
-                            SizedBox(
-                              height: 3,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              TextFormField(
+                                focusNode: lName,
+                                enabled: true,
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (term) {
+                                  lName.unfocus();
+                                  FocusScope.of(context).requestFocus(dob);
+                                },
+                                controller: _lastNameController,
+                                decoration: InputDecoration(
+                                  labelText: 'Last Name',
+                                  hintText: 'Last Name',
+                                  hintStyle: TextStyle(fontSize: 18.0),
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Your Last Name is Required';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Container(
+                                  child: DateTimePicker(
+                                    enabled: true,
+                                    focusNode: dob,
+                                    onFieldSubmitted: (term) {
+                                      dob.unfocus();
+                                      FocusScope.of(context).requestFocus(genderFocus);
+                                    },
+                                    type: DateTimePickerType.date,
+                                    dateMask: 'dd-MM-yyyy',
+                                    initialValue: _dateTimeNotifier.value.toString(),
+                                    firstDate: DateTime(1960),
+                                    lastDate: _dateTimeNotifier.value,
+                                    onChanged: (val) {
+                                      setState(() {
+                                        _birthDate = val;
+                                      });
+                                    },
+                                    validator: (val) {
+                                      if (val.isEmpty) {
+                                        return 'Your date of birth is Empty';
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (val) {
+                                      _birthDate = val;
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: 'Date of Birth',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Container(
+                                  child: DropdownButton<String>(
+                                    focusNode: genderFocus,
+                                    isExpanded: true,
+                                    onChanged: (String value) {
+                                      setState(() {
+                                        _currentGender = value;
+                                      });
+                                      genderFocus.unfocus();
+                                      FocusScope.of(context).requestFocus(emailFocus);
+                                    },
+                                    items: gender.map((gender) {
+                                      return DropdownMenuItem(
+                                        value: gender,
+                                        child: Text('$gender'),
+                                      );
+                                    }).toList(),
+                                    value: _currentGender,
+                                  ),
+                                ),
+                              ),
+                              TextFormField(
+                                focusNode: emailFocus,
+                                enabled: true,
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (term) {
+                                  emailFocus.unfocus();
+                                  FocusScope.of(context).requestFocus(mNumber);
+                                },
+                                controller: _emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  hintText: 'Email',
+                                  hintStyle: TextStyle(fontSize: 18.0),
+                                ),
+                                validator: validateEmail,
+                              ),
+                              TextFormField(
+                                focusNode: mNumber,
+                                enabled: true,
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (term) {
+                                  mNumber.unfocus();
+                                  FocusScope.of(context).requestFocus(pwd);
+                                },
+                                controller: _mobileController,
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                                decoration: InputDecoration(
+                                  labelText: 'Mobile Number',
+                                  hintText: 'Mobile Number',
+                                  hintStyle: TextStyle(fontSize: 18.0),
+                                ),
+                                validator: validateMobileNumber,
+                              ),
+                              TextFormField(
+                                focusNode: pwd,
+                                enabled: true,
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (term) {
+                                  pwd.unfocus();
+                                  FocusScope.of(context).requestFocus(rPwd);
+                                },
+                                obscureText: !this._obscureText,
+                                controller: _passwordController,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  hintText: 'Enter Password',
+                                  hintStyle: TextStyle(fontSize: 18.0),
+                                  suffixIcon: IconButton(
+                                    icon: SvgPicture.asset(
+                                      'assets/svg/show_password.svg',
+                                      height: 15,
+                                      width: 15,
+                                      color: this._obscureText ? Colors.pink : Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      toggle();
+                                    },
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Your Password is Required';
+                                  } else if (value.length < 6) {
+                                    return 'Your password length should be more than 6 characters';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              TextFormField(
+                                focusNode: rPwd,
+                                enabled: true,
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (term) {
+                                  rPwd.unfocus();
+                                  FocusScope.of(context).requestFocus(submitFocus);
+                                },
+                                onChanged: (val) {
+                                  if (_passwordController.text == val) {
+                                    _passwordController.text = _rePasswordController.text;
+                                  } else {}
+                                },
+                                obscureText: !this._obscureText,
+                                controller: _rePasswordController,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  labelText: 'Re-Type Password',
+                                  hintText: 'Re-Type Password',
+                                  hintStyle: TextStyle(fontSize: 18.0),
+                                  suffixIcon: IconButton(
+                                    icon: SvgPicture.asset(
+                                      'assets/svg/show_password.svg',
+                                      height: 15,
+                                      width: 15,
+                                      color: this._obscureText ? Colors.pink : Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      toggle();
+                                    },
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Your must retype the Password';
+                                  } else if (value.length < 6) {
+                                    return 'Your password length should be more than 6 characters';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Row(
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Have An Account ?',
-                                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                                        child: Center(
-                                          child: GestureDetector(
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'By signing up you accept our ',
+                                            style: TextStyle(
+                                              fontSize: 12.0,
+                                            ),
+                                          ),
+                                          GestureDetector(
                                             child: Container(
                                               child: Text(
-                                                'Sign In',
-                                                style: TextStyle(
-                                                    fontSize: 18.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontStyle: FontStyle.normal,
-                                                    color: Colors.pink),
+                                                'Terms of service ',
+                                                style: TextStyle(fontSize: 12.0, color: Colors.blue),
                                               ),
                                             ),
                                             onTap: () {
-                                              model.navigateToLogin();
+                                              model.navigateToTerms();
                                             },
                                           ),
-                                        ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'and ',
+                                            style: TextStyle(
+                                              fontSize: 12.0,
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            child: Container(
+                                              child: Text(
+                                                'Privacy Policy',
+                                                style: TextStyle(fontSize: 12.0, color: Colors.blue),
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              model.navigateToPrivacy();
+                                            },
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                child: FlatButton(
+                                  focusNode: submitFocus,
+                                  child: Text(
+                                    "SIGN UP",
+                                    style: TextStyle(fontSize: 15.0),
+                                  ),
+                                  textColor: Colors.white,
+                                  padding: EdgeInsets.all(14),
+                                  onPressed: () {
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      model.postSignUp(
+                                          _emailController.text,
+                                          _mobileController.text,
+                                          _birthDate,
+                                          _currentGender,
+                                          _passwordController.text,
+                                          _firstNameController.text,
+                                          _lastNameController.text);
+                                    }
+                                  },
+                                  color: Colors.pink,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Have An Account ?',
+                                          style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                                          child: Center(
+                                            child: GestureDetector(
+                                              child: Container(
+                                                child: Text(
+                                                  'Sign In',
+                                                  style: TextStyle(
+                                                      fontSize: 18.0,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontStyle: FontStyle.normal,
+                                                      color: Colors.pink),
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                model.navigateToLogin();
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

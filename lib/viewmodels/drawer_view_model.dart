@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:owomaniya/app/locator.dart';
 import 'package:owomaniya/viewmodels/base_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,6 +48,7 @@ class DrawerViewModel extends BaseModel {
   Future logout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.setString("token", null);
+    preferences.clear();
     var response;
     response = await _dialogService.showDialog(
       title: 'Are You Sure',
@@ -64,8 +66,4 @@ class DrawerViewModel extends BaseModel {
     var token = preferences.getString('token');
     return token;
   }
-
-  String _token;
-
-  String get token => _token;
 }

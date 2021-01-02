@@ -24,6 +24,26 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
     });
   }
 
+  FocusNode emailFocus;
+  FocusNode pwd;
+  FocusNode submitFocus;
+
+  @override
+  void initState() {
+    super.initState();
+    emailFocus = FocusNode();
+    pwd = FocusNode();
+    submitFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    emailFocus.dispose();
+    pwd.dispose();
+    submitFocus.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
@@ -40,194 +60,194 @@ class _LoginViewState extends State<LoginView> with TickerProviderStateMixin {
                   padding: const EdgeInsets.only(left: 85.0),
                   child: Text(
                     "Login",
-                    style: TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(26.0),
-                child: Container(
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(bottom: bottom),
-                    reverse: true,
-                    children: [
-                      Container(
-                        child: Wrap(
-                          runSpacing: 10.0,
-                          children: [
-                            // Column(
-                            //   children: [
-                            //     SizedBox(
-                            //       height: 60,
-                            //     ),
-                            //     Padding(
-                            //       padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 5.0),
-                            //       child: Center(
-                            //         child: Text(
-                            //           'Login',
-                            //           style: TextStyle(
-                            //             color: Colors.black,
-                            //             fontWeight: FontWeight.bold,
-                            //             fontSize: 20,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     Divider(
-                            //       color: Colors.grey,
-                            //     ),
-                            //   ],
-                            // ),
-                            Form(
-                              key: _formKey,
-                              child: Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(
-                                      height: 200,
-                                    ),
-                                    TextFormField(
-                                      controller: emailController,
-                                      keyboardType: TextInputType.text,
-                                      decoration: InputDecoration(
-                                          hintText: 'Email ID or Phone',
-                                          hintStyle: TextStyle(fontSize: 18.0),
-                                          labelText: 'Email ID or Phone'),
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return 'Enter Email Id or Phone Number';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    TextFormField(
-                                      controller: passwordController,
-                                      obscureText: !this._obscureText,
-                                      keyboardType: TextInputType.text,
-                                      decoration: InputDecoration(
-                                        hintText: 'Password',
-                                        hintStyle: TextStyle(fontSize: 18.0),
-                                        labelText: 'Password',
-                                        suffixIcon: IconButton(
-                                          icon: SvgPicture.asset(
-                                            'assets/svg/show_password.svg',
-                                            height: 15,
-                                            width: 15,
-                                            color: this._obscureText ? Colors.pink : Colors.grey,
-                                          ),
-                                          onPressed: () {
-                                            toggle();
-                                          },
-                                        ),
+              body: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(26.0),
+                  child: Container(
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(bottom: bottom),
+                      reverse: true,
+                      children: [
+                        Container(
+                          child: Wrap(
+                            runSpacing: 10.0,
+                            children: [
+                              Form(
+                                key: _formKey,
+                                child: Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SizedBox(
+                                        height: 200,
                                       ),
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return 'Password is required';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(left: 10.0),
-                                            child: Center(
-                                              child: GestureDetector(
-                                                child: Container(
-                                                  child: Text(
-                                                    'Forgot Password?',
-                                                    style: TextStyle(
-                                                        fontSize: 16.0,
-                                                        fontStyle: FontStyle.normal,
-                                                        color: Colors.pink),
-                                                  ),
-                                                ),
-                                                onTap: () {
-                                                  model.navigateToForgotPassword();
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      child: FlatButton(
-                                        child: Text(
-                                          "SIGN IN",
-                                          style: TextStyle(fontSize: 15.0),
-                                        ),
-                                        textColor: Colors.white,
-                                        padding: EdgeInsets.all(14),
-                                        onPressed: () {
-                                          FocusManager.instance.primaryFocus.unfocus();
-                                          if (_formKey.currentState.validate()) {
-                                            model.postLogin(
-                                              emailController.text,
-                                              passwordController.text,
-                                            );
-                                          }
+                                      TextFormField(
+                                        focusNode: emailFocus,
+                                        enabled: true,
+                                        textInputAction: TextInputAction.next,
+                                        onFieldSubmitted: (term) {
+                                          emailFocus.unfocus();
+                                          FocusScope.of(context).requestFocus(pwd);
                                         },
-                                        color: Colors.pink,
+                                        controller: emailController,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                            hintText: 'Email ID or Phone',
+                                            hintStyle: TextStyle(fontSize: 18.0),
+                                            labelText: 'Email ID or Phone'),
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Enter Email Id or Phone Number';
+                                          }
+                                          return null;
+                                        },
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Don\'t have An Account ?',
-                                              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                      TextFormField(
+                                        focusNode: pwd,
+                                        enabled: true,
+                                        textInputAction: TextInputAction.next,
+                                        onFieldSubmitted: (term) {
+                                          pwd.unfocus();
+                                          FocusScope.of(context).requestFocus(submitFocus);
+                                        },
+                                        controller: passwordController,
+                                        obscureText: !this._obscureText,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          hintText: 'Password',
+                                          hintStyle: TextStyle(fontSize: 18.0),
+                                          labelText: 'Password',
+                                          suffixIcon: IconButton(
+                                            icon: SvgPicture.asset(
+                                              'assets/svg/show_password.svg',
+                                              height: 15,
+                                              width: 15,
+                                              color: this._obscureText ? Colors.pink : Colors.grey,
                                             ),
-                                            Padding(
+                                            onPressed: () {
+                                              toggle();
+                                            },
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return 'Password is required';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Center(
+                                            child: Padding(
                                               padding: const EdgeInsets.only(left: 10.0),
                                               child: Center(
                                                 child: GestureDetector(
-                                                    child: Container(
-                                                      child: Text(
-                                                        'Sign Up',
-                                                        style: TextStyle(
-                                                            fontSize: 18.0,
-                                                            fontWeight: FontWeight.bold,
-                                                            fontStyle: FontStyle.normal,
-                                                            color: Colors.pink),
-                                                      ),
+                                                  child: Container(
+                                                    child: Text(
+                                                      'Forgot Password?',
+                                                      style: TextStyle(
+                                                          fontSize: 16.0,
+                                                          fontStyle: FontStyle.normal,
+                                                          color: Colors.pink),
                                                     ),
-                                                    onTap: () {
-                                                      FocusManager.instance.primaryFocus.unfocus();
-                                                      model.navigateToSignUp();
-                                                    }),
+                                                  ),
+                                                  onTap: () {
+                                                    model.navigateToForgotPassword();
+                                                  },
+                                                ),
                                               ),
                                             ),
-                                          ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        child: FlatButton(
+                                          focusNode: submitFocus,
+                                          child: Text(
+                                            "SIGN IN",
+                                            style: TextStyle(fontSize: 15.0),
+                                          ),
+                                          textColor: Colors.white,
+                                          padding: EdgeInsets.all(14),
+                                          onPressed: () {
+                                            FocusManager.instance.primaryFocus.unfocus();
+                                            if (_formKey.currentState.validate()) {
+                                              model.postLogin(
+                                                emailController.text,
+                                                passwordController.text,
+                                              );
+                                            }
+                                          },
+                                          color: Colors.pink,
                                         ),
-                                      ],
-                                    ),
-                                  ],
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Don\'t have An Account ?',
+                                                style: TextStyle(
+                                                    fontSize: 15.0, fontWeight: FontWeight.bold),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10.0),
+                                                child: Center(
+                                                  child: GestureDetector(
+                                                      child: Container(
+                                                        child: Text(
+                                                          'Sign Up',
+                                                          style: TextStyle(
+                                                              fontSize: 18.0,
+                                                              fontWeight: FontWeight.bold,
+                                                              fontStyle: FontStyle.normal,
+                                                              color: Colors.pink),
+                                                        ),
+                                                      ),
+                                                      onTap: () {
+                                                        FocusManager.instance.primaryFocus
+                                                            .unfocus();
+                                                        model.navigateToSignUp();
+                                                      }),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

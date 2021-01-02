@@ -74,6 +74,7 @@ class ApiUrls {
 
   static const String NEW_TOKEN =
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjc1MjIsImlzcyI6Imh0dHA6Ly9kZXYtYXBpLm9vd29tYW5peWEuY29tL2FwaS9hZG1pbi9sb2dpbiIsImlhdCI6MTU4OTU1MjQ2NiwiZXhwIjoxNjIxMDg4NDY2LCJuYmYiOjE1ODk1NTI0NjYsImp0aSI6ImxDVEdDVjFuaWNYYVNtNUIifQ.uVw6uOkch4TcrLTu4mkdAJCEpUTiwZg3O4tXIigtXMM";
+
   static const String localURL = "https://dev-api.oowomaniya.com/api/";
 
   // static const String localURL = "https://ow.stimulusco.com/api/";
@@ -132,7 +133,7 @@ class ApiUrls {
 
   //  feed urls
   static const String GET_FEEDS_WITHOUT_TOKEN_URL =
-      localURL + FEED + SLASH + TIMELINE + QUESTION_MARK + PAGE + EQUALS ; //Add page number
+      localURL + FEED + SLASH + TIMELINE + QUESTION_MARK + PAGE + EQUALS; //Add page number
   static const String GET_FEED_DETAILS_URL = localURL +
       FEED +
       SLASH +
@@ -147,7 +148,7 @@ class ApiUrls {
       "8090"; //change value
   static const String GET_FEEDS_WITH_TOKEN_URL = localURL + FEED + QUESTION_MARK + TOKEN + EQUALS + "token";
 
-  static const String PAGE_NO = AND + PAGE + EQUALS ; //Add page number
+  static const String PAGE_NO = AND + PAGE + EQUALS; //Add page number
 
   static const String ADD_BOOKMARK_URL =
       localURL + FEED + SLASH + BOOKMARK + SLASH + ADD + QUESTION_MARK + TOKEN + EQUALS; //Add steffina token

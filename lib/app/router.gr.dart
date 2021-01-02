@@ -9,6 +9,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../model/user_profile.dart';
 import '../ui/view/ask_expert_view.dart';
 import '../ui/view/ask_query_view.dart';
 import '../ui/view/bookmark_view.dart';
@@ -229,8 +230,18 @@ class Router extends RouterBase {
       );
     },
     UserProfileView: (data) {
+      final args = data.getArgs<UserProfileViewArguments>(
+        orElse: () => UserProfileViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => UserProfileView(),
+        builder: (context) => UserProfileView(
+          key: args.key,
+          profile: args.profile,
+          firstNameController: args.firstNameController,
+          lastNameController: args.lastNameController,
+          mobileController: args.mobileController,
+          emailController: args.emailController,
+        ),
         settings: data,
       );
     },
@@ -265,8 +276,16 @@ class Router extends RouterBase {
       );
     },
     AskExpertView: (data) {
+      final args = data.getArgs<AskExpertViewArguments>(
+        orElse: () => AskExpertViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AskExpertView(),
+        builder: (context) => AskExpertView(
+          key: args.key,
+          doctorName: args.doctorName,
+          expertiseField: args.expertiseField,
+          doctorImage: args.doctorImage,
+        ),
         settings: data,
       );
     },
@@ -301,8 +320,14 @@ class Router extends RouterBase {
       );
     },
     CommentView: (data) {
+      final args = data.getArgs<CommentViewArguments>(
+        orElse: () => CommentViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => CommentView(),
+        builder: (context) => CommentView(
+          key: args.key,
+          itemHolder: args.itemHolder,
+        ),
         settings: data,
       );
     },
@@ -317,4 +342,38 @@ class Router extends RouterBase {
 class HomeViewArguments {
   final Key key;
   HomeViewArguments({this.key});
+}
+
+/// UserProfileView arguments holder class
+class UserProfileViewArguments {
+  final Key key;
+  final UserProfile profile;
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
+  final TextEditingController mobileController;
+  final TextEditingController emailController;
+  UserProfileViewArguments(
+      {this.key,
+      this.profile,
+      this.firstNameController,
+      this.lastNameController,
+      this.mobileController,
+      this.emailController});
+}
+
+/// AskExpertView arguments holder class
+class AskExpertViewArguments {
+  final Key key;
+  final String doctorName;
+  final String expertiseField;
+  final String doctorImage;
+  AskExpertViewArguments(
+      {this.key, this.doctorName, this.expertiseField, this.doctorImage});
+}
+
+/// CommentView arguments holder class
+class CommentViewArguments {
+  final Key key;
+  final int itemHolder;
+  CommentViewArguments({this.key, this.itemHolder});
 }

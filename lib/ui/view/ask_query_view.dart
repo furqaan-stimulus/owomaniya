@@ -16,40 +16,36 @@ class _AskQueryViewState extends State<AskQueryView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AskQueryViewModel>.reactive(
         builder: (context, model, child) => Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                leading: Container(
+                  child: IconButton(
+                    icon: SvgPicture.asset(
+                      'assets/svg/ask_expert_pink.svg',
+                      width: 45,
+                      height: 45,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+                title: Text(
+                  "Ask an Expert",
+                  style:
+                      TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+              ),
               body: Container(
                 child: ListView(
                   shrinkWrap: true,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(26.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 20, 10.0, 0.0),
                       child: Container(
                         child: Wrap(
                           runSpacing: 10.0,
                           children: [
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 0.0),
-                                child: Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/svg/ask_expert_pink.svg',
-                                      width: 45,
-                                      height: 45,
-                                    ),
-                                    SizedBox(
-                                      width: 10.0,
-                                    ),
-                                    Text(
-                                      'Ask an Expert',
-                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Divider(
-                              color: Colors.grey,
-                            ),
                             Center(
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
@@ -59,13 +55,10 @@ class _AskQueryViewState extends State<AskQueryView> {
                                   children: <Widget>[
                                     Row(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 0.0),
-                                          child: SvgPicture.asset(
-                                            'assets/svg/check_pink.svg',
-                                            height: 15.0,
-                                            width: 15.0,
-                                          ),
+                                        SvgPicture.asset(
+                                          'assets/svg/check_pink.svg',
+                                          height: 20.0,
+                                          width: 20.0,
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 16.0),
@@ -78,13 +71,10 @@ class _AskQueryViewState extends State<AskQueryView> {
                                     ),
                                     Row(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 0.0),
-                                          child: SvgPicture.asset(
-                                            'assets/svg/check_pink.svg',
-                                            height: 15.0,
-                                            width: 15.0,
-                                          ),
+                                        SvgPicture.asset(
+                                          'assets/svg/check_pink.svg',
+                                          height: 20.0,
+                                          width: 20.0,
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 16.0),
@@ -97,13 +87,10 @@ class _AskQueryViewState extends State<AskQueryView> {
                                     ),
                                     Row(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 0.0),
-                                          child: SvgPicture.asset(
-                                            'assets/svg/check_pink.svg',
-                                            height: 15.0,
-                                            width: 15.0,
-                                          ),
+                                        SvgPicture.asset(
+                                          'assets/svg/check_pink.svg',
+                                          height: 20.0,
+                                          width: 20.0,
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 16.0),
@@ -120,7 +107,7 @@ class _AskQueryViewState extends State<AskQueryView> {
                                     Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 0.0, top: 8.0, bottom: 4.0),
+                                          padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
                                           child: SvgPicture.asset(
                                             'assets/svg/anyonmans.svg',
                                             height: 45,
@@ -139,14 +126,15 @@ class _AskQueryViewState extends State<AskQueryView> {
                                       ],
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                                       child: TextField(
                                         controller: queryController,
                                         maxLines: null,
                                         decoration: InputDecoration(
                                             errorText: _validate ? "Query can\'t be empty" : null,
                                             hintText: 'Type your query here...',
-                                            border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
+                                            border: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey))),
                                       ),
                                     ),
                                     Divider(
@@ -180,6 +168,9 @@ class _AskQueryViewState extends State<AskQueryView> {
                                           color: Colors.pink,
                                         ),
                                       ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
                                     ),
                                     Text(
                                       'Disclaimer: Information provide by an expert here is for general informational purpose only and it should NOT be considered as a substitute for professional expert (medical,psychological or fitness advice) as complete physical assessment of an individual has not been done. Please consult your nearest doctor/expert before acting on it. The advice is also not valid for medico-legal purposes.',

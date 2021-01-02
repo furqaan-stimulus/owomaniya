@@ -22,18 +22,18 @@ class FeedItemModel {
   Meta meta;
 
   factory FeedItemModel.fromJson(Map<String, dynamic> json) => FeedItemModel(
-        status: json["status"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-        links: Links.fromJson(json["links"]),
-        meta: Meta.fromJson(json["meta"]),
-      );
+    status: json["status"],
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    links: Links.fromJson(json["links"]),
+    meta: Meta.fromJson(json["meta"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-        "links": links.toJson(),
-        "meta": meta.toJson(),
-      };
+    "status": status,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "links": links.toJson(),
+    "meta": meta.toJson(),
+  };
 }
 
 class Datum {
@@ -86,64 +86,61 @@ class Datum {
   List<Feedqueryassigned> feedqueryassigned;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        id: json["id"],
-        feedTitle: json["feed_title"],
-        feedUrl: json["feed_url"],
-        feedDate: DateTime.parse(json["feed_date"]),
-        feedType: feedTypeValues.map[json["feed_type"]],
-        feedDetail: json["feed_detail"],
-        feedLikeCnt: json["feed_like_cnt"],
-        feedCommentCnt: json["feed_comment_cnt"],
-        feedShareCnt: json["feed_share_cnt"],
-        feedAttendanceCnt: json["feed_attendance_cnt"],
-        feedRelateCnt: json["feed_relate_cnt"],
-        canComment: canCommentValues.map[json["can_comment"]],
-        feedtypekey: json["feedtypekey"],
-        bookmarked: json["bookmarked"],
-        liked: json["liked"],
-        attending: json["attending"],
-        relate: json["relate"],
-        paymentdone: json["paymentdone"],
-        details: Details.fromJson(json["details"]),
-        media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
-        categorymapping: List<Categorymapping>.from(json["categorymapping"].map((x) => Categorymapping.fromJson(x))),
-        feedqueryassigned:
-            List<Feedqueryassigned>.from(json["feedqueryassigned"].map((x) => Feedqueryassigned.fromJson(x))),
-      );
+    id: json["id"],
+    feedTitle: json["feed_title"],
+    feedUrl: json["feed_url"],
+    feedDate: DateTime.parse(json["feed_date"]),
+    feedType: feedTypeValues.map[json["feed_type"]],
+    feedDetail: json["feed_detail"],
+    feedLikeCnt: json["feed_like_cnt"],
+    feedCommentCnt: json["feed_comment_cnt"],
+    feedShareCnt: json["feed_share_cnt"],
+    feedAttendanceCnt: json["feed_attendance_cnt"],
+    feedRelateCnt: json["feed_relate_cnt"],
+    canComment: canCommentValues.map[json["can_comment"]],
+    feedtypekey: json["feedtypekey"],
+    bookmarked: json["bookmarked"],
+    liked: json["liked"],
+    attending: json["attending"],
+    relate: json["relate"],
+    paymentdone: json["paymentdone"],
+    details: Details.fromJson(json["details"]),
+    media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
+    categorymapping: List<Categorymapping>.from(json["categorymapping"].map((x) => Categorymapping.fromJson(x))),
+    feedqueryassigned: List<Feedqueryassigned>.from(json["feedqueryassigned"].map((x) => Feedqueryassigned.fromJson(x))),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "feed_title": feedTitle,
-        "feed_url": feedUrl,
-        "feed_date": feedDate.toString(),
-        "feed_type": feedTypeValues.reverse[feedType],
-        "feed_detail": feedDetail,
-        "feed_like_cnt": feedLikeCnt,
-        "feed_comment_cnt": feedCommentCnt,
-        "feed_share_cnt": feedShareCnt,
-        "feed_attendance_cnt": feedAttendanceCnt,
-        "feed_relate_cnt": feedRelateCnt,
-        "can_comment": canCommentValues.reverse[canComment],
-        "feedtypekey": feedtypekey,
-        "bookmarked": bookmarked,
-        "liked": liked,
-        "attending": attending,
-        "relate": relate,
-        "paymentdone": paymentdone,
-        "details": details.toJson(),
-        "media": List<dynamic>.from(media.map((x) => x.toJson())),
-        "categorymapping": List<dynamic>.from(categorymapping.map((x) => x.toJson())),
-        "feedqueryassigned": List<dynamic>.from(feedqueryassigned.map((x) => x.toJson())),
-      };
-
-  static List<Datum> parseList(List<Map<String, dynamic>> list) {
-    return list.map((i) => Datum.fromJson(i)).toList();
-  }
+    "id": id,
+    "feed_title": feedTitle,
+    "feed_url": feedUrl,
+    "feed_date": feedDate.toIso8601String(),
+    "feed_type": feedTypeValues.reverse[feedType],
+    "feed_detail": feedDetail,
+    "feed_like_cnt": feedLikeCnt,
+    "feed_comment_cnt": feedCommentCnt,
+    "feed_share_cnt": feedShareCnt,
+    "feed_attendance_cnt": feedAttendanceCnt,
+    "feed_relate_cnt": feedRelateCnt,
+    "can_comment": canCommentValues.reverse[canComment],
+    "feedtypekey": feedtypekey,
+    "bookmarked": bookmarked,
+    "liked": liked,
+    "attending": attending,
+    "relate": relate,
+    "paymentdone": paymentdone,
+    "details": details.toJson(),
+    "media": List<dynamic>.from(media.map((x) => x.toJson())),
+    "categorymapping": List<dynamic>.from(categorymapping.map((x) => x.toJson())),
+    "feedqueryassigned": List<dynamic>.from(feedqueryassigned.map((x) => x.toJson())),
+  };
 }
 
 enum CanComment { Y }
 
-final canCommentValues = EnumValues({"Y": CanComment.Y});
+final canCommentValues = EnumValues({
+  "Y": CanComment.Y
+});
 
 class Categorymapping {
   Categorymapping({
@@ -155,15 +152,14 @@ class Categorymapping {
   Category category;
 
   factory Categorymapping.fromJson(Map<String, dynamic> json) => Categorymapping(
-        updatedAt: DateTime.parse(json["updated_at"]),
-        category: Category.fromJson(json["category"]),
-      );
+    updatedAt: DateTime.parse(json["updated_at"]),
+    category: Category.fromJson(json["category"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "updated_at":
-            "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
-        "category": category.toJson(),
-      };
+    "updated_at": "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+    "category": category.toJson(),
+  };
 }
 
 class Category {
@@ -178,16 +174,16 @@ class Category {
   String iconPath;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        category: json["category"],
-        iconPath: json["icon_path"],
-      );
+    id: json["id"],
+    category: json["category"],
+    iconPath: json["icon_path"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "category": category,
-        "icon_path": iconPath,
-      };
+    "id": id,
+    "category": category,
+    "icon_path": iconPath,
+  };
 }
 
 class Details {
@@ -200,15 +196,14 @@ class Details {
   List<dynamic> otherdetails;
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
-        authordetails:
-            List<DetailsAuthordetail>.from(json["authordetails"].map((x) => DetailsAuthordetail.fromJson(x))),
-        otherdetails: List<dynamic>.from(json["otherdetails"].map((x) => x)),
-      );
+    authordetails: List<DetailsAuthordetail>.from(json["authordetails"].map((x) => DetailsAuthordetail.fromJson(x))),
+    otherdetails: List<dynamic>.from(json["otherdetails"].map((x) => x)),
+  );
 
   Map<String, dynamic> toJson() => {
-        "authordetails": List<dynamic>.from(authordetails.map((x) => x.toJson())),
-        "otherdetails": List<dynamic>.from(otherdetails.map((x) => x)),
-      };
+    "authordetails": List<dynamic>.from(authordetails.map((x) => x.toJson())),
+    "otherdetails": List<dynamic>.from(otherdetails.map((x) => x)),
+  };
 }
 
 class DetailsAuthordetail {
@@ -229,24 +224,22 @@ class DetailsAuthordetail {
   User user;
 
   factory DetailsAuthordetail.fromJson(Map<String, dynamic> json) => DetailsAuthordetail(
-        id: json["id"] == null ? null : json["id"],
-        feedsId: json["feeds_id"] == null ? null : json["feeds_id"],
-        usersId: json["users_id"] == null ? null : json["users_id"],
-        isPrimary: json["is_primary"] == null ? null : json["is_primary"],
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-        user: User.fromJson(json["user"]),
-      );
+    id: json["id"] == null ? null : json["id"],
+    feedsId: json["feeds_id"] == null ? null : json["feeds_id"],
+    usersId: json["users_id"] == null ? null : json["users_id"],
+    isPrimary: json["is_primary"] == null ? null : json["is_primary"],
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    user: User.fromJson(json["user"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id == null ? null : id,
-        "feeds_id": feedsId == null ? null : feedsId,
-        "users_id": usersId == null ? null : usersId,
-        "is_primary": isPrimary == null ? null : isPrimary,
-        "updated_at": updatedAt == null
-            ? null
-            : "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
-        "user": user.toJson(),
-      };
+    "id": id == null ? null : id,
+    "feeds_id": feedsId == null ? null : feedsId,
+    "users_id": usersId == null ? null : usersId,
+    "is_primary": isPrimary == null ? null : isPrimary,
+    "updated_at": updatedAt == null ? null : "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+    "user": user.toJson(),
+  };
 }
 
 class User {
@@ -277,36 +270,32 @@ class User {
   Expertdetails expertdetails;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        firstName: json["first_name"],
-        emailAddress: json["email_address"],
-        lastName: json["last_name"] == null ? null : json["last_name"],
-        mobileNo: json["mobile_no"] == null ? null : json["mobile_no"],
-        id: json["id"],
-        userImage: json["user_image"],
-        uploadUrl: json["upload_url"] == null ? null : json["upload_url"],
-        authordetails: List<UserAuthordetail>.from(json["authordetails"].map((x) => UserAuthordetail.fromJson(x))),
-        queryPrice: json["query_price"] == null ? null : json["query_price"],
-        expertexpertisemapping: json["expertexpertisemapping"] == null
-            ? null
-            : List<Expertexpertisemapping>.from(
-                json["expertexpertisemapping"].map((x) => Expertexpertisemapping.fromJson(x))),
-        expertdetails: json["expertdetails"] == null ? null : Expertdetails.fromJson(json["expertdetails"]),
-      );
+    firstName: json["first_name"],
+    emailAddress: json["email_address"],
+    lastName: json["last_name"],
+    mobileNo: json["mobile_no"] == null ? null : json["mobile_no"],
+    id: json["id"],
+    userImage: json["user_image"],
+    uploadUrl: json["upload_url"],
+    authordetails: List<UserAuthordetail>.from(json["authordetails"].map((x) => UserAuthordetail.fromJson(x))),
+    queryPrice: json["query_price"] == null ? null : json["query_price"],
+    expertexpertisemapping: json["expertexpertisemapping"] == null ? null : List<Expertexpertisemapping>.from(json["expertexpertisemapping"].map((x) => Expertexpertisemapping.fromJson(x))),
+    expertdetails: json["expertdetails"] == null ? null : Expertdetails.fromJson(json["expertdetails"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "first_name": firstName,
-        "email_address": emailAddress,
-        "last_name": lastName == null ? null : lastName,
-        "mobile_no": mobileNo == null ? null : mobileNo,
-        "id": id,
-        "user_image": userImage,
-        "upload_url": uploadUrl == null ? null : uploadUrl,
-        "authordetails": List<dynamic>.from(authordetails.map((x) => x.toJson())),
-        "query_price": queryPrice == null ? null : queryPrice,
-        "expertexpertisemapping":
-            expertexpertisemapping == null ? null : List<dynamic>.from(expertexpertisemapping.map((x) => x.toJson())),
-        "expertdetails": expertdetails == null ? null : expertdetails.toJson(),
-      };
+    "first_name": firstName,
+    "email_address": emailAddress,
+    "last_name": lastName,
+    "mobile_no": mobileNo == null ? null : mobileNo,
+    "id": id,
+    "user_image": userImage,
+    "upload_url": uploadUrl,
+    "authordetails": List<dynamic>.from(authordetails.map((x) => x.toJson())),
+    "query_price": queryPrice == null ? null : queryPrice,
+    "expertexpertisemapping": expertexpertisemapping == null ? null : List<dynamic>.from(expertexpertisemapping.map((x) => x.toJson())),
+    "expertdetails": expertdetails == null ? null : expertdetails.toJson(),
+  };
 }
 
 class UserAuthordetail {
@@ -335,36 +324,39 @@ class UserAuthordetail {
   DateTime updatedAt;
 
   factory UserAuthordetail.fromJson(Map<String, dynamic> json) => UserAuthordetail(
-        id: json["id"],
-        usersId: json["users_id"],
-        userRoleId: json["user_role_id"],
-        introduction: json["introduction"],
-        brief: json["brief"] == null ? null : json["brief"],
-        facebookLink: json["facebook_link"] == null ? null : json["facebook_link"],
-        twitterLink: json["twitter_link"] == null ? null : json["twitter_link"],
-        website: json["website"] == null ? null : json["website"],
-        prefix: prefixValues.map[json["prefix"]],
-        updatedAt: DateTime.parse(json["updated_at"]),
-      );
+    id: json["id"],
+    usersId: json["users_id"],
+    userRoleId: json["user_role_id"],
+    introduction: json["introduction"],
+    brief: json["brief"],
+    facebookLink: json["facebook_link"],
+    twitterLink: json["twitter_link"],
+    website: json["website"],
+    prefix: prefixValues.map[json["prefix"]],
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "users_id": usersId,
-        "user_role_id": userRoleId,
-        "introduction": introduction,
-        "brief": brief == null ? null : brief,
-        "facebook_link": facebookLink == null ? null : facebookLink,
-        "twitter_link": twitterLink == null ? null : twitterLink,
-        "website": website == null ? null : website,
-        "prefix": prefixValues.reverse[prefix],
-        "updated_at":
-            "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
-      };
+    "id": id,
+    "users_id": usersId,
+    "user_role_id": userRoleId,
+    "introduction": introduction,
+    "brief": brief,
+    "facebook_link": facebookLink,
+    "twitter_link": twitterLink,
+    "website": website,
+    "prefix": prefixValues.reverse[prefix],
+    "updated_at": "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+  };
 }
 
-enum Prefix { EMPTY, MR, MISS }
+enum Prefix { EMPTY, MISS, DR }
 
-final prefixValues = EnumValues({"": Prefix.EMPTY, "Miss.": Prefix.MISS, "Mr.": Prefix.MR});
+final prefixValues = EnumValues({
+  "Dr.": Prefix.DR,
+  "": Prefix.EMPTY,
+  "Miss.": Prefix.MISS
+});
 
 class Expertdetails {
   Expertdetails({
@@ -376,14 +368,14 @@ class Expertdetails {
   int userExpertExp;
 
   factory Expertdetails.fromJson(Map<String, dynamic> json) => Expertdetails(
-        id: json["id"],
-        userExpertExp: json["user_expert_exp"],
-      );
+    id: json["id"],
+    userExpertExp: json["user_expert_exp"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_expert_exp": userExpertExp,
-      };
+    "id": id,
+    "user_expert_exp": userExpertExp,
+  };
 }
 
 class Expertexpertisemapping {
@@ -396,15 +388,14 @@ class Expertexpertisemapping {
   Parentexpertise parentexpertise;
 
   factory Expertexpertisemapping.fromJson(Map<String, dynamic> json) => Expertexpertisemapping(
-        updatedAt: DateTime.parse(json["updated_at"]),
-        parentexpertise: Parentexpertise.fromJson(json["parentexpertise"]),
-      );
+    updatedAt: DateTime.parse(json["updated_at"]),
+    parentexpertise: Parentexpertise.fromJson(json["parentexpertise"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "updated_at":
-            "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
-        "parentexpertise": parentexpertise.toJson(),
-      };
+    "updated_at": "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+    "parentexpertise": parentexpertise.toJson(),
+  };
 }
 
 class Parentexpertise {
@@ -423,25 +414,28 @@ class Parentexpertise {
   dynamic updatedAt;
 
   factory Parentexpertise.fromJson(Map<String, dynamic> json) => Parentexpertise(
-        id: json["id"],
-        expertiseId: json["expertise_id"],
-        expertiseName: json["expertise_name"],
-        iconPath: json["icon_path"],
-        updatedAt: json["updated_at"],
-      );
+    id: json["id"],
+    expertiseId: json["expertise_id"],
+    expertiseName: json["expertise_name"],
+    iconPath: json["icon_path"],
+    updatedAt: json["updated_at"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "expertise_id": expertiseId,
-        "expertise_name": expertiseName,
-        "icon_path": iconPath,
-        "updated_at": updatedAt,
-      };
+    "id": id,
+    "expertise_id": expertiseId,
+    "expertise_name": expertiseName,
+    "icon_path": iconPath,
+    "updated_at": updatedAt,
+  };
 }
 
 enum FeedType { ARTICLE, QUERY }
 
-final feedTypeValues = EnumValues({"Article": FeedType.ARTICLE, "Query": FeedType.QUERY});
+final feedTypeValues = EnumValues({
+  "Article": FeedType.ARTICLE,
+  "Query": FeedType.QUERY
+});
 
 class Feedqueryassigned {
   Feedqueryassigned({
@@ -471,32 +465,32 @@ class Feedqueryassigned {
   Assignedexpert assignedexpert;
 
   factory Feedqueryassigned.fromJson(Map<String, dynamic> json) => Feedqueryassigned(
-        id: json["id"],
-        feedsId: json["feeds_id"],
-        assignedUserExpertId: json["assigned_user_expert_id"],
-        feedStatus: json["feed_status"],
-        intialUserExpertId: json["intial_user_expert_id"],
-        totalfollowups: json["totalfollowups"],
-        createdAt: DateTime.parse(json["created_at"]),
-        createdBy: json["created_by"],
-        updatedAt: DateTime.parse(json["updated_at"]),
-        latestanswer: json["latestanswer"],
-        assignedexpert: Assignedexpert.fromJson(json["assignedexpert"]),
-      );
+    id: json["id"],
+    feedsId: json["feeds_id"],
+    assignedUserExpertId: json["assigned_user_expert_id"],
+    feedStatus: json["feed_status"],
+    intialUserExpertId: json["intial_user_expert_id"],
+    totalfollowups: json["totalfollowups"],
+    createdAt: DateTime.parse(json["created_at"]),
+    createdBy: json["created_by"],
+    updatedAt: DateTime.parse(json["updated_at"]),
+    latestanswer: json["latestanswer"],
+    assignedexpert: Assignedexpert.fromJson(json["assignedexpert"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "feeds_id": feedsId,
-        "assigned_user_expert_id": assignedUserExpertId,
-        "feed_status": feedStatus,
-        "intial_user_expert_id": intialUserExpertId,
-        "totalfollowups": totalfollowups,
-        "created_at": createdAt.toString(),
-        "created_by": createdBy,
-        "updated_at": updatedAt.toString(),
-        "latestanswer": latestanswer,
-        "assignedexpert": assignedexpert.toJson(),
-      };
+    "id": id,
+    "feeds_id": feedsId,
+    "assigned_user_expert_id": assignedUserExpertId,
+    "feed_status": feedStatus,
+    "intial_user_expert_id": intialUserExpertId,
+    "totalfollowups": totalfollowups,
+    "created_at": createdAt.toIso8601String(),
+    "created_by": createdBy,
+    "updated_at": updatedAt.toIso8601String(),
+    "latestanswer": latestanswer,
+    "assignedexpert": assignedexpert.toJson(),
+  };
 }
 
 class Assignedexpert {
@@ -555,63 +549,60 @@ class Assignedexpert {
   int verifiedEmail;
 
   factory Assignedexpert.fromJson(Map<String, dynamic> json) => Assignedexpert(
-        id: json["id"],
-        emailAddress: json["email_address"],
-        mobileNo: json["mobile_no"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        dateOfBirth: DateTime.parse(json["date_of_birth"]),
-        gender: json["gender"],
-        maritalStatus: json["marital_status"],
-        city: json["city"],
-        state: json["state"],
-        country: json["country"],
-        userImage: json["user_image"],
-        healthDetails: HealthDetails.fromJson(json["health_details"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        deletedAt: json["deleted_at"],
-        userDevicesId: json["user_devices_id"],
-        pgAmount: json["pg_amount"],
-        reasonForSuspension: json["reason_for_suspension"],
-        flagged: json["flagged"],
-        flagNote: json["flag_note"],
-        userUrl: json["user_url"],
-        uploadUrl: json["upload_url"],
-        verifiedMobile: json["verified_mobile"],
-        verifiedEmail: json["verified_email"],
-      );
+    id: json["id"],
+    emailAddress: json["email_address"],
+    mobileNo: json["mobile_no"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
+    dateOfBirth: DateTime.parse(json["date_of_birth"]),
+    gender: json["gender"],
+    maritalStatus: json["marital_status"],
+    city: json["city"],
+    state: json["state"],
+    country: json["country"],
+    userImage: json["user_image"],
+    healthDetails: HealthDetails.fromJson(json["health_details"]),
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    deletedAt: json["deleted_at"],
+    userDevicesId: json["user_devices_id"],
+    pgAmount: json["pg_amount"],
+    reasonForSuspension: json["reason_for_suspension"],
+    flagged: json["flagged"],
+    flagNote: json["flag_note"],
+    userUrl: json["user_url"],
+    uploadUrl: json["upload_url"],
+    verifiedMobile: json["verified_mobile"],
+    verifiedEmail: json["verified_email"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "email_address": emailAddress,
-        "mobile_no": mobileNo,
-        "first_name": firstName,
-        "last_name": lastName,
-        "date_of_birth":
-            "${dateOfBirth.year.toString().padLeft(4, '0')}-${dateOfBirth.month.toString().padLeft(2, '0')}-${dateOfBirth.day.toString().padLeft(2, '0')}",
-        "gender": gender,
-        "marital_status": maritalStatus,
-        "city": city,
-        "state": state,
-        "country": country,
-        "user_image": userImage,
-        "health_details": healthDetails.toJson(),
-        "created_at":
-            "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",
-        "updated_at":
-            "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
-        "deleted_at": deletedAt,
-        "user_devices_id": userDevicesId,
-        "pg_amount": pgAmount,
-        "reason_for_suspension": reasonForSuspension,
-        "flagged": flagged,
-        "flag_note": flagNote,
-        "user_url": userUrl,
-        "upload_url": uploadUrl,
-        "verified_mobile": verifiedMobile,
-        "verified_email": verifiedEmail,
-      };
+    "id": id,
+    "email_address": emailAddress,
+    "mobile_no": mobileNo,
+    "first_name": firstName,
+    "last_name": lastName,
+    "date_of_birth": "${dateOfBirth.year.toString().padLeft(4, '0')}-${dateOfBirth.month.toString().padLeft(2, '0')}-${dateOfBirth.day.toString().padLeft(2, '0')}",
+    "gender": gender,
+    "marital_status": maritalStatus,
+    "city": city,
+    "state": state,
+    "country": country,
+    "user_image": userImage,
+    "health_details": healthDetails.toJson(),
+    "created_at": "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",
+    "updated_at": "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+    "deleted_at": deletedAt,
+    "user_devices_id": userDevicesId,
+    "pg_amount": pgAmount,
+    "reason_for_suspension": reasonForSuspension,
+    "flagged": flagged,
+    "flag_note": flagNote,
+    "user_url": userUrl,
+    "upload_url": uploadUrl,
+    "verified_mobile": verifiedMobile,
+    "verified_email": verifiedEmail,
+  };
 }
 
 class HealthDetails {
@@ -632,22 +623,22 @@ class HealthDetails {
   int bmi;
 
   factory HealthDetails.fromJson(Map<String, dynamic> json) => HealthDetails(
-        height: json["height"],
-        weight: json["weight"],
-        heightunit: json["heightunit"],
-        weightunit: json["weightunit"],
-        bloodGroup: json["blood_group"],
-        bmi: json["bmi"],
-      );
+    height: json["height"],
+    weight: json["weight"],
+    heightunit: json["heightunit"],
+    weightunit: json["weightunit"],
+    bloodGroup: json["blood_group"],
+    bmi: json["bmi"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "height": height,
-        "weight": weight,
-        "heightunit": heightunit,
-        "weightunit": weightunit,
-        "blood_group": bloodGroup,
-        "bmi": bmi,
-      };
+    "height": height,
+    "weight": weight,
+    "heightunit": heightunit,
+    "weightunit": weightunit,
+    "blood_group": bloodGroup,
+    "bmi": bmi,
+  };
 }
 
 class Media {
@@ -666,26 +657,27 @@ class Media {
   int feedsId;
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
-        id: json["id"],
-        mediaType: mediaTypeValues.map[json["media_type"]],
-        mediaPath: json["media_path"],
-        updatedAt: DateTime.parse(json["updated_at"]),
-        feedsId: json["feeds_id"],
-      );
+    id: json["id"],
+    mediaType: mediaTypeValues.map[json["media_type"]],
+    mediaPath: json["media_path"],
+    updatedAt: DateTime.parse(json["updated_at"]),
+    feedsId: json["feeds_id"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "media_type": mediaTypeValues.reverse[mediaType],
-        "media_path": mediaPath,
-        "updated_at":
-            "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
-        "feeds_id": feedsId,
-      };
+    "id": id,
+    "media_type": mediaTypeValues.reverse[mediaType],
+    "media_path": mediaPath,
+    "updated_at": "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+    "feeds_id": feedsId,
+  };
 }
 
 enum MediaType { COVER_IMAGE }
 
-final mediaTypeValues = EnumValues({"cover_image": MediaType.COVER_IMAGE});
+final mediaTypeValues = EnumValues({
+  "cover_image": MediaType.COVER_IMAGE
+});
 
 class Links {
   Links({
@@ -703,20 +695,20 @@ class Links {
   String next;
 
   factory Links.fromJson(Map<String, dynamic> json) => Links(
-        self: json["self"],
-        first: json["first"],
-        last: json["last"],
-        prev: json["prev"],
-        next: json["next"],
-      );
+    self: json["self"],
+    first: json["first"],
+    last: json["last"],
+    prev: json["prev"],
+    next: json["next"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "self": self,
-        "first": first,
-        "last": last,
-        "prev": prev,
-        "next": next,
-      };
+    "self": self,
+    "first": first,
+    "last": last,
+    "prev": prev,
+    "next": next,
+  };
 }
 
 class Meta {
@@ -739,24 +731,24 @@ class Meta {
   int total;
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-        currentPage: json["current_page"],
-        from: json["from"],
-        lastPage: json["last_page"],
-        path: json["path"],
-        perPage: json["per_page"],
-        to: json["to"],
-        total: json["total"],
-      );
+    currentPage: json["current_page"],
+    from: json["from"],
+    lastPage: json["last_page"],
+    path: json["path"],
+    perPage: json["per_page"],
+    to: json["to"],
+    total: json["total"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "current_page": currentPage,
-        "from": from,
-        "last_page": lastPage,
-        "path": path,
-        "per_page": perPage,
-        "to": to,
-        "total": total,
-      };
+    "current_page": currentPage,
+    "from": from,
+    "last_page": lastPage,
+    "path": path,
+    "per_page": perPage,
+    "to": to,
+    "total": total,
+  };
 }
 
 class EnumValues<T> {

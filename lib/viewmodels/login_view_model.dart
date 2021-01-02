@@ -95,7 +95,6 @@ class LoginViewModel extends BaseModel {
       preferences.setString('first_name', authUser.data.user.firstName);
       preferences.setString('last_name', authUser.data.user.lastName);
       preferences.setString('user_image', authUser.data.user.userImage);
-
       _loggedInStatus = Status.LoggedIn;
       Fluttertoast.showToast(msg: 'Login successful');
       result = {'status': true, 'message': 'code ${response.statusCode} '};

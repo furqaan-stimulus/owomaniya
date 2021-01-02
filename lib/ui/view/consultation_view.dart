@@ -6,8 +6,7 @@ class ConsultationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ConsultationViewModel>.reactive(
-        builder: (context, model, child) => Scaffold(
-        ),
+        builder: (context, model, child) => Scaffold(),
         viewModelBuilder: () => ConsultationViewModel());
   }
 }

@@ -11,35 +11,12 @@ class VoicesView extends StatefulWidget {
 }
 
 class _VoicesViewState extends State<VoicesView> {
-  Future<FeedItemModel> feedModel;
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<VoicesViewModel>.reactive(
-      builder: (context, model, child) => Scaffold(
-        body: ListView(
-          physics: ScrollPhysics(),
-          shrinkWrap: true,
-          children: [
-            FutureBuilder<FeedItemModel>(
-              future: feedModel,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return WebView(
-                    initialUrl: snapshot.data.data[0].feedUrl,
-                  );
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                }
-                return Center(child: LinearProgressIndicator());
-              },
-            ),
-          ],
-        ),
-      ),
+      builder: (context, model, child) => Scaffold(),
       viewModelBuilder: () => VoicesViewModel(),
       onModelReady: (model) {
-        feedModel = model.loadFeed();
         if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
       },
     );
