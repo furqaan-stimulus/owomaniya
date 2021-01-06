@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final queryConsultationModel = queryConsultationModelFromJson(jsonString);
-
 import 'dart:convert';
 
 QueryConsultationModel queryConsultationModelFromJson(String str) =>
@@ -89,8 +85,8 @@ class Datum {
         paymentdone: json["paymentdone"],
         details: Details.fromJson(json["details"]),
         categorymapping: List<dynamic>.from(json["categorymapping"].map((x) => x)),
-        feedqueryassigned:
-            List<Feedqueryassigned>.from(json["feedqueryassigned"].map((x) => Feedqueryassigned.fromJson(x))),
+        feedqueryassigned: List<Feedqueryassigned>.from(
+            json["feedqueryassigned"].map((x) => Feedqueryassigned.fromJson(x))),
         queryOrder: QueryOrder.fromJson(json["query_order"]),
       );
 
@@ -124,7 +120,8 @@ class Details {
   List<dynamic> otherdetails;
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
-        authordetails: List<Authordetail>.from(json["authordetails"].map((x) => Authordetail.fromJson(x))),
+        authordetails:
+            List<Authordetail>.from(json["authordetails"].map((x) => Authordetail.fromJson(x))),
         otherdetails: List<dynamic>.from(json["otherdetails"].map((x) => x)),
       );
 

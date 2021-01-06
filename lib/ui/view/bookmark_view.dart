@@ -22,6 +22,8 @@ class _BookmarkViewState extends State<BookmarkView> {
   bool isVideosFilter = false;
   bool isEventsFilter = false;
 
+  List<GetBookmark> bookmarkList = [];
+
   void toggleVisibility() {
     setState(() {
       isContainerVisible = !isContainerVisible;
@@ -243,7 +245,7 @@ class _BookmarkViewState extends State<BookmarkView> {
                         shrinkWrap: true,
                         itemCount: snapshot.data.data.length,
                         itemBuilder: (context, fIndex) {
-                          if(snapshot.data.data.length == 0){
+                          if (snapshot.data.data.length == 0) {
                             return Container(
                               child: Center(
                                 child: Text(
@@ -252,7 +254,7 @@ class _BookmarkViewState extends State<BookmarkView> {
                                 ),
                               ),
                             );
-                          }else{
+                          } else {
                             if (snapshot.data.data[fIndex].feed.feedType == "Article") {
                               return Card(
                                 elevation: 5.0,
@@ -276,7 +278,8 @@ class _BookmarkViewState extends State<BookmarkView> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                              padding:
+                                                  const EdgeInsets.only(left: 10.0, right: 10.0),
                                               child: GestureDetector(
                                                   onTap: () {
                                                     model.removeBookmark(
@@ -321,7 +324,8 @@ class _BookmarkViewState extends State<BookmarkView> {
                                                     softWrap: false,
                                                     maxLines: 3,
                                                     style: TextStyle(
-                                                        fontSize: 14.0, fontWeight: FontWeight.bold),
+                                                        fontSize: 14.0,
+                                                        fontWeight: FontWeight.bold),
                                                   ),
                                                   SizedBox(
                                                     height: 10.0,
@@ -361,7 +365,8 @@ class _BookmarkViewState extends State<BookmarkView> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                              padding:
+                                                  const EdgeInsets.only(left: 10.0, right: 10.0),
                                               child: GestureDetector(
                                                   onTap: () {
                                                     model.removeBookmark(
@@ -401,26 +406,26 @@ class _BookmarkViewState extends State<BookmarkView> {
                                                       width: 10.0,
                                                     ),
                                                     snapshot.data.data[fIndex].feed
-                                                        .feedqueryanswered[0].feedStatus ==
-                                                        "ANSWERED"
+                                                                .feedqueryanswered[0].feedStatus ==
+                                                            "ANSWERED"
                                                         ? Row(
-                                                      children: [
-                                                        SvgPicture.asset(
-                                                          'assets/svg/check_pink.svg',
-                                                          height: 12.0,
-                                                          width: 12.0,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 5.0,
-                                                        ),
-                                                        Text(
-                                                          'Answered',
-                                                          style: TextStyle(
-                                                              fontSize: 12.0,
-                                                              color: Colors.pink),
-                                                        ),
-                                                      ],
-                                                    )
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                'assets/svg/check_pink.svg',
+                                                                height: 12.0,
+                                                                width: 12.0,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 5.0,
+                                                              ),
+                                                              Text(
+                                                                'Answered',
+                                                                style: TextStyle(
+                                                                    fontSize: 12.0,
+                                                                    color: Colors.pink),
+                                                              ),
+                                                            ],
+                                                          )
                                                         : Text(''),
                                                   ],
                                                 ),
@@ -503,7 +508,6 @@ class _BookmarkViewState extends State<BookmarkView> {
     );
     final jsonString = json.decode(response.body);
     GetBookmark model = GetBookmark.fromJson(jsonString);
-    print("length: ${model.data.length}");
     return model;
   }
 }

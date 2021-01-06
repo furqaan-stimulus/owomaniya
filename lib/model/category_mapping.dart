@@ -2,55 +2,39 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:owomaniya/model/category.dart';
 import 'package:owomaniya/model/feed.dart';
 
-class Categorymapping {
+part 'category_mapping.g.dart';
 
-  int id;
-
-  @JsonKey(name: 'feeds_id')
-  int feedsId;
-
-  @JsonKey(name: 'category_id')
-  Category categoryId;
-
-  @JsonKey(name: 'created_at')
-  DateTime createdAt;
-
-  @JsonKey(name: 'created_by')
-  int createdBy;
+@JsonSerializable(
+  explicitToJson: true,
+  includeIfNull: true,
+  nullable: true,
+  anyMap: true,
+)
+class CategoryMapping {
 
   @JsonKey(name: 'updated_at')
   DateTime updatedAt;
 
-  @JsonKey(name: 'updated_by')
-  int updatedBy;
-
-  @JsonKey(name: 'deleted_at')
-  DateTime deletedAt;
-
-  Feed feed;
-
+  @JsonKey(name: 'category')
   Category category;
 
-  Categorymapping(
-      {this.id,
-      this.feedsId,
-      this.categoryId,
-      this.createdAt,
-      this.createdBy,
-      this.updatedAt,
-      this.updatedBy,
-      this.deletedAt,
-      this.feed,
-      this.category});
+  CategoryMapping({
+    this.updatedAt,
+    this.category,
+  });
 
-  factory Categorymapping.fromJson(Map<String, dynamic> json) => Categorymapping(
-        updatedAt: DateTime.parse(json["updated_at"]),
-        category: Category.fromJson(json["category"]),
-      );
+  factory CategoryMapping.fromJson(Map<String, dynamic> json) => _$CategoryMappingFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-        "updated_at":
-            "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
-        "category": category.toJson(),
-      };
+  Map<String, dynamic> toJson() => _$CategoryMappingToJson(this);
+
+// factory CategoryMapping.fromJson(Map<String, dynamic> json) => CategoryMapping(
+//       updatedAt: DateTime.parse(json["updated_at"]),
+//       category: Category.fromJson(json["category"]),
+//     );
+//
+// Map<String, dynamic> toJson() => {
+//       "updated_at":
+//           "${updatedAt.year.toString().padLeft(4, '0')}-${updatedAt.month.toString().padLeft(2, '0')}-${updatedAt.day.toString().padLeft(2, '0')}",
+//       "category": category.toJson(),
+//     };
 }

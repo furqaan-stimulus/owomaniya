@@ -13,8 +13,8 @@ class ShareYourVoiceViewModel extends BaseModel {
   Future<Map<String, dynamic>> shareVoice(String shortStory, String aboutYou) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 
-    var userId = preferences.getInt("user_id");
     var token = preferences.getString("token");
+    var result;
 
     if (token == null) {
       _navigationService.navigateTo(Routes.loginView);
@@ -24,7 +24,7 @@ class ShareYourVoiceViewModel extends BaseModel {
         'about_you': aboutYou,
       };
       setBusy(true);
-      var result;
+
       Response response = await post(ApiUrls.SHARE_VOICE_URL + token,
           body: json.encode(shareVoiceData), headers: {'content-Type': 'application/json'});
       if (response.statusCode == 200) {
@@ -38,5 +38,6 @@ class ShareYourVoiceViewModel extends BaseModel {
       }
       return json.decode(response.body);
     }
+    return result;
   }
 }

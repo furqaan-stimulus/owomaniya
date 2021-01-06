@@ -72,7 +72,7 @@ class _BlogPostCardState extends State<BlogPostCard> {
                           //   width: 50,
                           // ),
                           Image.asset(
-                            model[index].details.authordetails[index].user.userImage,
+                            model[index].details.authorDetails[index].user.userImage,
                             height: 50,
                             width: 50,
                           ),

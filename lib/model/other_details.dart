@@ -1,1 +1,1 @@
-class OtherDetails{}
+class OtherDetails {}
