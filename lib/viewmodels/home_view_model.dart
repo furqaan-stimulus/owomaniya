@@ -83,13 +83,19 @@ class HomeViewModel extends BaseViewModel {
   }
 
   navigateToCommentScreen(int item, BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CommentView(itemHolder: item)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CommentView(itemHolder: item)));
   }
 
-  navigateToExpertScreen(String doctorName,String expertiseFiled,String image, BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => AskExpertView(doctorName: doctorName,expertiseField: expertiseFiled,doctorImage: image,)));
+  navigateToExpertScreen(
+      String doctorName, String expertiseFiled, String image, BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AskExpertView(
+                  doctorName: doctorName,
+                  expertiseField: expertiseFiled,
+                  doctorImage: image,
+                )));
   }
 
   Future navigateToCommentView() async {
@@ -108,8 +114,8 @@ class HomeViewModel extends BaseViewModel {
       FeedItemModel model = FeedItemModel.fromJson(jsonString);
       return model;
     } else {
-      response = await http.get(
-          ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO + "$page");
+      response =
+          await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO + "$page");
       final jsonString = json.decode(response.body);
       FeedItemModel model = FeedItemModel.fromJson(jsonString);
       return model;
@@ -142,10 +148,7 @@ class HomeViewModel extends BaseViewModel {
   Future<Map<String, dynamic>> likeArticle(int feedId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
-    final Map<String, dynamic> postLikeData = {
-      "feed_id": feedId,
-      "engagement_type": "likes"
-    };
+    final Map<String, dynamic> postLikeData = {"feed_id": feedId, "engagement_type": "likes"};
 
     print('feedId$feedId');
     final response = await http.post(
@@ -169,10 +172,7 @@ class HomeViewModel extends BaseViewModel {
   Future<Map<String, dynamic>> relateQuery(int feedId) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
-    final Map<String, dynamic> postRelateData = {
-      "feed_id": feedId,
-      "engagement_type": "relate"
-    };
+    final Map<String, dynamic> postRelateData = {"feed_id": feedId, "engagement_type": "relate"};
 
     print('feedId$feedId');
     final response = await http.post(

@@ -75,9 +75,9 @@ class ApiUrls {
   static const String NEW_TOKEN =
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjc1MjIsImlzcyI6Imh0dHA6Ly9kZXYtYXBpLm9vd29tYW5peWEuY29tL2FwaS9hZG1pbi9sb2dpbiIsImlhdCI6MTU4OTU1MjQ2NiwiZXhwIjoxNjIxMDg4NDY2LCJuYmYiOjE1ODk1NTI0NjYsImp0aSI6ImxDVEdDVjFuaWNYYVNtNUIifQ.uVw6uOkch4TcrLTu4mkdAJCEpUTiwZg3O4tXIigtXMM";
 
-  static const String localURL = "https://dev-api.oowomaniya.com/api/";
+  // static const String localURL = "https://dev-api.oowomaniya.com/api/";
 
-  // static const String localURL = "https://ow.stimulusco.com/api/";
+  static const String localURL = "https://ow.stimulusco.com/api/";
 
   //Query urls
   static const String GET_SEARCH_QUERY_URL = localURL +

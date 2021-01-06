@@ -61,15 +61,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/oowomaniya_logo.png
-    - assets/images/stethoscope.png
-    - assets/images/onboarding0.png
-    - assets/images/onboarding1.png
-    - assets/images/onboarding2.png
-    - assets/images/ow_symbol.png
-    - assets/svg/Asset_53.svg
-    - assets/svg/Asset_54.svg
-    - assets/svg/anyonmans.svg
+    - assets/images/
     - assets/svg/
 
 

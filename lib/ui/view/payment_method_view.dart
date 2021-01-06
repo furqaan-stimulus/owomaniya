@@ -40,8 +40,36 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<PaymentMethodViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SvgPicture.asset(
+              'assets/svg/wallet_pink.svg',
+              height: 40,
+              width: 40,
+            ),
+          ),
+          title: Text(
+            'Payment Method',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0, top: 20.0, bottom: 18.0),
+              child: Container(
+                height: 50,
+                width: 95,
+                child: Text(
+                  'Amount \u20B9 99',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),
+                ),
+              ),
+            ),
+          ],
+        ),
         body: Padding(
-          padding: const EdgeInsets.all(26.0),
+          padding: const EdgeInsets.fromLTRB(8.0, 20, 10.0, 0.0),
           child: Container(
             child: ListView(
               shrinkWrap: true,
@@ -53,58 +81,15 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                       Center(
                         child: Column(
                           children: [
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                          icon: SvgPicture.asset(
-                                            'assets/svg/wallet_pink.svg',
-                                            width: 40,
-                                            height: 40,
-                                          ),
-                                          onPressed: () {},
-                                        ),
-                                        Text(
-                                          'Payment Method',
-                                          style: TextStyle(
-                                              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
-                                      child: Text(
-                                        'Amount \u20B9 99',
-                                        style: TextStyle(fontWeight: FontWeight.bold),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Divider(
-                              color: Colors.grey,
-                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    Padding(
-                                        padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                                        child: SvgPicture.asset(
-                                          'assets/svg/anyonmans.svg',
-                                          width: 45.0,
-                                          height: 45.0,
-                                        )),
+                                    SvgPicture.asset(
+                                      'assets/svg/anyonmans.svg',
+                                      width: 50.0,
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 16.0),
                                       child: Text(
@@ -146,7 +131,7 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                                       Expanded(
                                         child: Container(
                                           child: Padding(
-                                            padding: const EdgeInsets.all(14.0),
+                                            padding: const EdgeInsets.all(8.0),
                                             child: Text(
                                               snapshot.data,
                                             ),
@@ -170,128 +155,117 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                             Divider(
                               color: Colors.grey,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.radio_button_checked,
-                                        color: Colors.pink,
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.radio_button_checked,
+                                      color: Colors.pink,
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        'Pay \u20B9 99 online',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: TextStyle(fontSize: 17.0),
                                       ),
-                                      SizedBox(
-                                        width: 15.0,
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Container(
+                                      child: SvgPicture.asset('assets/svg/visa.svg'),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Container(
+                                      child: SvgPicture.asset('assets/svg/mastercard.svg'),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Container(
+                                      child: SvgPicture.asset('assets/svg/paytm.svg'),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 35.0,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'You can use your credit/debit card, Internet banking or PayTM',
+                                        softWrap: true,
                                       ),
-                                      Container(
-                                        child: Text(
-                                          'Pay \u20B9 99 online',
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                          style: TextStyle(fontSize: 17.0),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Container(
-                                        child: SvgPicture.asset('assets/svg/visa.svg'),
-                                      ),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Container(
-                                        child: SvgPicture.asset('assets/svg/mastercard.svg'),
-                                      ),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Container(
-                                        child: SvgPicture.asset('assets/svg/paytm.svg'),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 40.0,
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          'You can use your credit/debit card, Internet banking or PayTM',
-                                          softWrap: true,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    )
+                                  ],
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 30.0,
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(left: 8.0),
-                            //   child: Column(
-                            //     children: [
-                            //       Row(
-                            //         children: [
-                            //           Container(
-                            //             height: 30,
-                            //             width: 20,
-                            //             child: Checkbox(
-                            //               onChanged: (newValue) {
-                            //                 setState(() {
-                            //                   onChecked = !onChecked;
-                            //                 });
-                            //               },
-                            //               value: onChecked,
-                            //             ),
-                            //           ),
-                            //           SizedBox(
-                            //             width: 15.0,
-                            //           ),
-                            //           Container(
-                            //             child: Text(
-                            //               'Use \u20B9 19 from Health Piggy',
-                            //               overflow: TextOverflow.ellipsis,
-                            //               maxLines: 7,
-                            //             ),
-                            //           ),
-                            //           SizedBox(
-                            //             width: 15.0,
-                            //           ),
-                            //           Container(
-                            //             child: SvgPicture.asset(
-                            //                 'assets/svg/sidebar_amount.svg'),
-                            //           ),
-                            //         ],
-                            //       ),
-                            //       SizedBox(
-                            //         height: 10.0,
-                            //       ),
-                            //       Row(
-                            //         children: [
-                            //           SizedBox(
-                            //             width: 40.0,
-                            //           ),
-                            //           Container(
-                            //             child: Text(
-                            //               'Current Balance \u20B9 20',
-                            //               overflow: TextOverflow.ellipsis,
-                            //               maxLines: 2,
-                            //             ),
-                            //           )
-                            //         ],
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      height: 30,
+                                      width: 20,
+                                      child: Checkbox(
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            onChecked = !onChecked;
+                                          });
+                                        },
+                                        value: onChecked,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.0,
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        'Use \u20B9 19 from Health Piggy',
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.0,
+                                    ),
+                                    Container(
+                                      child: SvgPicture.asset('assets/svg/sidebar_amount.svg'),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 35.0,
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        'Current Balance \u20B9 20',
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                             SizedBox(
-                              height: 10.0,
+                              height: 15.0,
                             ),
                             Container(
                               width: double.infinity,
@@ -321,7 +295,6 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
         ),
       ),
       viewModelBuilder: () => PaymentMethodViewModel(),
-      onModelReady: (model) {},
     );
   }
 
@@ -337,7 +310,8 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
 
   void _handlePaymentError(PaymentFailureResponse response) {
     Fluttertoast.showToast(
-        msg: "ERROR: " + response.code.toString() + " - " + response.message, timeInSecForIosWeb: 10);
+        msg: "ERROR: " + response.code.toString() + " - " + response.message,
+        timeInSecForIosWeb: 10);
     _navigationService.pushNamedAndRemoveUntil(Routes.paymentFailureView);
   }
 

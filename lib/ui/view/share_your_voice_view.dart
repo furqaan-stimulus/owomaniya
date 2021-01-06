@@ -37,13 +37,10 @@ class _ShareYourVoiceViewState extends State<ShareYourVoiceView> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 20, 10.0, 0.0),
           child: ListView(
             shrinkWrap: true,
             children: [
-              SizedBox(
-                height: 50.0,
-              ),
               Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

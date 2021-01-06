@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
+import 'dart:io' as Io;
 import 'package:http/http.dart' as http;
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -81,11 +81,11 @@ class _UserProfileViewState extends State<UserProfileView> {
 
   bool isEditable = false;
   bool isEditing = false;
-  File _image;
+  Io.File _image;
 
   _imgFromCamera() async {
     // ignore: deprecated_member_use
-    File image = await ImagePicker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    Io.File image = await ImagePicker.pickImage(source: ImageSource.camera, imageQuality: 50);
     setState(() {
       _image = image;
     });
@@ -93,7 +93,7 @@ class _UserProfileViewState extends State<UserProfileView> {
 
   _imgFromGallery() async {
     // ignore: deprecated_member_use
-    File image = await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    Io.File image = await ImagePicker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     setState(() {
       _image = image;
@@ -223,12 +223,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                                               ? ClipRRect(
                                                                   borderRadius:
                                                                       BorderRadius.circular(60),
-                                                                  child: Image.file(
-                                                                    _image,
-                                                                    width: 120,
-                                                                    height: 120,
-                                                                    fit: BoxFit.fitHeight,
-                                                                  ),
+                                                                  child: Image.network(snapshot.data.data.alternativeimage),
                                                                 )
                                                               : Container(
                                                                   decoration: BoxDecoration(
@@ -237,8 +232,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                                                   ),
                                                                   width: 100,
                                                                   height: 100,
-                                                                  child: Image.network(
-                                                                      '${snapshot.data.data.userImage}'),
+                                                                  child: Image.network(snapshot.data.data.alternativeimage),
                                                                 ),
                                                         ),
                                                         Positioned(

@@ -9,4 +9,12 @@ class PaymentFailureViewModel extends BaseModel {
   Future navigateToPaymentMethodView() async {
     _navigationService.pushNamedAndRemoveUntil(Routes.paymentMethodView);
   }
+
+  Future navigateToHomeView() async {
+    _navigationService.pushNamedAndRemoveUntil(Routes.homeView);
+  }
+
+  Future navigateToMyConsultationView() async {
+    _navigationService.pushNamedAndRemoveUntil(Routes.myConsultationView);
+  }
 }
