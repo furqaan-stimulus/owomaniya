@@ -16,11 +16,11 @@ Feed _$FeedFromJson(Map json) {
         : DateTime.parse(json['feed_date'] as String),
     feedType: json['feed_type'] as String,
     feedDetail: json['feed_detail'] as String,
-    feedLikeCount: json['feed_like_count'] as int,
-    feedCommentCount: json['feed_comment_count'] as int,
-    feedShareCount: json['feed_share_count'] as int,
-    feedAttendanceCount: json['feed_attendance_count'] as int,
-    feedRelateCount: json['feed_relate_count'] as int,
+    feedLikeCount: json['feed_like_cnt'] as int,
+    feedCommentCount: json['feed_comment_cnt'] as int,
+    feedShareCount: json['feed_share_cnt'] as int,
+    feedAttendanceCount: json['feed_attendance_cnt'] as int,
+    feedRelateCount: json['feed_relate_cnt'] as int,
     canComment: json['can_comment'] as String,
     feedTypeKey: json['feedtypekey'] as String,
     bookmarked: json['bookmarked'] as bool,
@@ -56,7 +56,7 @@ Feed _$FeedFromJson(Map json) {
         ?.toList(),
     feedEvent: json['feedevent'],
   )
-    ..feedImpressionCount = json['feed_impression_count'] as int
+    ..feedImpressionCount = json['feed_impression_cnt'] as int
     ..feedStatus = json['feed_status'] as String
     ..isAnonymous =
         _$enumDecodeNullable(_$IsAnonymousEnumMap, json['is_anonymous'])
@@ -90,12 +90,12 @@ Map<String, dynamic> _$FeedToJson(Feed instance) => <String, dynamic>{
       'feed_date': instance.feedDate?.toIso8601String(),
       'feed_type': instance.feedType,
       'feed_detail': instance.feedDetail,
-      'feed_like_count': instance.feedLikeCount,
-      'feed_comment_count': instance.feedCommentCount,
-      'feed_share_count': instance.feedShareCount,
-      'feed_attendance_count': instance.feedAttendanceCount,
-      'feed_relate_count': instance.feedRelateCount,
-      'feed_impression_count': instance.feedImpressionCount,
+      'feed_like_cnt': instance.feedLikeCount,
+      'feed_comment_cnt': instance.feedCommentCount,
+      'feed_share_cnt': instance.feedShareCount,
+      'feed_attendance_cnt': instance.feedAttendanceCount,
+      'feed_relate_cnt': instance.feedRelateCount,
+      'feed_impression_cnt': instance.feedImpressionCount,
       'feed_status': instance.feedStatus,
       'is_anonymous': _$IsAnonymousEnumMap[instance.isAnonymous],
       'created_at': instance.createdAt?.toIso8601String(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:owomaniya/model/feed.dart';
 import 'package:owomaniya/model/feed_item_model.dart';
 import 'package:owomaniya/app/router.gr.dart' as route;
 import 'package:owomaniya/ui/view/comment_view.dart';
@@ -78,6 +79,10 @@ class HomeViewModel extends BaseViewModel {
 
   String get token => _token;
 
+  List<Feed> _feed;
+
+  List<Feed> get feed => _feed;
+
   Future navigateToAskExpertView() async {
     await _navigationService.navigateTo(route.Routes.askExpertView);
   }
@@ -120,6 +125,21 @@ class HomeViewModel extends BaseViewModel {
       FeedItemModel model = FeedItemModel.fromJson(jsonString);
       return model;
     }
+  }
+
+  Future<List<Feed>> getFeedList() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var token = preferences.getString('token');
+    http.Response response;
+    if (_token == null) {
+      response = await http.get(ApiUrls.GET_FEEDS_WITHOUT_TOKEN_URL + "$page");
+      _feed = (json.decode(response.body)['data'] as List).map((i) => Feed.fromJson(i)).toList();
+    } else {
+      response =
+          await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO + "$page");
+      _feed = (json.decode(response.body)['data'] as List).map((i) => Feed.fromJson(i)).toList();
+    }
+    return (json.decode(response.body)['data'] as List).map((i) => Feed.fromJson(i)).toList();
   }
 
   Future<Map<String, dynamic>> postBookmark(int feedId) async {

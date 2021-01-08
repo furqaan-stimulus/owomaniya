@@ -59,7 +59,7 @@ T _$enumDecodeNullable<T>(
 }
 
 const _$MediaTypeEnumMap = {
-  MediaType.COVER_IMAGE: 'COVER_IMAGE',
-  MediaType.VIDEO: 'VIDEO',
-  MediaType.IMAGE: 'IMAGE',
+  MediaType.cover_image: 'cover_image',
+  MediaType.video: 'video',
+  MediaType.image: 'image',
 };

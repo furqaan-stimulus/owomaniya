@@ -1,9 +1,11 @@
+import 'package:owomaniya/model/feed.dart';
 import 'package:owomaniya/model/feed_item_model.dart';
 import 'package:owomaniya/utils/date_time_ago.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:owomaniya/viewmodels/home_view_model.dart';
 import 'package:owomaniya/widget/popup_view.dart';
+import 'package:owomaniya/widget/relate_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
@@ -21,6 +23,8 @@ class _HomeViewState extends State<HomeView> {
   Future<SharedPreferences> preferences = SharedPreferences.getInstance();
   Future<FeedItemModel> feedModel;
   ScrollController _sc = new ScrollController();
+
+  List<Feed> feedList;
 
   @override
   void initState() {
@@ -1078,6 +1082,7 @@ class _HomeViewState extends State<HomeView> {
                         },
                       );
                     } else if (snapshot.hasError) {
+                      print(snapshot.error);
                       return Center(
                         child: Text('${snapshot.error}'),
                       );
@@ -1557,86 +1562,135 @@ class _HomeViewState extends State<HomeView> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: <Widget>[
-                                                Padding(
-                                                  padding: const EdgeInsets.only(top: 10.0),
-                                                  child: GestureDetector(
-                                                    key: UniqueKey(),
-                                                    onTap: () {
-                                                      if (sptoken.data == null) {
+                                                // Padding(
+                                                //   padding: const EdgeInsets.only(top: 10.0),
+                                                //   child: GestureDetector(
+                                                //     key: UniqueKey(),
+                                                //     onTap: () {
+                                                //       if (sptoken.data == null) {
+                                                //         ScaffoldMessenger.of(context).showSnackBar(
+                                                //           SnackBar(
+                                                //             action: SnackBarAction(
+                                                //               label: 'Undo',
+                                                //               onPressed: () {},
+                                                //             ),
+                                                //             content: Text('You are not Login'),
+                                                //           ),
+                                                //         );
+                                                //       } else {
+                                                //         if (snapshot.data.data[first].relate ==
+                                                //             false) {
+                                                //           model.relateQuery(
+                                                //               snapshot.data.data[first].id);
+                                                //           snapshot.data.data[first].relate =
+                                                //               !snapshot.data.data[first].relate;
+                                                //           ScaffoldMessenger.of(context)
+                                                //               .showSnackBar(
+                                                //             SnackBar(
+                                                //               action: SnackBarAction(
+                                                //                 label: 'Cancel',
+                                                //                 onPressed: () {},
+                                                //               ),
+                                                //               content: Text('Relate'),
+                                                //             ),
+                                                //           );
+                                                //           print("Query card if condition :");
+                                                //         } else {
+                                                //           model.relateQuery(
+                                                //               snapshot.data.data[first].id);
+                                                //           snapshot.data.data[first].relate =
+                                                //               !snapshot.data.data[first].relate;
+                                                //           ScaffoldMessenger.of(context)
+                                                //               .showSnackBar(
+                                                //             SnackBar(
+                                                //               action: SnackBarAction(
+                                                //                 label: 'Cancel',
+                                                //                 onPressed: () {},
+                                                //               ),
+                                                //               content: Text('Relate removed'),
+                                                //             ),
+                                                //           );
+                                                //           print("Query card else condition :");
+                                                //         }
+                                                //       }
+                                                //     },
+                                                //     child: Row(
+                                                //       children: [
+                                                //         snapshot.data.data[first].relate == false
+                                                //             ? SvgPicture.asset(
+                                                //                 'assets/svg/relate_hand.svg',
+                                                //                 height: 20,
+                                                //                 width: 20,
+                                                //               )
+                                                //             : SvgPicture.asset(
+                                                //                 'assets/svg/relate_hand_pink.svg',
+                                                //                 height: 20,
+                                                //                 width: 20,
+                                                //               ),
+                                                //         SizedBox(
+                                                //           width: 10.0,
+                                                //         ),
+                                                //         Text(
+                                                //           'I Relate',
+                                                //           style: TextStyle(
+                                                //               color: snapshot.data.data[first]
+                                                //                           .relate ==
+                                                //                       false
+                                                //                   ? Colors.black
+                                                //                   : Colors.pink),
+                                                //         ),
+                                                //       ],
+                                                //     ),
+                                                //   ),
+                                                // ),
+                                                RelateButton(
+                                                  relate: false,
+                                                  onPressed: () {
+                                                    if (sptoken.data == null) {
+                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(
+                                                          action: SnackBarAction(
+                                                            label: 'Undo',
+                                                            onPressed: () {},
+                                                          ),
+                                                          content: Text('You are not Login'),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      if (snapshot.data.data[first].relate ==
+                                                          false) {
+                                                        model.relateQuery(
+                                                            snapshot.data.data[first].id);
+                                                        snapshot.data.data[first].relate =
+                                                            !snapshot.data.data[first].relate;
                                                         ScaffoldMessenger.of(context).showSnackBar(
                                                           SnackBar(
                                                             action: SnackBarAction(
-                                                              label: 'Undo',
+                                                              label: 'Cancel',
                                                               onPressed: () {},
                                                             ),
-                                                            content: Text('You are not Login'),
+                                                            content: Text('Relate'),
                                                           ),
                                                         );
+                                                        print("Query card if condition :");
                                                       } else {
-                                                        if (snapshot.data.data[first].relate ==
-                                                            false) {
-                                                          model.relateQuery(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].relate =
-                                                              !snapshot.data.data[first].relate;
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
-                                                            SnackBar(
-                                                              action: SnackBarAction(
-                                                                label: 'Cancel',
-                                                                onPressed: () {},
-                                                              ),
-                                                              content: Text('Relate'),
+                                                        model.relateQuery(
+                                                            snapshot.data.data[first].id);
+                                                        snapshot.data.data[first].relate =
+                                                            !snapshot.data.data[first].relate;
+                                                        ScaffoldMessenger.of(context).showSnackBar(
+                                                          SnackBar(
+                                                            action: SnackBarAction(
+                                                              label: 'Cancel',
+                                                              onPressed: () {},
                                                             ),
-                                                          );
-                                                          print("Query card if condition :");
-                                                        } else {
-                                                          model.relateQuery(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].relate =
-                                                              !snapshot.data.data[first].relate;
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
-                                                            SnackBar(
-                                                              action: SnackBarAction(
-                                                                label: 'Cancel',
-                                                                onPressed: () {},
-                                                              ),
-                                                              content: Text('Relate removed'),
-                                                            ),
-                                                          );
-                                                          print("Query card else condition :");
-                                                        }
+                                                            content: Text('Relate removed'),
+                                                          ),
+                                                        );
+                                                        print("Query card else condition :");
                                                       }
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        snapshot.data.data[first].relate == false
-                                                            ? SvgPicture.asset(
-                                                                'assets/svg/relate_hand.svg',
-                                                                height: 20,
-                                                                width: 20,
-                                                              )
-                                                            : SvgPicture.asset(
-                                                                'assets/svg/relate_hand_pink.svg',
-                                                                height: 20,
-                                                                width: 20,
-                                                              ),
-                                                        SizedBox(
-                                                          width: 10.0,
-                                                        ),
-                                                        Text(
-                                                          'I Relate',
-                                                          style: TextStyle(
-                                                              color: snapshot.data.data[first]
-                                                                          .relate ==
-                                                                      false
-                                                                  ? Colors.black
-                                                                  : Colors.pink),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                    }
+                                                  },
                                                 ),
                                                 SizedBox(
                                                   width: 5,
@@ -2087,6 +2141,7 @@ class _HomeViewState extends State<HomeView> {
                         },
                       );
                     } else if (snapshot.hasError) {
+                      print(snapshot.error);
                       return Center(
                         child: Text('${snapshot.error}'),
                       );
@@ -2599,6 +2654,8 @@ class _HomeViewState extends State<HomeView> {
         feedModel = model.loadFeed();
         _getImage();
         model.isUserSignedIn();
+        feedList = model.feed;
+        print("feed list: ${feedList.length}");
       },
     );
   }

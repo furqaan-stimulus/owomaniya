@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LikeButton extends StatefulWidget {
+class RelateButton extends StatefulWidget {
   final Function() onPressed;
-  final bool liked;
+  final bool relate;
 
-  const LikeButton({Key key, this.onPressed, this.liked}) : super(key: key);
+  const RelateButton({Key key, this.onPressed, this.relate}) : super(key: key);
 
   @override
-  _LikeButtonState createState() => _LikeButtonState();
+  _RelateButtonState createState() => _RelateButtonState();
 }
 
-class _LikeButtonState extends State<LikeButton> {
+class _RelateButtonState extends State<RelateButton> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -23,7 +23,7 @@ class _LikeButtonState extends State<LikeButton> {
               onTap: () {
                 Row(
                   children: [
-                    widget.liked
+                    widget.relate
                         ? SvgPicture.asset(
                             'assets/svg/relate_hand.svg',
                             height: 20,
@@ -38,8 +38,8 @@ class _LikeButtonState extends State<LikeButton> {
                       width: 10.0,
                     ),
                     Text(
-                      'Like',
-                      style: TextStyle(color: widget.liked ? Colors.black : Colors.pink),
+                      'I Relate',
+                      style: TextStyle(color: widget.relate ? Colors.black : Colors.pink),
                     ),
                   ],
                 );

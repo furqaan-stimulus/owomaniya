@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:owomaniya/model/feed.dart';
 
 part 'get_bookmark.g.dart';
+
 // GetBookmark getBookmarkFromJson(String str) => GetBookmark.fromJson(json.decode(str));
 //
 // String getBookmarkToJson(GetBookmark data) => json.encode(data.toJson());
@@ -25,8 +26,6 @@ part 'get_bookmark.g.dart';
 //     "data": List<dynamic>.from(data.map((x) => x.toJson())),
 //   };
 // }
-
-
 
 @JsonSerializable(
   explicitToJson: true,

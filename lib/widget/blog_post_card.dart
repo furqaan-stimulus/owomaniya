@@ -66,11 +66,6 @@ class _BlogPostCardState extends State<BlogPostCard> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Image.asset(
-                          //   'assets/images/ow_symbol.png',
-                          //   height: 50,
-                          //   width: 50,
-                          // ),
                           Image.asset(
                             model[index].details.authorDetails[index].user.userImage,
                             height: 50,
@@ -85,18 +80,15 @@ class _BlogPostCardState extends State<BlogPostCard> {
                             children: [
                               Text(
                                 'name',
-                                // '${model[index].data[index].details.authordetails[index].user.firstName + model[index].data[index].details.authordetails[index].user.lastName}',
+
                                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 'intro',
-                                // '${model[index].data[index].details.authordetails[index].user.authordetails[index].introduction}',
-                                // model.details.introduction,
                                 style: TextStyle(fontSize: 16.0, color: Colors.grey),
                               ),
                               Text(
                                 'time',
-                                // '${model[index].data[index].feedDate}'
                               ),
                             ],
                           ),
@@ -116,10 +108,6 @@ class _BlogPostCardState extends State<BlogPostCard> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Image.asset('assets/images/onboarding0.png'),
-                                // Image.network(model[index]
-                                //     .data[index]
-                                //     .media[index]
-                                //     .mediaPath),
                                 SizedBox(
                                   height: 20.0,
                                 ),
@@ -129,8 +117,6 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                   children: [
                                     Text(
                                       'category',
-                                      // '${model[index].data[index].categorymapping[index].category.category}'
-                                      // model.categoryMapping.category.category
                                     ),
                                     Container(
                                       height: 20,
@@ -401,14 +387,16 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                                 children: [
                                                   Text(
                                                     'Mirza',
-                                                    style: TextStyle(color: Colors.black, fontSize: 16),
+                                                    style: TextStyle(
+                                                        color: Colors.black, fontSize: 16),
                                                   ),
                                                   SizedBox(
                                                     height: 5.0,
                                                   ),
                                                   Text(
                                                     'comment 1',
-                                                    style: TextStyle(color: Colors.blueGrey, fontSize: 14),
+                                                    style: TextStyle(
+                                                        color: Colors.blueGrey, fontSize: 14),
                                                   ),
                                                 ],
                                               ),
@@ -435,14 +423,16 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                                 children: [
                                                   Text(
                                                     'Mirza',
-                                                    style: TextStyle(color: Colors.black, fontSize: 16),
+                                                    style: TextStyle(
+                                                        color: Colors.black, fontSize: 16),
                                                   ),
                                                   SizedBox(
                                                     height: 5.0,
                                                   ),
                                                   Text(
                                                     'comment 2',
-                                                    style: TextStyle(color: Colors.blueGrey, fontSize: 14),
+                                                    style: TextStyle(
+                                                        color: Colors.blueGrey, fontSize: 14),
                                                   ),
                                                 ],
                                               ),
@@ -469,14 +459,16 @@ class _BlogPostCardState extends State<BlogPostCard> {
                                                 children: [
                                                   Text(
                                                     'Mirza',
-                                                    style: TextStyle(color: Colors.black, fontSize: 16),
+                                                    style: TextStyle(
+                                                        color: Colors.black, fontSize: 16),
                                                   ),
                                                   SizedBox(
                                                     height: 5.0,
                                                   ),
                                                   Text(
                                                     'comment 3',
-                                                    style: TextStyle(color: Colors.blueGrey, fontSize: 14),
+                                                    style: TextStyle(
+                                                        color: Colors.blueGrey, fontSize: 14),
                                                   ),
                                                 ],
                                               ),

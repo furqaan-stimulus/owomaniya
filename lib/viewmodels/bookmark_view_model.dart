@@ -33,4 +33,5 @@ class BookmarkViewModel extends BaseModel {
     setBusy(false);
     return jsonDecode(response.body);
   }
+
 }
