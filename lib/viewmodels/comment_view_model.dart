@@ -9,25 +9,23 @@ class CommentViewModel extends BaseModel {
   String _token;
 
   String get token => _token;
-  Future<FeedComments> getComments(
-      int index,
-      int feedId,
-      ) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
 
+  Future<List<FeedComments>> getComments(
+    int feedId,
+  ) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
     http.Response response;
-    if (_token != null) {
-      response = await http.get(ApiUrls.GET_FEED_COMMENT_URL + token + ApiUrls.FEED_NO + "${3113}");
-      final jsonString = json.decode(response.body);
-      FeedComments model = FeedComments.fromJson(jsonString);
-      print(" page :${model.data.currentPage}");
-      return model;
-    }
-    return jsonDecode(response.body);
+    print("get comment id: $feedId");
+    response = await http.get(ApiUrls.GET_FEED_COMMENT_URL + token + ApiUrls.FEED_NO + "$feedId");
+    print("--------- ${json.decode(response.body)['data']['data']}");
+    return (json.decode(response.body)['data']['data'] as List)
+        .map((e) => FeedComments.fromJson(e))
+        .toList();
   }
 
-  Future<Map<String, dynamic>> postFeedComment(int feedId, String comment, String isAnonymous) async {
+  Future<Map<String, dynamic>> postFeedComment(
+      int feedId, String comment, String isAnonymous) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
     final Map<String, dynamic> postFeedCommentData = {

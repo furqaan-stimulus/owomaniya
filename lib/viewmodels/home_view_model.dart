@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:owomaniya/model/feed.dart';
-import 'package:owomaniya/model/feed_item_model.dart';
+import 'package:owomaniya/model/feed_item_model.dart' as feed;
 import 'package:owomaniya/app/router.gr.dart' as route;
 import 'package:owomaniya/ui/view/comment_view.dart';
 import 'package:owomaniya/ui/view/ask_expert_view.dart';
+import 'package:owomaniya/ui/view/feed_details_view.dart';
 import 'package:owomaniya/utils/api_urls.dart';
 import 'package:owomaniya/app/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,20 +79,26 @@ class HomeViewModel extends BaseViewModel {
 
   String get token => _token;
 
-  List<Feed> _feed;
-
-  List<Feed> get feed => _feed;
-
   Future navigateToAskExpertView() async {
     await _navigationService.navigateTo(route.Routes.askExpertView);
   }
 
-  navigateToCommentScreen(int item, BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CommentView(itemHolder: item)));
+  navigateToCommentScreen(int id, BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CommentView(feedId: id)));
   }
 
-  navigateToExpertScreen(
-      String doctorName, String expertiseFiled, String image, BuildContext context) {
+  navigateToFeedDetailsView(int id, String userName, String userImage, BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FeedDetailsView(
+                  feedId: id,
+                  userName: userName,
+                  userImage: userImage,
+                )));
+  }
+
+  navigateToExpertScreen(String doctorName, String expertiseFiled, String image, BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -109,37 +115,28 @@ class HomeViewModel extends BaseViewModel {
 
   int page = 1;
 
-  Future<FeedItemModel> loadFeed() async {
+  Future<List<feed.Datum>> loadFeed() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var token = preferences.getString('token');
     http.Response response;
+    print('load feed called');
     if (_token == null) {
+      print('-------load feed without token------------');
       response = await http.get(ApiUrls.GET_FEEDS_WITHOUT_TOKEN_URL + "$page");
-      final jsonString = json.decode(response.body);
-      FeedItemModel model = FeedItemModel.fromJson(jsonString);
-      return model;
+      final jsonString = (json.decode(response.body)['data'] as List).map((e) => feed.Datum.fromJson(e)).toList();
+      // feed.Datum model = feed.Datum.fromJson(jsonString);
+      print('-------load feed without token before return statement------------');
+      print('without token ${jsonString[0].id}');
+      return jsonString;
     } else {
-      response =
-          await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO + "$page");
-      final jsonString = json.decode(response.body);
-      FeedItemModel model = FeedItemModel.fromJson(jsonString);
-      return model;
+      print('-------load feed with token------------');
+      response = await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO + "$page");
+      final jsonString = (json.decode(response.body)['data'] as List).map((e) => feed.Datum.fromJson(e)).toList();
+      // feed.Datum model = feed.Datum.fromJson(jsonString);
+      print('-------load feed with token before return statement------------');
+      print('with token ${jsonString.length}');
+      return jsonString;
     }
-  }
-
-  Future<List<Feed>> getFeedList() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var token = preferences.getString('token');
-    http.Response response;
-    if (_token == null) {
-      response = await http.get(ApiUrls.GET_FEEDS_WITHOUT_TOKEN_URL + "$page");
-      _feed = (json.decode(response.body)['data'] as List).map((i) => Feed.fromJson(i)).toList();
-    } else {
-      response =
-          await http.get(ApiUrls.GET_FEEDS_WITH_TOKEN_URL + token + ApiUrls.PAGE_NO + "$page");
-      _feed = (json.decode(response.body)['data'] as List).map((i) => Feed.fromJson(i)).toList();
-    }
-    return (json.decode(response.body)['data'] as List).map((i) => Feed.fromJson(i)).toList();
   }
 
   Future<Map<String, dynamic>> postBookmark(int feedId) async {

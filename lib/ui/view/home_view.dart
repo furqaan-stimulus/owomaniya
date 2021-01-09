@@ -1,13 +1,13 @@
-import 'package:owomaniya/model/feed.dart';
 import 'package:owomaniya/model/feed_item_model.dart';
 import 'package:owomaniya/utils/date_time_ago.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:owomaniya/viewmodels/home_view_model.dart';
 import 'package:owomaniya/widget/popup_view.dart';
-import 'package:owomaniya/widget/relate_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../model/feed_item_model.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({
@@ -21,10 +21,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   bool descTextShowFlag = false;
   Future<SharedPreferences> preferences = SharedPreferences.getInstance();
-  Future<FeedItemModel> feedModel;
+  Future<List<Datum>> feedModel;
   ScrollController _sc = new ScrollController();
-
-  List<Feed> feedList;
 
   @override
   void initState() {
@@ -49,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
           future: _getToken(),
           builder: (context, sptoken) {
             if (sptoken.hasData) {
-              return FutureBuilder<FeedItemModel>(
+              return FutureBuilder<List<Datum>>(
                 future: feedModel,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
@@ -58,14 +56,14 @@ class _HomeViewState extends State<HomeView> {
                         controller: _sc,
                         physics: ScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: snapshot.data.data?.length ?? 0,
+                        itemCount: snapshot.data?.length ?? 0,
                         itemBuilder: (context, first) {
                           return ListView.builder(
                             physics: ScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: snapshot.data.data[first].details.authordetails?.length ?? 0,
+                            itemCount: snapshot.data[first].details.authordetails?.length ?? 0,
                             itemBuilder: (context, second) {
-                              if (snapshot.data.data[first].feedType == FeedType.QUERY) {
+                              if (snapshot.data[first].feedType == FeedType.QUERY) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                                   child: Card(
@@ -88,11 +86,10 @@ class _HomeViewState extends State<HomeView> {
                                                       children: [
                                                         Text(
                                                           'Query on ',
-                                                          style: TextStyle(
-                                                              fontSize: 14.0, color: Colors.grey),
+                                                          style: TextStyle(fontSize: 14.0, color: Colors.grey),
                                                         ),
                                                         Text(
-                                                          '${snapshot.data.data[first].categorymapping[second].category.category}',
+                                                          '${snapshot.data[first].categorymapping[second].category.category}',
                                                           style: TextStyle(
                                                             fontSize: 14.0,
                                                             fontWeight: FontWeight.bold,
@@ -101,11 +98,7 @@ class _HomeViewState extends State<HomeView> {
                                                         SizedBox(
                                                           width: 10.0,
                                                         ),
-                                                        snapshot
-                                                                    .data
-                                                                    .data[first]
-                                                                    .feedqueryassigned[second]
-                                                                    .feedStatus ==
+                                                        snapshot.data[first].feedqueryassigned[second].feedStatus ==
                                                                 "ANSWERED"
                                                             ? Row(
                                                                 children: [
@@ -119,9 +112,8 @@ class _HomeViewState extends State<HomeView> {
                                                                   ),
                                                                   Text(
                                                                     'Answered',
-                                                                    style: TextStyle(
-                                                                        fontSize: 14.0,
-                                                                        color: Colors.pink),
+                                                                    style:
+                                                                        TextStyle(fontSize: 14.0, color: Colors.pink),
                                                                   ),
                                                                 ],
                                                               )
@@ -132,8 +124,7 @@ class _HomeViewState extends State<HomeView> {
                                                       height: 5.0,
                                                     ),
                                                     Text(
-                                                      DateTimeAgo.timeAgoSinceDate(
-                                                          '${snapshot.data.data[first].feedDate}'),
+                                                      DateTimeAgo.timeAgoSinceDate('${snapshot.data[first].feedDate}'),
                                                       style: TextStyle(
                                                         fontSize: 12.0,
                                                       ),
@@ -164,7 +155,7 @@ class _HomeViewState extends State<HomeView> {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    '${snapshot.data.data[first].feedTitle}',
+                                                    '${snapshot.data[first].feedTitle}',
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
                                                     maxLines: 3,
@@ -177,8 +168,7 @@ class _HomeViewState extends State<HomeView> {
                                                     height: 20,
                                                     width: 20,
                                                     child: GestureDetector(
-                                                      child: snapshot.data.data[first].bookmarked ==
-                                                              false
+                                                      child: snapshot.data[first].bookmarked == false
                                                           ? SvgPicture.asset(
                                                               "assets/svg/tag_inactive.svg",
                                                               width: 10.0,
@@ -191,8 +181,7 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                       onTap: () {
                                                         if (sptoken.data == null) {
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
+                                                          ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
                                                               action: SnackBarAction(
                                                                 label: 'Undo',
@@ -202,16 +191,11 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                           );
                                                         } else {
-                                                          if (snapshot
-                                                                  .data.data[first].bookmarked ==
-                                                              false) {
-                                                            model.postBookmark(
-                                                                snapshot.data.data[first].id);
-                                                            snapshot.data.data[first].bookmarked =
-                                                                !snapshot
-                                                                    .data.data[first].bookmarked;
-                                                            ScaffoldMessenger.of(context)
-                                                                .showSnackBar(
+                                                          if (snapshot.data[first].bookmarked == false) {
+                                                            model.postBookmark(snapshot.data[first].id);
+                                                            snapshot.data[first].bookmarked =
+                                                                !snapshot.data[first].bookmarked;
+                                                            ScaffoldMessenger.of(context).showSnackBar(
                                                               SnackBar(
                                                                 action: SnackBarAction(
                                                                   label: 'Cancel',
@@ -221,13 +205,10 @@ class _HomeViewState extends State<HomeView> {
                                                               ),
                                                             );
                                                           } else {
-                                                            model.postBookmark(
-                                                                snapshot.data.data[first].id);
-                                                            snapshot.data.data[first].bookmarked =
-                                                                !snapshot
-                                                                    .data.data[first].bookmarked;
-                                                            ScaffoldMessenger.of(context)
-                                                                .showSnackBar(
+                                                            model.postBookmark(snapshot.data[first].id);
+                                                            snapshot.data[first].bookmarked =
+                                                                !snapshot.data[first].bookmarked;
+                                                            ScaffoldMessenger.of(context).showSnackBar(
                                                               SnackBar(
                                                                 action: SnackBarAction(
                                                                   label: 'Cancel',
@@ -248,14 +229,14 @@ class _HomeViewState extends State<HomeView> {
                                             Padding(
                                               padding: const EdgeInsets.only(),
                                               child: Text(
-                                                '${snapshot.data.data[first].feedDetail}',
+                                                '${snapshot.data[first].feedDetail}',
                                                 maxLines: descTextShowFlag ? 8 : 2,
                                                 textAlign: TextAlign.start,
                                               ),
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                model.launchUrl(snapshot.data.data[first].feedUrl);
+                                                model.launchUrl(snapshot.data[first].feedUrl);
                                                 setState(
                                                   () {
                                                     descTextShowFlag = !descTextShowFlag;
@@ -270,8 +251,7 @@ class _HomeViewState extends State<HomeView> {
                                                           "Show Less",
                                                           style: TextStyle(color: Colors.grey),
                                                         )
-                                                      : Text("Continue Reading",
-                                                          style: TextStyle(color: Colors.grey))
+                                                      : Text("Continue Reading", style: TextStyle(color: Colors.grey))
                                                 ],
                                               ),
                                             ),
@@ -280,14 +260,10 @@ class _HomeViewState extends State<HomeView> {
                                               children: <Widget>[
                                                 Container(
                                                   width: double.infinity,
-                                                  padding: EdgeInsets.only(
-                                                      top: 20.0,
-                                                      bottom: 10.0,
-                                                      left: 10.0,
-                                                      right: 10.0),
+                                                  padding:
+                                                      EdgeInsets.only(top: 20.0, bottom: 10.0, left: 10.0, right: 10.0),
                                                   decoration: BoxDecoration(
-                                                    border:
-                                                        Border.all(color: Colors.grey, width: 0.5),
+                                                    border: Border.all(color: Colors.grey, width: 0.5),
                                                     borderRadius: BorderRadius.circular(3),
                                                     shape: BoxShape.rectangle,
                                                   ),
@@ -300,12 +276,7 @@ class _HomeViewState extends State<HomeView> {
                                                           SizedBox(
                                                             height: 10.0,
                                                           ),
-                                                          snapshot
-                                                                      .data
-                                                                      .data[first]
-                                                                      .details
-                                                                      .authordetails[second]
-                                                                      .user
+                                                          snapshot.data[first].details.authordetails[second].user
                                                                       .userImage ==
                                                                   null
                                                               ? SvgPicture.asset(
@@ -321,41 +292,30 @@ class _HomeViewState extends State<HomeView> {
                                                                     image: DecorationImage(
                                                                       fit: BoxFit.fill,
                                                                       image: NetworkImage(
-                                                                        snapshot
-                                                                            .data
-                                                                            .data[first]
-                                                                            .details
-                                                                            .authordetails[second]
-                                                                            .user
-                                                                            .userImage,
+                                                                        snapshot.data[first].details
+                                                                            .authordetails[second].user.userImage,
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(left: 8.0),
+                                                            padding: const EdgeInsets.only(left: 8.0),
                                                             child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment.start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment.start,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 Text(
-                                                                  '${snapshot.data.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.firstName}' +
-                                                                      ' ${snapshot.data.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data.data[first].details.authordetails[second].user?.lastName}',
+                                                                  '${snapshot.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data[first].details.authordetails[second].user.firstName}' +
+                                                                      ' ${snapshot.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data[first].details.authordetails[second].user?.lastName}',
                                                                   style: TextStyle(
-                                                                      fontWeight: FontWeight.bold,
-                                                                      fontSize: 16),
+                                                                      fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsets.only(
-                                                                      top: 4.0),
+                                                                  padding: const EdgeInsets.only(top: 4.0),
                                                                   child: Text(
-                                                                    '${snapshot.data.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName}',
-                                                                    style: TextStyle(
-                                                                        color: Colors.grey,
-                                                                        fontSize: 14.0),
+                                                                    '${snapshot.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName == null ? '' : snapshot.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName}',
+                                                                    style:
+                                                                        TextStyle(color: Colors.grey, fontSize: 14.0),
                                                                   ),
                                                                 ),
                                                               ],
@@ -370,17 +330,14 @@ class _HomeViewState extends State<HomeView> {
                                                         color: Colors.grey,
                                                       ),
                                                       Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.spaceAround,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                         children: [
                                                           SizedBox(
                                                             width: 5,
                                                           ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(top: 8.0),
+                                                            padding: const EdgeInsets.only(top: 8.0),
                                                             child: SvgPicture.asset(
                                                               'assets/svg/full_consultation.svg',
                                                               height: 14,
@@ -391,12 +348,10 @@ class _HomeViewState extends State<HomeView> {
                                                             width: 5,
                                                           ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(top: 8.0),
+                                                            padding: const EdgeInsets.only(top: 8.0),
                                                             child: GestureDetector(
                                                                 onTap: () {
-                                                                  model.launchUrl(snapshot
-                                                                      .data.data[first].feedUrl);
+                                                                  model.launchUrl(snapshot.data[first].feedUrl);
                                                                 },
                                                                 child: Text(
                                                                   'See Full Consultation',
@@ -404,12 +359,9 @@ class _HomeViewState extends State<HomeView> {
                                                                 )),
                                                           ),
                                                           Container(
-                                                              height: 30,
-                                                              child: VerticalDivider(
-                                                                  color: Colors.grey)),
+                                                              height: 30, child: VerticalDivider(color: Colors.grey)),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(top: 8.0),
+                                                            padding: const EdgeInsets.only(top: 8.0),
                                                             child: SvgPicture.asset(
                                                               'assets/svg/sidebar_query.svg',
                                                               height: 14,
@@ -420,28 +372,15 @@ class _HomeViewState extends State<HomeView> {
                                                             width: 5,
                                                           ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(top: 8.0),
+                                                            padding: const EdgeInsets.only(top: 8.0),
                                                             child: GestureDetector(
                                                               onTap: () {
-                                                                var fName = snapshot
-                                                                    .data
-                                                                    .data[first]
-                                                                    .details
-                                                                    .authordetails[second]
-                                                                    .user
-                                                                    .firstName;
-                                                                var lName = snapshot
-                                                                    .data
-                                                                    .data[first]
-                                                                    .details
-                                                                    .authordetails[second]
-                                                                    .user
-                                                                    .lastName;
-                                                                var fullName =
-                                                                    "$fName" + " " + "$lName";
+                                                                var fName = snapshot.data[first].details
+                                                                    .authordetails[second].user.firstName;
+                                                                var lName = snapshot.data[first].details
+                                                                    .authordetails[second].user.lastName;
+                                                                var fullName = "$fName" + " " + "$lName";
                                                                 var expertise = snapshot
-                                                                    .data
                                                                     .data[first]
                                                                     .details
                                                                     .authordetails[second]
@@ -449,22 +388,14 @@ class _HomeViewState extends State<HomeView> {
                                                                     .expertexpertisemapping[second]
                                                                     .parentexpertise
                                                                     .expertiseName;
-                                                                var img = snapshot
-                                                                    .data
-                                                                    .data[first]
-                                                                    .details
-                                                                    .authordetails[second]
-                                                                    .user
-                                                                    .userImage;
+                                                                var img = snapshot.data[first].details
+                                                                    .authordetails[second].user.userImage;
 
                                                                 model.navigateToExpertScreen(
-                                                                    fullName,
-                                                                    expertise,
-                                                                    img,
-                                                                    context);
+                                                                    fullName, expertise, img, context);
                                                               },
                                                               child: Text(
-                                                                'Ask ${snapshot.data.data[first].details.authordetails[second].user.firstName} ${snapshot.data.data[first].details.authordetails[second].user.lastName}',
+                                                                'Ask ${snapshot.data[first].details.authordetails[second].user.firstName} ${snapshot.data[first].details.authordetails[second].user.lastName}',
                                                                 style: TextStyle(fontSize: 13.0),
                                                               ),
                                                             ),
@@ -482,8 +413,7 @@ class _HomeViewState extends State<HomeView> {
                                                     color: Colors.white,
                                                     child: Text(
                                                       'Expert Says',
-                                                      style: TextStyle(
-                                                          color: Colors.black, fontSize: 12),
+                                                      style: TextStyle(color: Colors.black, fontSize: 12),
                                                     ),
                                                   ),
                                                 ),
@@ -494,15 +424,12 @@ class _HomeViewState extends State<HomeView> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: <Widget>[
-                                                Text(
-                                                    '${snapshot.data.data[first].feedRelateCnt} Relate with this'),
+                                                Text('${snapshot.data[first].feedRelateCnt} Relate with this'),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(left: 8.0, right: 8.0),
+                                                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                                                   child: Text('.'),
                                                 ),
-                                                Text(
-                                                    '${snapshot.data.data[first].feedCommentCnt} Comment'),
+                                                Text('${snapshot.data[first].feedCommentCnt} Comment'),
                                               ],
                                             ),
                                             SizedBox(height: 10.0),
@@ -529,14 +456,10 @@ class _HomeViewState extends State<HomeView> {
                                                           ),
                                                         );
                                                       } else {
-                                                        if (snapshot.data.data[first].relate ==
-                                                            false) {
-                                                          model.relateQuery(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].relate =
-                                                              !snapshot.data.data[first].relate;
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
+                                                        if (snapshot.data[first].relate == false) {
+                                                          model.relateQuery(snapshot.data[first].id);
+                                                          snapshot.data[first].relate = !snapshot.data[first].relate;
+                                                          ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
                                                               action: SnackBarAction(
                                                                 label: 'Cancel',
@@ -547,12 +470,9 @@ class _HomeViewState extends State<HomeView> {
                                                           );
                                                           print("Query card if condition");
                                                         } else {
-                                                          model.relateQuery(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].relate =
-                                                              !snapshot.data.data[first].relate;
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
+                                                          model.relateQuery(snapshot.data[first].id);
+                                                          snapshot.data[first].relate = !snapshot.data[first].relate;
+                                                          ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
                                                               action: SnackBarAction(
                                                                 label: 'Cancel',
@@ -567,7 +487,7 @@ class _HomeViewState extends State<HomeView> {
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        snapshot.data.data[first].relate == false
+                                                        snapshot.data[first].relate == false
                                                             ? SvgPicture.asset(
                                                                 'assets/svg/relate_hand.svg',
                                                                 height: 20,
@@ -584,9 +504,7 @@ class _HomeViewState extends State<HomeView> {
                                                         Text(
                                                           'I Relate',
                                                           style: TextStyle(
-                                                              color: snapshot.data.data[first]
-                                                                          .relate ==
-                                                                      false
+                                                              color: snapshot.data[first].relate == false
                                                                   ? Colors.black
                                                                   : Colors.pink),
                                                         ),
@@ -611,8 +529,7 @@ class _HomeViewState extends State<HomeView> {
                                                       );
                                                     } else {
                                                       setState(() {
-                                                        model.navigateToCommentScreen(
-                                                            snapshot.data.data[first].id, context);
+                                                        model.navigateToCommentScreen(snapshot.data[first].id, context);
                                                       });
                                                     }
                                                   },
@@ -620,8 +537,7 @@ class _HomeViewState extends State<HomeView> {
                                                     padding: const EdgeInsets.only(top: 10.0),
                                                     child: Row(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         SvgPicture.asset(
                                                           'assets/svg/comment.svg',
@@ -668,8 +584,7 @@ class _HomeViewState extends State<HomeView> {
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                snapshot.data.data[first].details
-                                                            .authordetails[second].user.userImage ==
+                                                snapshot.data[first].details.authordetails[second].user.userImage ==
                                                         null
                                                     ? SvgPicture.asset(
                                                         'assets/svg/anyonmans.svg',
@@ -684,12 +599,7 @@ class _HomeViewState extends State<HomeView> {
                                                           image: DecorationImage(
                                                             fit: BoxFit.fill,
                                                             image: NetworkImage(
-                                                              snapshot
-                                                                  .data
-                                                                  .data[first]
-                                                                  .details
-                                                                  .authordetails[second]
-                                                                  .user
+                                                              snapshot.data[first].details.authordetails[second].user
                                                                   .userImage,
                                                             ),
                                                           ),
@@ -706,27 +616,24 @@ class _HomeViewState extends State<HomeView> {
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
-                                                          '${snapshot.data.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.firstName}' +
-                                                              ' ${snapshot.data.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data.data[first].details.authordetails[second].user?.lastName}',
-                                                          style: TextStyle(
-                                                              fontSize: 18.0,
-                                                              fontWeight: FontWeight.bold),
+                                                          '${snapshot.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data[first].details.authordetails[second].user.firstName}' +
+                                                              ' ${snapshot.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data[first].details.authordetails[second].user?.lastName}',
+                                                          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                                                         ),
                                                       ),
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
-                                                          '${snapshot.data.data[first].details.authordetails[second].user.authordetails[second].introduction}',
+                                                          '${snapshot.data[first].details.authordetails[second].user.authordetails[second].introduction}',
                                                           softWrap: true,
-                                                          style: TextStyle(
-                                                              fontSize: 14.0, color: Colors.grey),
+                                                          style: TextStyle(fontSize: 14.0, color: Colors.grey),
                                                         ),
                                                       ),
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
                                                           DateTimeAgo.timeAgoSinceDate(
-                                                              '${snapshot.data.data[first].feedDate}'),
+                                                              '${snapshot.data[first].feedDate}'),
                                                           style: TextStyle(
                                                             fontSize: 14.0,
                                                           ),
@@ -741,13 +648,19 @@ class _HomeViewState extends State<HomeView> {
                                               height: 10.0,
                                             ),
                                             GestureDetector(
-                                              onTap: () {
-                                                model.launchUrl(snapshot.data.data[first].feedUrl);
+                                              onTap: () async {
+                                                final SharedPreferences pref = await preferences;
+                                                final String fName = pref.getString("first_name");
+                                                final String lName = pref.getString("last_name");
+                                                String fullName = '$fName $lName';
+                                                final String image = pref.getString("user_image");
+                                                // model.launchUrl(snapshot.data[first].feedUrl);
+                                                model.navigateToFeedDetailsView(
+                                                    snapshot.data[first].id, fullName, image, context);
                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                  border:
-                                                      Border.all(color: Colors.grey, width: 0.5),
+                                                  border: Border.all(color: Colors.grey, width: 0.5),
                                                   borderRadius: BorderRadius.circular(3),
                                                 ),
                                                 child: Column(
@@ -762,8 +675,7 @@ class _HomeViewState extends State<HomeView> {
                                                         image: DecorationImage(
                                                           fit: BoxFit.fill,
                                                           image: NetworkImage(
-                                                            snapshot.data.data[first].media[second]
-                                                                .mediaPath,
+                                                            snapshot.data[first].media[second].mediaPath,
                                                           ),
                                                         ),
                                                       ),
@@ -773,24 +685,19 @@ class _HomeViewState extends State<HomeView> {
                                                       height: 5.0,
                                                     ),
                                                     Padding(
-                                                      padding: const EdgeInsets.fromLTRB(
-                                                          10.0, 10.0, 10.0, 10.0),
+                                                      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                                                       child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.spaceBetween,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text(
-                                                            '${snapshot.data.data[first].categorymapping[second].category.category}',
+                                                            '${snapshot.data[first].categorymapping[second].category.category}',
                                                           ),
                                                           Container(
                                                             height: 20,
                                                             width: 20,
                                                             child: GestureDetector(
-                                                              child: snapshot.data.data[first]
-                                                                          .bookmarked ==
-                                                                      false
+                                                              child: snapshot.data[first].bookmarked == false
                                                                   ? SvgPicture.asset(
                                                                       "assets/svg/tag_inactive.svg",
                                                                       width: 10.0,
@@ -803,92 +710,66 @@ class _HomeViewState extends State<HomeView> {
                                                                     ),
                                                               onTap: () {
                                                                 if (sptoken.data == null) {
-                                                                  ScaffoldMessenger.of(context)
-                                                                      .showSnackBar(
+                                                                  ScaffoldMessenger.of(context).showSnackBar(
                                                                     SnackBar(
                                                                       action: SnackBarAction(
                                                                         label: 'Undo',
                                                                         onPressed: () {},
                                                                       ),
-                                                                      content:
-                                                                          Text('You are not Login'),
+                                                                      content: Text('You are not Login'),
                                                                     ),
                                                                   );
                                                                 } else {
-                                                                  if (snapshot.data.data[first]
-                                                                          .bookmarked ==
-                                                                      false) {
-                                                                    snapshot.data.data
-                                                                        .forEach((datum) {
+                                                                  if (snapshot.data[first].bookmarked == false) {
+                                                                    snapshot.data.forEach((datum) {
                                                                       var book = datum.bookmarked;
                                                                       var id = datum.id;
                                                                       if (book) {
-                                                                        print(
-                                                                            "Query card if condition: $book");
-                                                                        print(
-                                                                            "Query card if condition : $id");
+                                                                        print("Query card if condition: $book");
+                                                                        print("Query card if condition : $id");
                                                                       } else {
-                                                                        print(
-                                                                            "Query card else condition : $book");
-                                                                        print(
-                                                                            "Query card else condition : $id");
+                                                                        print("Query card else condition : $book");
+                                                                        print("Query card else condition : $id");
                                                                       }
                                                                     });
-                                                                    model.postBookmark(snapshot
-                                                                        .data.data[first].id);
-                                                                    snapshot.data.data[first]
-                                                                            .bookmarked =
-                                                                        !snapshot.data.data[first]
-                                                                            .bookmarked;
-                                                                    ScaffoldMessenger.of(context)
-                                                                        .showSnackBar(
+                                                                    model.postBookmark(snapshot.data[first].id);
+                                                                    snapshot.data[first].bookmarked =
+                                                                        !snapshot.data[first].bookmarked;
+                                                                    ScaffoldMessenger.of(context).showSnackBar(
                                                                       SnackBar(
                                                                         action: SnackBarAction(
                                                                           label: 'Cancel',
                                                                           onPressed: () {},
                                                                         ),
-                                                                        content:
-                                                                            Text('Bookmark Added'),
+                                                                        content: Text('Bookmark Added'),
                                                                       ),
                                                                     );
-                                                                    print(
-                                                                        "Query card if condition :");
+                                                                    print("Query card if condition :");
                                                                   } else {
-                                                                    snapshot.data.data
-                                                                        .forEach((datum) {
+                                                                    snapshot.data.forEach((datum) {
                                                                       var book = datum.bookmarked;
                                                                       var id = datum.id;
                                                                       if (book) {
-                                                                        print(
-                                                                            "Query card if condition : $book");
-                                                                        print(
-                                                                            "Query card if condition : $id");
+                                                                        print("Query card if condition : $book");
+                                                                        print("Query card if condition : $id");
                                                                       } else {
-                                                                        print(
-                                                                            "Query card else condition : $book");
-                                                                        print(
-                                                                            "Query card else condition : $id");
+                                                                        print("Query card else condition : $book");
+                                                                        print("Query card else condition : $id");
                                                                       }
                                                                     });
-                                                                    model.postBookmark(snapshot
-                                                                        .data.data[first].id);
-                                                                    snapshot.data.data[first]
-                                                                            .bookmarked =
-                                                                        !snapshot.data.data[first]
-                                                                            .bookmarked;
-                                                                    ScaffoldMessenger.of(context)
-                                                                        .showSnackBar(
+                                                                    model.postBookmark(snapshot.data[first].id);
+                                                                    snapshot.data[first].bookmarked =
+                                                                        !snapshot.data[first].bookmarked;
+                                                                    ScaffoldMessenger.of(context).showSnackBar(
                                                                       SnackBar(
                                                                         action: SnackBarAction(
                                                                           label: 'Cancel',
                                                                           onPressed: () {},
                                                                         ),
-                                                                        content: Text(
-                                                                            'Bookmark removed'),
+                                                                        content: Text('Bookmark removed'),
                                                                       ),
                                                                     );
-                                                                    print(
-                                                                        "Query card else condition :");
+                                                                    print("Query card else condition :");
                                                                   }
                                                                 }
                                                               },
@@ -898,10 +779,9 @@ class _HomeViewState extends State<HomeView> {
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding: const EdgeInsets.fromLTRB(
-                                                          10.0, 0.0, 35.0, 25.0),
+                                                      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 35.0, 25.0),
                                                       child: Text(
-                                                        '${snapshot.data.data[first].feedTitle}',
+                                                        '${snapshot.data[first].feedTitle}',
                                                         textAlign: TextAlign.left,
                                                         softWrap: true,
                                                       ),
@@ -911,24 +791,22 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 0.0),
+                                              padding: const EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 0.0),
                                               child: Row(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 children: <Widget>[
                                                   Text(
-                                                    ' ${snapshot.data.data[first].feedLikeCnt} like this',
+                                                    ' ${snapshot.data[first].feedLikeCnt} like this',
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        left: 8.0, right: 8.0),
+                                                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                                                     child: Text(
                                                       '.',
                                                     ),
                                                   ),
                                                   Text(
-                                                    '${snapshot.data.data[first].feedCommentCnt} comments',
+                                                    '${snapshot.data[first].feedCommentCnt} comments',
                                                   ),
                                                 ],
                                               ),
@@ -956,14 +834,10 @@ class _HomeViewState extends State<HomeView> {
                                                           ),
                                                         );
                                                       } else {
-                                                        if (snapshot.data.data[first].liked ==
-                                                            false) {
-                                                          model.likeArticle(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].liked =
-                                                              !snapshot.data.data[first].liked;
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
+                                                        if (snapshot.data[first].liked == false) {
+                                                          model.likeArticle(snapshot.data[first].id);
+                                                          snapshot.data[first].liked = !snapshot.data[first].liked;
+                                                          ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
                                                               action: SnackBarAction(
                                                                 label: 'Cancel',
@@ -973,12 +847,9 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                           );
                                                         } else {
-                                                          model.likeArticle(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].liked =
-                                                              !snapshot.data.data[first].liked;
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
+                                                          model.likeArticle(snapshot.data[first].id);
+                                                          snapshot.data[first].liked = !snapshot.data[first].liked;
+                                                          ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
                                                               action: SnackBarAction(
                                                                 label: 'Cancel',
@@ -992,7 +863,7 @@ class _HomeViewState extends State<HomeView> {
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        snapshot.data.data[first].liked == false
+                                                        snapshot.data[first].liked == false
                                                             ? SvgPicture.asset(
                                                                 'assets/svg/like_gray.svg',
                                                                 height: 20,
@@ -1009,11 +880,9 @@ class _HomeViewState extends State<HomeView> {
                                                         Text(
                                                           'Like',
                                                           style: TextStyle(
-                                                            color:
-                                                                snapshot.data.data[first].liked ==
-                                                                        false
-                                                                    ? Colors.black
-                                                                    : Colors.pink,
+                                                            color: snapshot.data[first].liked == false
+                                                                ? Colors.black
+                                                                : Colors.pink,
                                                           ),
                                                         ),
                                                       ],
@@ -1039,14 +908,12 @@ class _HomeViewState extends State<HomeView> {
                                                           ),
                                                         );
                                                       } else {
-                                                        model.navigateToCommentScreen(
-                                                            snapshot.data.data[first].id, context);
+                                                        model.navigateToCommentScreen(snapshot.data[first].id, context);
                                                       }
                                                     },
                                                     child: Row(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         SvgPicture.asset(
                                                           'assets/svg/comment.svg',
@@ -1082,7 +949,6 @@ class _HomeViewState extends State<HomeView> {
                         },
                       );
                     } else if (snapshot.hasError) {
-                      print(snapshot.error);
                       return Center(
                         child: Text('${snapshot.error}'),
                       );
@@ -1110,7 +976,7 @@ class _HomeViewState extends State<HomeView> {
               );
             } else if (!sptoken.hasData) {
               // Without Login part
-              return FutureBuilder<FeedItemModel>(
+              return FutureBuilder<List<Datum>>(
                 future: feedModel,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
@@ -1118,14 +984,14 @@ class _HomeViewState extends State<HomeView> {
                       return ListView.builder(
                         physics: ScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: snapshot.data.data?.length ?? 0,
+                        itemCount: snapshot.data?.length ?? 0,
                         itemBuilder: (context, first) {
                           return ListView.builder(
                             physics: ScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: snapshot.data.data[first].details.authordetails?.length ?? 0,
+                            itemCount: snapshot.data[first].details.authordetails?.length ?? 0,
                             itemBuilder: (context, second) {
-                              if (snapshot.data.data[first].feedType == FeedType.QUERY) {
+                              if (snapshot.data[first].feedType == FeedType.QUERY) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                                   child: Card(
@@ -1148,11 +1014,10 @@ class _HomeViewState extends State<HomeView> {
                                                       children: [
                                                         Text(
                                                           'Query on ',
-                                                          style: TextStyle(
-                                                              fontSize: 14.0, color: Colors.grey),
+                                                          style: TextStyle(fontSize: 14.0, color: Colors.grey),
                                                         ),
                                                         Text(
-                                                          '${snapshot.data.data[first].categorymapping[second].category.category}',
+                                                          '${snapshot.data[first].categorymapping[second].category.category}',
                                                           style: TextStyle(
                                                             fontSize: 14.0,
                                                             fontWeight: FontWeight.bold,
@@ -1161,11 +1026,7 @@ class _HomeViewState extends State<HomeView> {
                                                         SizedBox(
                                                           width: 10.0,
                                                         ),
-                                                        snapshot
-                                                                    .data
-                                                                    .data[first]
-                                                                    .feedqueryassigned[second]
-                                                                    .feedStatus ==
+                                                        snapshot.data[first].feedqueryassigned[second].feedStatus ==
                                                                 "ANSWERED"
                                                             ? Row(
                                                                 children: [
@@ -1179,9 +1040,8 @@ class _HomeViewState extends State<HomeView> {
                                                                   ),
                                                                   Text(
                                                                     'Answered',
-                                                                    style: TextStyle(
-                                                                        fontSize: 14.0,
-                                                                        color: Colors.pink),
+                                                                    style:
+                                                                        TextStyle(fontSize: 14.0, color: Colors.pink),
                                                                   ),
                                                                 ],
                                                               )
@@ -1192,8 +1052,7 @@ class _HomeViewState extends State<HomeView> {
                                                       height: 5.0,
                                                     ),
                                                     Text(
-                                                      DateTimeAgo.timeAgoSinceDate(
-                                                          '${snapshot.data.data[first].feedDate}'),
+                                                      DateTimeAgo.timeAgoSinceDate('${snapshot.data[first].feedDate}'),
                                                       style: TextStyle(
                                                         fontSize: 12.0,
                                                       ),
@@ -1224,7 +1083,7 @@ class _HomeViewState extends State<HomeView> {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    '${snapshot.data.data[first].feedTitle}',
+                                                    '${snapshot.data[first].feedTitle}',
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
                                                     maxLines: 3,
@@ -1237,26 +1096,22 @@ class _HomeViewState extends State<HomeView> {
                                                     height: 20,
                                                     width: 20,
                                                     child: GestureDetector(
-                                                      child: snapshot.data.data[first].bookmarked ==
-                                                              false
+                                                      child: snapshot.data[first].bookmarked == false
                                                           ? SvgPicture.asset(
                                                               "assets/svg/tag_inactive.svg",
                                                               width: 10.0,
                                                               height: 16.0,
-                                                              key: ValueKey(snapshot
-                                                                  .data.data[first].bookmarked),
+                                                              key: ValueKey(snapshot.data[first].bookmarked),
                                                             )
                                                           : SvgPicture.asset(
                                                               "assets/svg/tag_active.svg",
                                                               width: 10.0,
                                                               height: 16.0,
-                                                              key: ValueKey(snapshot
-                                                                  .data.data[first].bookmarked),
+                                                              key: ValueKey(snapshot.data[first].bookmarked),
                                                             ),
                                                       onTap: () {
                                                         if (sptoken.data == null) {
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
+                                                          ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
                                                               action: SnackBarAction(
                                                                 label: 'Undo',
@@ -1266,16 +1121,11 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                           );
                                                         } else {
-                                                          if (snapshot
-                                                                  .data.data[first].bookmarked ==
-                                                              false) {
-                                                            model.postBookmark(
-                                                                snapshot.data.data[first].id);
-                                                            snapshot.data.data[first].bookmarked =
-                                                                !snapshot
-                                                                    .data.data[first].bookmarked;
-                                                            ScaffoldMessenger.of(context)
-                                                                .showSnackBar(
+                                                          if (snapshot.data[first].bookmarked == false) {
+                                                            model.postBookmark(snapshot.data[first].id);
+                                                            snapshot.data[first].bookmarked =
+                                                                !snapshot.data[first].bookmarked;
+                                                            ScaffoldMessenger.of(context).showSnackBar(
                                                               SnackBar(
                                                                 action: SnackBarAction(
                                                                   label: 'Cancel',
@@ -1285,13 +1135,10 @@ class _HomeViewState extends State<HomeView> {
                                                               ),
                                                             );
                                                           } else {
-                                                            model.postBookmark(
-                                                                snapshot.data.data[first].id);
-                                                            snapshot.data.data[first].bookmarked =
-                                                                !snapshot
-                                                                    .data.data[first].bookmarked;
-                                                            ScaffoldMessenger.of(context)
-                                                                .showSnackBar(
+                                                            model.postBookmark(snapshot.data[first].id);
+                                                            snapshot.data[first].bookmarked =
+                                                                !snapshot.data[first].bookmarked;
+                                                            ScaffoldMessenger.of(context).showSnackBar(
                                                               SnackBar(
                                                                 action: SnackBarAction(
                                                                   label: 'Cancel',
@@ -1312,7 +1159,7 @@ class _HomeViewState extends State<HomeView> {
                                             Padding(
                                               padding: const EdgeInsets.only(),
                                               child: Text(
-                                                '${snapshot.data.data[first].feedDetail}',
+                                                '${snapshot.data[first].feedDetail}',
                                                 maxLines: descTextShowFlag ? 8 : 2,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -1333,8 +1180,7 @@ class _HomeViewState extends State<HomeView> {
                                                           "Show Less",
                                                           style: TextStyle(color: Colors.grey),
                                                         )
-                                                      : Text("Continue Reading",
-                                                          style: TextStyle(color: Colors.grey))
+                                                      : Text("Continue Reading", style: TextStyle(color: Colors.grey))
                                                 ],
                                               ),
                                             ),
@@ -1343,14 +1189,10 @@ class _HomeViewState extends State<HomeView> {
                                               children: <Widget>[
                                                 Container(
                                                   width: double.infinity,
-                                                  padding: EdgeInsets.only(
-                                                      top: 20.0,
-                                                      bottom: 10.0,
-                                                      left: 10.0,
-                                                      right: 10.0),
+                                                  padding:
+                                                      EdgeInsets.only(top: 20.0, bottom: 10.0, left: 10.0, right: 10.0),
                                                   decoration: BoxDecoration(
-                                                    border:
-                                                        Border.all(color: Colors.grey, width: 0.5),
+                                                    border: Border.all(color: Colors.grey, width: 0.5),
                                                     borderRadius: BorderRadius.circular(3),
                                                     shape: BoxShape.rectangle,
                                                   ),
@@ -1363,12 +1205,7 @@ class _HomeViewState extends State<HomeView> {
                                                           SizedBox(
                                                             height: 10.0,
                                                           ),
-                                                          snapshot
-                                                                      .data
-                                                                      .data[first]
-                                                                      .details
-                                                                      .authordetails[second]
-                                                                      .user
+                                                          snapshot.data[first].details.authordetails[second].user
                                                                       .userImage ==
                                                                   null
                                                               ? SvgPicture.asset(
@@ -1384,41 +1221,30 @@ class _HomeViewState extends State<HomeView> {
                                                                     image: DecorationImage(
                                                                       fit: BoxFit.fill,
                                                                       image: NetworkImage(
-                                                                        snapshot
-                                                                            .data
-                                                                            .data[first]
-                                                                            .details
-                                                                            .authordetails[second]
-                                                                            .user
-                                                                            .userImage,
+                                                                        snapshot.data[first].details
+                                                                            .authordetails[second].user.userImage,
                                                                       ),
                                                                     ),
                                                                   ),
                                                                 ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(left: 8.0),
+                                                            padding: const EdgeInsets.only(left: 8.0),
                                                             child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment.start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment.start,
+                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
                                                                 Text(
-                                                                  '${snapshot.data.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.firstName}' +
-                                                                      ' ${snapshot.data.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data.data[first].details.authordetails[second].user?.lastName}',
+                                                                  '${snapshot.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data[first].details.authordetails[second].user.firstName}' +
+                                                                      ' ${snapshot.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data[first].details.authordetails[second].user?.lastName}',
                                                                   style: TextStyle(
-                                                                      fontWeight: FontWeight.bold,
-                                                                      fontSize: 16),
+                                                                      fontWeight: FontWeight.bold, fontSize: 16),
                                                                 ),
                                                                 Padding(
-                                                                  padding: const EdgeInsets.only(
-                                                                      top: 4.0),
+                                                                  padding: const EdgeInsets.only(top: 4.0),
                                                                   child: Text(
-                                                                    '${snapshot.data.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName}',
-                                                                    style: TextStyle(
-                                                                        color: Colors.grey,
-                                                                        fontSize: 14.0),
+                                                                    '${snapshot.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName == null ? '' : snapshot.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName}',
+                                                                    style:
+                                                                        TextStyle(color: Colors.grey, fontSize: 14.0),
                                                                   ),
                                                                 ),
                                                               ],
@@ -1433,17 +1259,14 @@ class _HomeViewState extends State<HomeView> {
                                                         color: Colors.grey,
                                                       ),
                                                       Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.spaceAround,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                         children: [
                                                           SizedBox(
                                                             width: 5,
                                                           ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(top: 8.0),
+                                                            padding: const EdgeInsets.only(top: 8.0),
                                                             child: SvgPicture.asset(
                                                               'assets/svg/full_consultation.svg',
                                                               height: 14,
@@ -1456,36 +1279,29 @@ class _HomeViewState extends State<HomeView> {
                                                           GestureDetector(
                                                             onTap: () {},
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets.only(top: 8.0),
+                                                              padding: const EdgeInsets.only(top: 8.0),
                                                               child: GestureDetector(
                                                                   onTap: () {
-                                                                    ScaffoldMessenger.of(context)
-                                                                        .showSnackBar(
+                                                                    ScaffoldMessenger.of(context).showSnackBar(
                                                                       SnackBar(
                                                                         action: SnackBarAction(
                                                                           label: 'Undo',
                                                                           onPressed: () {},
                                                                         ),
-                                                                        content: Text(
-                                                                            'You are not Login'),
+                                                                        content: Text('You are not Login'),
                                                                       ),
                                                                     );
                                                                   },
                                                                   child: Text(
                                                                     'See Full Consultation',
-                                                                    style:
-                                                                        TextStyle(fontSize: 13.0),
+                                                                    style: TextStyle(fontSize: 13.0),
                                                                   )),
                                                             ),
                                                           ),
                                                           Container(
-                                                              height: 30,
-                                                              child: VerticalDivider(
-                                                                  color: Colors.grey)),
+                                                              height: 30, child: VerticalDivider(color: Colors.grey)),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(top: 8.0),
+                                                            padding: const EdgeInsets.only(top: 8.0),
                                                             child: SvgPicture.asset(
                                                               'assets/svg/sidebar_query.svg',
                                                               height: 14,
@@ -1496,24 +1312,21 @@ class _HomeViewState extends State<HomeView> {
                                                             width: 5,
                                                           ),
                                                           Padding(
-                                                            padding:
-                                                                const EdgeInsets.only(top: 8.0),
+                                                            padding: const EdgeInsets.only(top: 8.0),
                                                             child: GestureDetector(
                                                               onTap: () {
-                                                                ScaffoldMessenger.of(context)
-                                                                    .showSnackBar(
+                                                                ScaffoldMessenger.of(context).showSnackBar(
                                                                   SnackBar(
                                                                     action: SnackBarAction(
                                                                       label: 'Undo',
                                                                       onPressed: () {},
                                                                     ),
-                                                                    content:
-                                                                        Text('You are not Login'),
+                                                                    content: Text('You are not Login'),
                                                                   ),
                                                                 );
                                                               },
                                                               child: Text(
-                                                                'Ask ${snapshot.data.data[first].details.authordetails[second].user.firstName} ${snapshot.data.data[first].details.authordetails[second].user.lastName}',
+                                                                'Ask ${snapshot.data[first].details.authordetails[second].user.firstName} ${snapshot.data[first].details.authordetails[second].user.lastName}',
                                                                 style: TextStyle(fontSize: 13.0),
                                                               ),
                                                             ),
@@ -1531,8 +1344,7 @@ class _HomeViewState extends State<HomeView> {
                                                     color: Colors.white,
                                                     child: Text(
                                                       'Expert Says',
-                                                      style: TextStyle(
-                                                          color: Colors.black, fontSize: 12),
+                                                      style: TextStyle(color: Colors.black, fontSize: 12),
                                                     ),
                                                   ),
                                                 ),
@@ -1543,15 +1355,12 @@ class _HomeViewState extends State<HomeView> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: <Widget>[
-                                                Text(
-                                                    '${snapshot.data.data[first].feedRelateCnt} Relate with this'),
+                                                Text('${snapshot.data[first].feedRelateCnt} Relate with this'),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(left: 8.0, right: 8.0),
+                                                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                                                   child: Text('.'),
                                                 ),
-                                                Text(
-                                                    '${snapshot.data.data[first].feedCommentCnt} Comment'),
+                                                Text('${snapshot.data[first].feedCommentCnt} Comment'),
                                               ],
                                             ),
                                             SizedBox(height: 15.0),
@@ -1562,135 +1371,77 @@ class _HomeViewState extends State<HomeView> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: <Widget>[
-                                                // Padding(
-                                                //   padding: const EdgeInsets.only(top: 10.0),
-                                                //   child: GestureDetector(
-                                                //     key: UniqueKey(),
-                                                //     onTap: () {
-                                                //       if (sptoken.data == null) {
-                                                //         ScaffoldMessenger.of(context).showSnackBar(
-                                                //           SnackBar(
-                                                //             action: SnackBarAction(
-                                                //               label: 'Undo',
-                                                //               onPressed: () {},
-                                                //             ),
-                                                //             content: Text('You are not Login'),
-                                                //           ),
-                                                //         );
-                                                //       } else {
-                                                //         if (snapshot.data.data[first].relate ==
-                                                //             false) {
-                                                //           model.relateQuery(
-                                                //               snapshot.data.data[first].id);
-                                                //           snapshot.data.data[first].relate =
-                                                //               !snapshot.data.data[first].relate;
-                                                //           ScaffoldMessenger.of(context)
-                                                //               .showSnackBar(
-                                                //             SnackBar(
-                                                //               action: SnackBarAction(
-                                                //                 label: 'Cancel',
-                                                //                 onPressed: () {},
-                                                //               ),
-                                                //               content: Text('Relate'),
-                                                //             ),
-                                                //           );
-                                                //           print("Query card if condition :");
-                                                //         } else {
-                                                //           model.relateQuery(
-                                                //               snapshot.data.data[first].id);
-                                                //           snapshot.data.data[first].relate =
-                                                //               !snapshot.data.data[first].relate;
-                                                //           ScaffoldMessenger.of(context)
-                                                //               .showSnackBar(
-                                                //             SnackBar(
-                                                //               action: SnackBarAction(
-                                                //                 label: 'Cancel',
-                                                //                 onPressed: () {},
-                                                //               ),
-                                                //               content: Text('Relate removed'),
-                                                //             ),
-                                                //           );
-                                                //           print("Query card else condition :");
-                                                //         }
-                                                //       }
-                                                //     },
-                                                //     child: Row(
-                                                //       children: [
-                                                //         snapshot.data.data[first].relate == false
-                                                //             ? SvgPicture.asset(
-                                                //                 'assets/svg/relate_hand.svg',
-                                                //                 height: 20,
-                                                //                 width: 20,
-                                                //               )
-                                                //             : SvgPicture.asset(
-                                                //                 'assets/svg/relate_hand_pink.svg',
-                                                //                 height: 20,
-                                                //                 width: 20,
-                                                //               ),
-                                                //         SizedBox(
-                                                //           width: 10.0,
-                                                //         ),
-                                                //         Text(
-                                                //           'I Relate',
-                                                //           style: TextStyle(
-                                                //               color: snapshot.data.data[first]
-                                                //                           .relate ==
-                                                //                       false
-                                                //                   ? Colors.black
-                                                //                   : Colors.pink),
-                                                //         ),
-                                                //       ],
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                RelateButton(
-                                                  relate: false,
-                                                  onPressed: () {
-                                                    if (sptoken.data == null) {
-                                                      ScaffoldMessenger.of(context).showSnackBar(
-                                                        SnackBar(
-                                                          action: SnackBarAction(
-                                                            label: 'Undo',
-                                                            onPressed: () {},
-                                                          ),
-                                                          content: Text('You are not Login'),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      if (snapshot.data.data[first].relate ==
-                                                          false) {
-                                                        model.relateQuery(
-                                                            snapshot.data.data[first].id);
-                                                        snapshot.data.data[first].relate =
-                                                            !snapshot.data.data[first].relate;
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 10.0),
+                                                  child: GestureDetector(
+                                                    key: UniqueKey(),
+                                                    onTap: () {
+                                                      if (sptoken.data == null) {
                                                         ScaffoldMessenger.of(context).showSnackBar(
                                                           SnackBar(
                                                             action: SnackBarAction(
-                                                              label: 'Cancel',
+                                                              label: 'Undo',
                                                               onPressed: () {},
                                                             ),
-                                                            content: Text('Relate'),
+                                                            content: Text('You are not Login'),
                                                           ),
                                                         );
-                                                        print("Query card if condition :");
                                                       } else {
-                                                        model.relateQuery(
-                                                            snapshot.data.data[first].id);
-                                                        snapshot.data.data[first].relate =
-                                                            !snapshot.data.data[first].relate;
-                                                        ScaffoldMessenger.of(context).showSnackBar(
-                                                          SnackBar(
-                                                            action: SnackBarAction(
-                                                              label: 'Cancel',
-                                                              onPressed: () {},
+                                                        if (snapshot.data[first].relate == false) {
+                                                          model.relateQuery(snapshot.data[first].id);
+                                                          snapshot.data[first].relate = !snapshot.data[first].relate;
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            SnackBar(
+                                                              action: SnackBarAction(
+                                                                label: 'Cancel',
+                                                                onPressed: () {},
+                                                              ),
+                                                              content: Text('Relate'),
                                                             ),
-                                                            content: Text('Relate removed'),
-                                                          ),
-                                                        );
-                                                        print("Query card else condition :");
+                                                          );
+                                                          print("Query card if condition :");
+                                                        } else {
+                                                          model.relateQuery(snapshot.data[first].id);
+                                                          snapshot.data[first].relate = !snapshot.data[first].relate;
+                                                          ScaffoldMessenger.of(context).showSnackBar(
+                                                            SnackBar(
+                                                              action: SnackBarAction(
+                                                                label: 'Cancel',
+                                                                onPressed: () {},
+                                                              ),
+                                                              content: Text('Relate removed'),
+                                                            ),
+                                                          );
+                                                          print("Query card else condition :");
+                                                        }
                                                       }
-                                                    }
-                                                  },
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        snapshot.data[first].relate == false
+                                                            ? SvgPicture.asset(
+                                                                'assets/svg/relate_hand.svg',
+                                                                height: 20,
+                                                                width: 20,
+                                                              )
+                                                            : SvgPicture.asset(
+                                                                'assets/svg/relate_hand_pink.svg',
+                                                                height: 20,
+                                                                width: 20,
+                                                              ),
+                                                        SizedBox(
+                                                          width: 10.0,
+                                                        ),
+                                                        Text(
+                                                          'I Relate',
+                                                          style: TextStyle(
+                                                              color: snapshot.data[first].relate == false
+                                                                  ? Colors.black
+                                                                  : Colors.pink),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
                                                 SizedBox(
                                                   width: 5,
@@ -1713,8 +1464,7 @@ class _HomeViewState extends State<HomeView> {
                                                     padding: const EdgeInsets.only(top: 10.0),
                                                     child: Row(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         SvgPicture.asset(
                                                           'assets/svg/comment.svg',
@@ -1764,8 +1514,7 @@ class _HomeViewState extends State<HomeView> {
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                snapshot.data.data[first].details
-                                                            .authordetails[second].user.userImage ==
+                                                snapshot.data[first].details.authordetails[second].user.userImage ==
                                                         null
                                                     ? SvgPicture.asset(
                                                         'assets/svg/anyonmans.svg',
@@ -1780,12 +1529,7 @@ class _HomeViewState extends State<HomeView> {
                                                           image: DecorationImage(
                                                             fit: BoxFit.fill,
                                                             image: NetworkImage(
-                                                              snapshot
-                                                                  .data
-                                                                  .data[first]
-                                                                  .details
-                                                                  .authordetails[second]
-                                                                  .user
+                                                              snapshot.data[first].details.authordetails[second].user
                                                                   .userImage,
                                                             ),
                                                           ),
@@ -1802,27 +1546,24 @@ class _HomeViewState extends State<HomeView> {
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
-                                                          '${snapshot.data.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.firstName}' +
-                                                              ' ${snapshot.data.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data.data[first].details.authordetails[second].user?.lastName}',
-                                                          style: TextStyle(
-                                                              fontSize: 18.0,
-                                                              fontWeight: FontWeight.bold),
+                                                          '${snapshot.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data[first].details.authordetails[second].user.firstName}' +
+                                                              ' ${snapshot.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data[first].details.authordetails[second].user?.lastName}',
+                                                          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                                                         ),
                                                       ),
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
-                                                          '${snapshot.data.data[first].details.authordetails[second].user.authordetails[second].introduction}',
+                                                          '${snapshot.data[first].details.authordetails[second].user.authordetails[second].introduction}',
                                                           softWrap: true,
-                                                          style: TextStyle(
-                                                              fontSize: 14.0, color: Colors.grey),
+                                                          style: TextStyle(fontSize: 14.0, color: Colors.grey),
                                                         ),
                                                       ),
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
                                                           DateTimeAgo.timeAgoSinceDate(
-                                                              '${snapshot.data.data[first].feedDate}'),
+                                                              '${snapshot.data[first].feedDate}'),
                                                           style: TextStyle(
                                                             fontSize: 14.0,
                                                           ),
@@ -1840,8 +1581,7 @@ class _HomeViewState extends State<HomeView> {
                                               onTap: () {},
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                  border:
-                                                      Border.all(color: Colors.grey, width: 0.5),
+                                                  border: Border.all(color: Colors.grey, width: 0.5),
                                                   borderRadius: BorderRadius.circular(3),
                                                 ),
                                                 child: Column(
@@ -1856,8 +1596,7 @@ class _HomeViewState extends State<HomeView> {
                                                         image: DecorationImage(
                                                           fit: BoxFit.fill,
                                                           image: NetworkImage(
-                                                            snapshot.data.data[first].media[second]
-                                                                .mediaPath,
+                                                            snapshot.data[first].media[second].mediaPath,
                                                           ),
                                                         ),
                                                       ),
@@ -1867,24 +1606,19 @@ class _HomeViewState extends State<HomeView> {
                                                       height: 5.0,
                                                     ),
                                                     Padding(
-                                                      padding: const EdgeInsets.fromLTRB(
-                                                          10.0, 10.0, 10.0, 10.0),
+                                                      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                                                       child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.spaceBetween,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text(
-                                                            '${snapshot.data.data[first].categorymapping[second].category.category}',
+                                                            '${snapshot.data[first].categorymapping[second].category.category}',
                                                           ),
                                                           Container(
                                                             height: 20,
                                                             width: 20,
                                                             child: GestureDetector(
-                                                              child: snapshot.data.data[first]
-                                                                          .bookmarked ==
-                                                                      false
+                                                              child: snapshot.data[first].bookmarked == false
                                                                   ? SvgPicture.asset(
                                                                       "assets/svg/tag_inactive.svg",
                                                                       width: 10.0,
@@ -1897,60 +1631,44 @@ class _HomeViewState extends State<HomeView> {
                                                                     ),
                                                               onTap: () {
                                                                 if (sptoken.data == null) {
-                                                                  ScaffoldMessenger.of(context)
-                                                                      .showSnackBar(
+                                                                  ScaffoldMessenger.of(context).showSnackBar(
                                                                     SnackBar(
                                                                       action: SnackBarAction(
                                                                         label: 'Undo',
                                                                         onPressed: () {},
                                                                       ),
-                                                                      content:
-                                                                          Text('You are not Login'),
+                                                                      content: Text('You are not Login'),
                                                                     ),
                                                                   );
                                                                 } else {
-                                                                  if (snapshot.data.data[first]
-                                                                          .bookmarked ==
-                                                                      false) {
-                                                                    model.postBookmark(snapshot
-                                                                        .data.data[first].id);
-                                                                    snapshot.data.data[first]
-                                                                            .bookmarked =
-                                                                        !snapshot.data.data[first]
-                                                                            .bookmarked;
-                                                                    ScaffoldMessenger.of(context)
-                                                                        .showSnackBar(
+                                                                  if (snapshot.data[first].bookmarked == false) {
+                                                                    model.postBookmark(snapshot.data[first].id);
+                                                                    snapshot.data[first].bookmarked =
+                                                                        !snapshot.data[first].bookmarked;
+                                                                    ScaffoldMessenger.of(context).showSnackBar(
                                                                       SnackBar(
                                                                         action: SnackBarAction(
                                                                           label: 'Cancel',
                                                                           onPressed: () {},
                                                                         ),
-                                                                        content:
-                                                                            Text('Bookmark Added'),
+                                                                        content: Text('Bookmark Added'),
                                                                       ),
                                                                     );
-                                                                    print(
-                                                                        "Query card if condition :");
+                                                                    print("Query card if condition :");
                                                                   } else {
-                                                                    model.postBookmark(snapshot
-                                                                        .data.data[first].id);
-                                                                    snapshot.data.data[first]
-                                                                            .bookmarked =
-                                                                        !snapshot.data.data[first]
-                                                                            .bookmarked;
-                                                                    ScaffoldMessenger.of(context)
-                                                                        .showSnackBar(
+                                                                    model.postBookmark(snapshot.data[first].id);
+                                                                    snapshot.data[first].bookmarked =
+                                                                        !snapshot.data[first].bookmarked;
+                                                                    ScaffoldMessenger.of(context).showSnackBar(
                                                                       SnackBar(
                                                                         action: SnackBarAction(
                                                                           label: 'Cancel',
                                                                           onPressed: () {},
                                                                         ),
-                                                                        content: Text(
-                                                                            'Bookmark removed'),
+                                                                        content: Text('Bookmark removed'),
                                                                       ),
                                                                     );
-                                                                    print(
-                                                                        "Query card if condition :");
+                                                                    print("Query card if condition :");
                                                                   }
                                                                 }
                                                               },
@@ -1960,10 +1678,9 @@ class _HomeViewState extends State<HomeView> {
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding: const EdgeInsets.fromLTRB(
-                                                          10.0, 0.0, 35.0, 25.0),
+                                                      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 35.0, 25.0),
                                                       child: Text(
-                                                        '${snapshot.data.data[first].feedTitle}',
+                                                        '${snapshot.data[first].feedTitle}',
                                                         textAlign: TextAlign.left,
                                                         softWrap: true,
                                                       ),
@@ -1973,24 +1690,22 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 0.0),
+                                              padding: const EdgeInsets.fromLTRB(0.0, 15.0, 10.0, 0.0),
                                               child: Row(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 children: <Widget>[
                                                   Text(
-                                                    ' ${snapshot.data.data[first].feedLikeCnt} like this',
+                                                    ' ${snapshot.data[first].feedLikeCnt} like this',
                                                   ),
                                                   Padding(
-                                                    padding: const EdgeInsets.only(
-                                                        left: 8.0, right: 8.0),
+                                                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                                                     child: Text(
                                                       '.',
                                                     ),
                                                   ),
                                                   Text(
-                                                    '${snapshot.data.data[first].feedCommentCnt} comments',
+                                                    '${snapshot.data[first].feedCommentCnt} comments',
                                                   ),
                                                 ],
                                               ),
@@ -2018,14 +1733,10 @@ class _HomeViewState extends State<HomeView> {
                                                           ),
                                                         );
                                                       } else {
-                                                        if (snapshot.data.data[first].liked ==
-                                                            false) {
-                                                          model.likeArticle(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].liked =
-                                                              !snapshot.data.data[first].liked;
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
+                                                        if (snapshot.data[first].liked == false) {
+                                                          model.likeArticle(snapshot.data[first].id);
+                                                          snapshot.data[first].liked = !snapshot.data[first].liked;
+                                                          ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
                                                               action: SnackBarAction(
                                                                 label: 'Cancel',
@@ -2035,12 +1746,9 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                           );
                                                         } else {
-                                                          model.likeArticle(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].liked =
-                                                              !snapshot.data.data[first].liked;
-                                                          ScaffoldMessenger.of(context)
-                                                              .showSnackBar(
+                                                          model.likeArticle(snapshot.data[first].id);
+                                                          snapshot.data[first].liked = !snapshot.data[first].liked;
+                                                          ScaffoldMessenger.of(context).showSnackBar(
                                                             SnackBar(
                                                               action: SnackBarAction(
                                                                 label: 'Cancel',
@@ -2054,7 +1762,7 @@ class _HomeViewState extends State<HomeView> {
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        snapshot.data.data[first].liked == false
+                                                        snapshot.data[first].liked == false
                                                             ? SvgPicture.asset(
                                                                 'assets/svg/like_gray.svg',
                                                                 height: 20,
@@ -2071,11 +1779,9 @@ class _HomeViewState extends State<HomeView> {
                                                         Text(
                                                           'Like',
                                                           style: TextStyle(
-                                                            color:
-                                                                snapshot.data.data[first].liked ==
-                                                                        false
-                                                                    ? Colors.black
-                                                                    : Colors.pink,
+                                                            color: snapshot.data[first].liked == false
+                                                                ? Colors.black
+                                                                : Colors.pink,
                                                           ),
                                                         ),
                                                       ],
@@ -2104,8 +1810,7 @@ class _HomeViewState extends State<HomeView> {
                                                     },
                                                     child: Row(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.spaceEvenly,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         SvgPicture.asset(
                                                           'assets/svg/comment.svg',
@@ -2141,7 +1846,6 @@ class _HomeViewState extends State<HomeView> {
                         },
                       );
                     } else if (snapshot.hasError) {
-                      print(snapshot.error);
                       return Center(
                         child: Text('${snapshot.error}'),
                       );
@@ -2224,16 +1928,12 @@ class _HomeViewState extends State<HomeView> {
                                           ? Text(
                                               'You',
                                               style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18.0),
+                                                  color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18.0),
                                             )
                                           : Text(
                                               sp.data,
                                               style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18.0),
+                                                  color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18.0),
                                             ),
                                     ),
                                   );
@@ -2257,9 +1957,7 @@ class _HomeViewState extends State<HomeView> {
                                   child: Text(
                                     'View Profile',
                                     style: TextStyle(
-                                        color: Colors.black,
-                                        decoration: TextDecoration.underline,
-                                        fontSize: 18.0),
+                                        color: Colors.black, decoration: TextDecoration.underline, fontSize: 18.0),
                                   ),
                                 ),
                               ),
@@ -2298,8 +1996,7 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           ],
                         ),
-                        decoration: BoxDecoration(
-                            color: Colors.white70, border: Border.all(color: Colors.black12)),
+                        decoration: BoxDecoration(color: Colors.white70, border: Border.all(color: Colors.black12)),
                       ),
                     ),
                     Container(
@@ -2557,17 +2254,14 @@ class _HomeViewState extends State<HomeView> {
                                     },
                                     child: Text(
                                       'Login/SignUp',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0),
+                                      style:
+                                          TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18.0),
                                     ),
                                   )),
                             ),
                           ],
                         ),
-                        decoration: BoxDecoration(
-                            color: Colors.white70, border: Border.all(color: Colors.black12)),
+                        decoration: BoxDecoration(color: Colors.white70, border: Border.all(color: Colors.black12)),
                       ),
                     ),
                     Container(
@@ -2654,8 +2348,6 @@ class _HomeViewState extends State<HomeView> {
         feedModel = model.loadFeed();
         _getImage();
         model.isUserSignedIn();
-        feedList = model.feed;
-        print("feed list: ${feedList.length}");
       },
     );
   }

@@ -17,6 +17,7 @@ import '../ui/view/comment_view.dart';
 import '../ui/view/consultation_view.dart';
 import '../ui/view/drawer_view.dart';
 import '../ui/view/feed_card_view.dart';
+import '../ui/view/feed_details_view.dart';
 import '../ui/view/forgot_password_view.dart';
 import '../ui/view/full_consultation_view.dart';
 import '../ui/view/home_view.dart';
@@ -68,6 +69,7 @@ class Routes {
   static const String feedCardView = '/feed-card-view';
   static const String queryCardView = '/query-card-view';
   static const String commentView = '/comment-view';
+  static const String feedDetailsView = '/feed-details-view';
   static const all = <String>{
     splashView,
     onBoardView,
@@ -97,6 +99,7 @@ class Routes {
     feedCardView,
     queryCardView,
     commentView,
+    feedDetailsView,
   };
 }
 
@@ -132,6 +135,7 @@ class Router extends RouterBase {
     RouteDef(Routes.feedCardView, page: FeedCardView),
     RouteDef(Routes.queryCardView, page: QueryCardView),
     RouteDef(Routes.commentView, page: CommentView),
+    RouteDef(Routes.feedDetailsView, page: FeedDetailsView),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
@@ -326,8 +330,14 @@ class Router extends RouterBase {
       return MaterialPageRoute<dynamic>(
         builder: (context) => CommentView(
           key: args.key,
-          itemHolder: args.itemHolder,
+          feedId: args.feedId,
         ),
+        settings: data,
+      );
+    },
+    FeedDetailsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => FeedDetailsView(),
         settings: data,
       );
     },
@@ -374,6 +384,6 @@ class AskExpertViewArguments {
 /// CommentView arguments holder class
 class CommentViewArguments {
   final Key key;
-  final int itemHolder;
-  CommentViewArguments({this.key, this.itemHolder});
+  final int feedId;
+  CommentViewArguments({this.key, this.feedId});
 }

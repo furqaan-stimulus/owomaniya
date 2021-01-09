@@ -4,26 +4,28 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:owomaniya/viewmodels/comment_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+import 'package:owomaniya/model/feed_comments.dart' as comment;
 
 class CommentView extends StatefulWidget {
-  final int itemHolder;
+  final int feedId;
 
-  const CommentView({Key key, this.itemHolder}) : super(key: key);
+  const CommentView({Key key, this.feedId}) : super(key: key);
 
   @override
-  _CommentViewState createState() => _CommentViewState(itemHolder);
+  _CommentViewState createState() => _CommentViewState(feedId);
 }
 
 class _CommentViewState extends State<CommentView> {
-  final int itemHolder;
+  final int feedId;
 
   Future<SharedPreferences> preferences = SharedPreferences.getInstance();
   bool onChecked = false;
   final commentController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
+  Future<List<comment.FeedComments>> commentList;
 
-  _CommentViewState(this.itemHolder);
+  _CommentViewState(this.feedId);
 
   void isAnonymous() {
     setState(() {
@@ -85,214 +87,64 @@ class _CommentViewState extends State<CommentView> {
                           height: height / 1.5,
                           child: Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 6.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/anyonmans.svg',
-                                        height: 40,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Mirza',
-                                          style: TextStyle(color: Colors.black, fontSize: 16),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          'comment 1',
-                                          style: TextStyle(color: Colors.blueGrey, fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 6.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/anyonmans.svg',
-                                        height: 40,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Mirza',
-                                          style: TextStyle(color: Colors.black, fontSize: 16),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          'comment 2',
-                                          style: TextStyle(color: Colors.blueGrey, fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 6.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/anyonmans.svg',
-                                        height: 40,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Mirza',
-                                          style: TextStyle(color: Colors.black, fontSize: 16),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          'comment 3',
-                                          style: TextStyle(color: Colors.blueGrey, fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 6.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/anyonmans.svg',
-                                        height: 40,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Mirza',
-                                          style: TextStyle(color: Colors.black, fontSize: 16),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          'comment 4',
-                                          style: TextStyle(color: Colors.blueGrey, fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 6.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/anyonmans.svg',
-                                        height: 40,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Mirza',
-                                          style: TextStyle(color: Colors.black, fontSize: 16),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          'comment 5',
-                                          style: TextStyle(color: Colors.blueGrey, fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 6.0),
-                                      child: SvgPicture.asset(
-                                        'assets/svg/anyonmans.svg',
-                                        height: 40,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5.0,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Mirza',
-                                          style: TextStyle(color: Colors.black, fontSize: 16),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          'comment 6',
-                                          style: TextStyle(color: Colors.blueGrey, fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  color: Colors.grey,
-                                ),
-                              ],
+                            child: FutureBuilder<List<comment.FeedComments>>(
+                              future: model.getComments(feedId),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data?.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      print("image data: ${snapshot.data[index].user.userImage}");
+                                      return Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 6.0),
+                                            child: snapshot.data[index].isAnonymous == "Y"
+                                                ? SvgPicture.asset(
+                                                    "assets/svg/anyonmans.svg",
+                                                    height: 40,
+                                                  )
+                                                : SvgPicture.network(
+                                                    snapshot.data[index].user.userImage,
+                                                    height: 40,
+                                                  ),
+                                          ),
+                                          SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              snapshot.data[index].isAnonymous == "Y"
+                                                  ? Text(
+                                                      "Anonymous",
+                                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                                    )
+                                                  : Text(
+                                                      "${snapshot.data[index].user.firstName} ${snapshot.data[index].user.lastName}",
+                                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                                    ),
+                                              SizedBox(
+                                                height: 5.0,
+                                              ),
+                                              Text(
+                                                snapshot.data[index].comment,
+                                                style: TextStyle(color: Colors.blueGrey, fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              },
                             ),
                           ),
                         ),
@@ -430,6 +282,7 @@ class _CommentViewState extends State<CommentView> {
                                       onTap: () {
                                         FocusManager.instance.primaryFocus.unfocus();
                                         commentController.clear();
+                                        print("comment button pressed");
                                         if (_formKey.currentState.validate()) {
                                           // if (onChecked == false) {
                                           //   model.postFeedComment(itemHolder, commentController.text, "N");
@@ -473,6 +326,10 @@ class _CommentViewState extends State<CommentView> {
         ),
       ),
       viewModelBuilder: () => CommentViewModel(),
+      onModelReady: (model) {
+        commentList = model.getComments(feedId);
+        print("feed id: $feedId");
+      },
     );
   }
 

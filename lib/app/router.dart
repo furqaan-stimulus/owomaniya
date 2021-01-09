@@ -5,6 +5,7 @@ import 'package:owomaniya/ui/view/bookmark_view.dart';
 import 'package:owomaniya/ui/view/consultation_view.dart';
 import 'package:owomaniya/ui/view/drawer_view.dart';
 import 'package:owomaniya/ui/view/feed_card_view.dart';
+import 'package:owomaniya/ui/view/feed_details_view.dart';
 import 'package:owomaniya/ui/view/forgot_password_view.dart';
 import 'package:owomaniya/ui/view/full_consultation_view.dart';
 import 'package:owomaniya/ui/view/home_view.dart';
@@ -57,5 +58,6 @@ import 'package:owomaniya/ui/view/comment_view.dart';
   MaterialRoute(page: FeedCardView),
   MaterialRoute(page: QueryCardView),
   MaterialRoute(page: CommentView),
+  MaterialRoute(page: FeedDetailsView),
 ])
 class $Router {}
