@@ -328,7 +328,7 @@ class UserAuthordetail {
     usersId: json["users_id"],
     userRoleId: json["user_role_id"],
     introduction: json["introduction"],
-    brief: json["brief"],
+    brief: json["brief"] == null ? null : json["brief"],
     facebookLink: json["facebook_link"],
     twitterLink: json["twitter_link"],
     website: json["website"],
@@ -341,7 +341,7 @@ class UserAuthordetail {
     "users_id": usersId,
     "user_role_id": userRoleId,
     "introduction": introduction,
-    "brief": brief,
+    "brief": brief == null ? null : brief,
     "facebook_link": facebookLink,
     "twitter_link": twitterLink,
     "website": website,
@@ -350,12 +350,12 @@ class UserAuthordetail {
   };
 }
 
-enum Prefix { EMPTY, MISS, DR }
+enum Prefix { EMPTY, MISS, MR }
 
 final prefixValues = EnumValues({
-  "Dr.": Prefix.DR,
   "": Prefix.EMPTY,
-  "Miss.": Prefix.MISS
+  "Miss.": Prefix.MISS,
+  "Mr.": Prefix.MR
 });
 
 class Expertdetails {
@@ -472,7 +472,7 @@ class Feedqueryassigned {
     intialUserExpertId: json["intial_user_expert_id"],
     totalfollowups: json["totalfollowups"],
     createdAt: DateTime.parse(json["created_at"]),
-    createdBy: json["created_by"],
+    createdBy: json["created_by"] == null ? null : json["created_by"],
     updatedAt: DateTime.parse(json["updated_at"]),
     latestanswer: json["latestanswer"],
     assignedexpert: Assignedexpert.fromJson(json["assignedexpert"]),
@@ -486,7 +486,7 @@ class Feedqueryassigned {
     "intial_user_expert_id": intialUserExpertId,
     "totalfollowups": totalfollowups,
     "created_at": createdAt.toIso8601String(),
-    "created_by": createdBy,
+    "created_by": createdBy == null ? null : createdBy,
     "updated_at": updatedAt.toIso8601String(),
     "latestanswer": latestanswer,
     "assignedexpert": assignedexpert.toJson(),
@@ -531,8 +531,8 @@ class Assignedexpert {
   String gender;
   String maritalStatus;
   String city;
-  dynamic state;
-  dynamic country;
+  String state;
+  String country;
   String userImage;
   HealthDetails healthDetails;
   DateTime createdAt;
@@ -554,12 +554,12 @@ class Assignedexpert {
     mobileNo: json["mobile_no"],
     firstName: json["first_name"],
     lastName: json["last_name"],
-    dateOfBirth: DateTime.parse(json["date_of_birth"]),
+    dateOfBirth: json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"]),
     gender: json["gender"],
     maritalStatus: json["marital_status"],
-    city: json["city"],
-    state: json["state"],
-    country: json["country"],
+    city: json["city"] == null ? null : json["city"],
+    state: json["state"] == null ? null : json["state"],
+    country: json["country"] == null ? null : json["country"],
     userImage: json["user_image"],
     healthDetails: HealthDetails.fromJson(json["health_details"]),
     createdAt: DateTime.parse(json["created_at"]),
@@ -582,12 +582,12 @@ class Assignedexpert {
     "mobile_no": mobileNo,
     "first_name": firstName,
     "last_name": lastName,
-    "date_of_birth": "${dateOfBirth.year.toString().padLeft(4, '0')}-${dateOfBirth.month.toString().padLeft(2, '0')}-${dateOfBirth.day.toString().padLeft(2, '0')}",
+    "date_of_birth": dateOfBirth == null ? null : "${dateOfBirth.year.toString().padLeft(4, '0')}-${dateOfBirth.month.toString().padLeft(2, '0')}-${dateOfBirth.day.toString().padLeft(2, '0')}",
     "gender": gender,
     "marital_status": maritalStatus,
-    "city": city,
-    "state": state,
-    "country": country,
+    "city": city == null ? null : city,
+    "state": state == null ? null : state,
+    "country": country == null ? null : country,
     "user_image": userImage,
     "health_details": healthDetails.toJson(),
     "created_at": "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",

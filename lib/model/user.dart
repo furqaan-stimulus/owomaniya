@@ -76,23 +76,28 @@ class User {
         id: json["id"],
         userImage: json["user_image"],
         uploadUrl: json["upload_url"] == null ? null : json["upload_url"],
-        authordetails:
-            List<UserAuthordetail>.from(json["authordetails"].map((x) => UserAuthordetail.fromJson(x))),
+        authordetails: json["authordetails"] == null
+            ? null
+            : List<UserAuthordetail>.from(
+                json["authordetails"].map((x) => UserAuthordetail.fromJson(x))),
         queryPrice: json["query_price"] == null ? null : json["query_price"],
         expertexpertisemapping: json["expertexpertisemapping"] == null
             ? null
             : List<Expertexpertisemapping>.from(
                 json["expertexpertisemapping"].map((x) => Expertexpertisemapping.fromJson(x))),
-        expertdetails: json["expertdetails"] == null ? null : Expertdetails.fromJson(json["expertdetails"]),
-        dateOfBirth: json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"] as String),
+        expertdetails:
+            json["expertdetails"] == null ? null : Expertdetails.fromJson(json["expertdetails"]),
+        dateOfBirth:
+            json["date_of_birth"] == null ? null : DateTime.parse(json["date_of_birth"] as String),
         gender: json["gender"],
         maritalStatus: json["marital_status"],
         city: json["city"],
         state: json["state"],
         country: json["country"],
-        healthDetails: json["health_details"] == null ? null : HealthDetails.fromJson(json["health_details"]),
-        createdAt: json["created_at"]== null ? null :DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null :DateTime.parse(json["updated_at"]),
+        healthDetails:
+            json["health_details"] == null ? null : HealthDetails.fromJson(json["health_details"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
         deletedAt: json["deleted_at"],
         userDevicesId: json["user_devices_id"],
         pgAmount: json["pg_amount"],
@@ -113,7 +118,8 @@ class User {
         "id": id,
         "user_image": userImage,
         "upload_url": uploadUrl == null ? null : uploadUrl,
-        "authordetails": List<dynamic>.from(authordetails.map((x) => x.toJson())),
+        "authordetails":
+            authordetails == null ? null : List<dynamic>.from(authordetails.map((x) => x.toJson())),
         "query_price": queryPrice == null ? null : queryPrice,
         "expertexpertisemapping": expertexpertisemapping == null
             ? null
@@ -126,7 +132,6 @@ class User {
         "city": city,
         "state": state,
         "country": country,
-        "user_image": userImage,
         "health_details": healthDetails.toJson(),
         "created_at":
             "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",
@@ -139,7 +144,6 @@ class User {
         "flagged": flagged,
         "flag_note": flagNote,
         "user_url": userUrl,
-        "upload_url": uploadUrl,
         "verified_mobile": verifiedMobile,
         "verified_email": verifiedEmail,
         "alternativeimage": alternativeimage,

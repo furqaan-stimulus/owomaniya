@@ -326,7 +326,7 @@ class Router extends RouterBase {
       return MaterialPageRoute<dynamic>(
         builder: (context) => CommentView(
           key: args.key,
-          itemHolder: args.itemHolder,
+          feedId: args.feedId,
         ),
         settings: data,
       );
@@ -374,6 +374,6 @@ class AskExpertViewArguments {
 /// CommentView arguments holder class
 class CommentViewArguments {
   final Key key;
-  final int itemHolder;
-  CommentViewArguments({this.key, this.itemHolder});
+  final int feedId;
+  CommentViewArguments({this.key, this.feedId});
 }

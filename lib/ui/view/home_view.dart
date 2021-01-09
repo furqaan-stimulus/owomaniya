@@ -7,6 +7,8 @@ import 'package:owomaniya/widget/popup_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../model/feed_item_model.dart';
+
 class HomeView extends StatefulWidget {
   HomeView({
     Key key,
@@ -19,7 +21,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   bool descTextShowFlag = false;
   Future<SharedPreferences> preferences = SharedPreferences.getInstance();
-  Future<FeedItemModel> feedModel;
+  Future<List<Datum>> feedModel;
   ScrollController _sc = new ScrollController();
 
   @override
@@ -45,7 +47,7 @@ class _HomeViewState extends State<HomeView> {
           future: _getToken(),
           builder: (context, sptoken) {
             if (sptoken.hasData) {
-              return FutureBuilder<FeedItemModel>(
+              return FutureBuilder<List<Datum>>(
                 future: feedModel,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
@@ -54,14 +56,14 @@ class _HomeViewState extends State<HomeView> {
                         controller: _sc,
                         physics: ScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: snapshot.data.data?.length ?? 0,
+                        itemCount: snapshot.data?.length ?? 0,
                         itemBuilder: (context, first) {
                           return ListView.builder(
                             physics: ScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: snapshot.data.data[first].details.authordetails?.length ?? 0,
+                            itemCount: snapshot.data[first].details.authordetails?.length ?? 0,
                             itemBuilder: (context, second) {
-                              if (snapshot.data.data[first].feedType == FeedType.QUERY) {
+                              if (snapshot.data[first].feedType == FeedType.QUERY) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                                   child: Card(
@@ -88,7 +90,7 @@ class _HomeViewState extends State<HomeView> {
                                                               fontSize: 14.0, color: Colors.grey),
                                                         ),
                                                         Text(
-                                                          '${snapshot.data.data[first].categorymapping[second].category.category}',
+                                                          '${snapshot.data[first].categorymapping[second].category.category}',
                                                           style: TextStyle(
                                                             fontSize: 14.0,
                                                             fontWeight: FontWeight.bold,
@@ -98,7 +100,6 @@ class _HomeViewState extends State<HomeView> {
                                                           width: 10.0,
                                                         ),
                                                         snapshot
-                                                                    .data
                                                                     .data[first]
                                                                     .feedqueryassigned[second]
                                                                     .feedStatus ==
@@ -129,7 +130,7 @@ class _HomeViewState extends State<HomeView> {
                                                     ),
                                                     Text(
                                                       DateTimeAgo.timeAgoSinceDate(
-                                                          '${snapshot.data.data[first].feedDate}'),
+                                                          '${snapshot.data[first].feedDate}'),
                                                       style: TextStyle(
                                                         fontSize: 12.0,
                                                       ),
@@ -160,7 +161,7 @@ class _HomeViewState extends State<HomeView> {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    '${snapshot.data.data[first].feedTitle}',
+                                                    '${snapshot.data[first].feedTitle}',
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
                                                     maxLines: 3,
@@ -173,18 +174,18 @@ class _HomeViewState extends State<HomeView> {
                                                     height: 20,
                                                     width: 20,
                                                     child: GestureDetector(
-                                                      child: snapshot.data.data[first].bookmarked ==
-                                                              false
-                                                          ? SvgPicture.asset(
-                                                              "assets/svg/tag_inactive.svg",
-                                                              width: 10.0,
-                                                              height: 16.0,
-                                                            )
-                                                          : SvgPicture.asset(
-                                                              "assets/svg/tag_active.svg",
-                                                              width: 10.0,
-                                                              height: 16.0,
-                                                            ),
+                                                      child:
+                                                          snapshot.data[first].bookmarked == false
+                                                              ? SvgPicture.asset(
+                                                                  "assets/svg/tag_inactive.svg",
+                                                                  width: 10.0,
+                                                                  height: 16.0,
+                                                                )
+                                                              : SvgPicture.asset(
+                                                                  "assets/svg/tag_active.svg",
+                                                                  width: 10.0,
+                                                                  height: 16.0,
+                                                                ),
                                                       onTap: () {
                                                         if (sptoken.data == null) {
                                                           ScaffoldMessenger.of(context)
@@ -198,14 +199,12 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                           );
                                                         } else {
-                                                          if (snapshot
-                                                                  .data.data[first].bookmarked ==
+                                                          if (snapshot.data[first].bookmarked ==
                                                               false) {
                                                             model.postBookmark(
-                                                                snapshot.data.data[first].id);
-                                                            snapshot.data.data[first].bookmarked =
-                                                                !snapshot
-                                                                    .data.data[first].bookmarked;
+                                                                snapshot.data[first].id);
+                                                            snapshot.data[first].bookmarked =
+                                                                !snapshot.data[first].bookmarked;
                                                             ScaffoldMessenger.of(context)
                                                                 .showSnackBar(
                                                               SnackBar(
@@ -218,10 +217,9 @@ class _HomeViewState extends State<HomeView> {
                                                             );
                                                           } else {
                                                             model.postBookmark(
-                                                                snapshot.data.data[first].id);
-                                                            snapshot.data.data[first].bookmarked =
-                                                                !snapshot
-                                                                    .data.data[first].bookmarked;
+                                                                snapshot.data[first].id);
+                                                            snapshot.data[first].bookmarked =
+                                                                !snapshot.data[first].bookmarked;
                                                             ScaffoldMessenger.of(context)
                                                                 .showSnackBar(
                                                               SnackBar(
@@ -244,14 +242,14 @@ class _HomeViewState extends State<HomeView> {
                                             Padding(
                                               padding: const EdgeInsets.only(),
                                               child: Text(
-                                                '${snapshot.data.data[first].feedDetail}',
+                                                '${snapshot.data[first].feedDetail}',
                                                 maxLines: descTextShowFlag ? 8 : 2,
                                                 textAlign: TextAlign.start,
                                               ),
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                model.launchUrl(snapshot.data.data[first].feedUrl);
+                                                model.launchUrl(snapshot.data[first].feedUrl);
                                                 setState(
                                                   () {
                                                     descTextShowFlag = !descTextShowFlag;
@@ -297,7 +295,6 @@ class _HomeViewState extends State<HomeView> {
                                                             height: 10.0,
                                                           ),
                                                           snapshot
-                                                                      .data
                                                                       .data[first]
                                                                       .details
                                                                       .authordetails[second]
@@ -318,7 +315,6 @@ class _HomeViewState extends State<HomeView> {
                                                                       fit: BoxFit.fill,
                                                                       image: NetworkImage(
                                                                         snapshot
-                                                                            .data
                                                                             .data[first]
                                                                             .details
                                                                             .authordetails[second]
@@ -338,8 +334,8 @@ class _HomeViewState extends State<HomeView> {
                                                                   CrossAxisAlignment.start,
                                                               children: [
                                                                 Text(
-                                                                  '${snapshot.data.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.firstName}' +
-                                                                      ' ${snapshot.data.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data.data[first].details.authordetails[second].user?.lastName}',
+                                                                  '${snapshot.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data[first].details.authordetails[second].user.firstName}' +
+                                                                      ' ${snapshot.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data[first].details.authordetails[second].user?.lastName}',
                                                                   style: TextStyle(
                                                                       fontWeight: FontWeight.bold,
                                                                       fontSize: 16),
@@ -348,7 +344,7 @@ class _HomeViewState extends State<HomeView> {
                                                                   padding: const EdgeInsets.only(
                                                                       top: 4.0),
                                                                   child: Text(
-                                                                    '${snapshot.data.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName}',
+                                                                    '${snapshot.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName == null ? '' : snapshot.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName}',
                                                                     style: TextStyle(
                                                                         color: Colors.grey,
                                                                         fontSize: 14.0),
@@ -391,8 +387,8 @@ class _HomeViewState extends State<HomeView> {
                                                                 const EdgeInsets.only(top: 8.0),
                                                             child: GestureDetector(
                                                                 onTap: () {
-                                                                  model.launchUrl(snapshot
-                                                                      .data.data[first].feedUrl);
+                                                                  model.launchUrl(
+                                                                      snapshot.data[first].feedUrl);
                                                                 },
                                                                 child: Text(
                                                                   'See Full Consultation',
@@ -421,14 +417,12 @@ class _HomeViewState extends State<HomeView> {
                                                             child: GestureDetector(
                                                               onTap: () {
                                                                 var fName = snapshot
-                                                                    .data
                                                                     .data[first]
                                                                     .details
                                                                     .authordetails[second]
                                                                     .user
                                                                     .firstName;
                                                                 var lName = snapshot
-                                                                    .data
                                                                     .data[first]
                                                                     .details
                                                                     .authordetails[second]
@@ -437,7 +431,6 @@ class _HomeViewState extends State<HomeView> {
                                                                 var fullName =
                                                                     "$fName" + " " + "$lName";
                                                                 var expertise = snapshot
-                                                                    .data
                                                                     .data[first]
                                                                     .details
                                                                     .authordetails[second]
@@ -446,7 +439,6 @@ class _HomeViewState extends State<HomeView> {
                                                                     .parentexpertise
                                                                     .expertiseName;
                                                                 var img = snapshot
-                                                                    .data
                                                                     .data[first]
                                                                     .details
                                                                     .authordetails[second]
@@ -460,7 +452,7 @@ class _HomeViewState extends State<HomeView> {
                                                                     context);
                                                               },
                                                               child: Text(
-                                                                'Ask ${snapshot.data.data[first].details.authordetails[second].user.firstName} ${snapshot.data.data[first].details.authordetails[second].user.lastName}',
+                                                                'Ask ${snapshot.data[first].details.authordetails[second].user.firstName} ${snapshot.data[first].details.authordetails[second].user.lastName}',
                                                                 style: TextStyle(fontSize: 13.0),
                                                               ),
                                                             ),
@@ -491,14 +483,14 @@ class _HomeViewState extends State<HomeView> {
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                    '${snapshot.data.data[first].feedRelateCnt} Relate with this'),
+                                                    '${snapshot.data[first].feedRelateCnt} Relate with this'),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(left: 8.0, right: 8.0),
                                                   child: Text('.'),
                                                 ),
                                                 Text(
-                                                    '${snapshot.data.data[first].feedCommentCnt} Comment'),
+                                                    '${snapshot.data[first].feedCommentCnt} Comment'),
                                               ],
                                             ),
                                             SizedBox(height: 10.0),
@@ -525,12 +517,11 @@ class _HomeViewState extends State<HomeView> {
                                                           ),
                                                         );
                                                       } else {
-                                                        if (snapshot.data.data[first].relate ==
-                                                            false) {
-                                                          model.relateQuery(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].relate =
-                                                              !snapshot.data.data[first].relate;
+                                                        if (snapshot.data[first].relate == false) {
+                                                          model
+                                                              .relateQuery(snapshot.data[first].id);
+                                                          snapshot.data[first].relate =
+                                                              !snapshot.data[first].relate;
                                                           ScaffoldMessenger.of(context)
                                                               .showSnackBar(
                                                             SnackBar(
@@ -543,10 +534,10 @@ class _HomeViewState extends State<HomeView> {
                                                           );
                                                           print("Query card if condition");
                                                         } else {
-                                                          model.relateQuery(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].relate =
-                                                              !snapshot.data.data[first].relate;
+                                                          model
+                                                              .relateQuery(snapshot.data[first].id);
+                                                          snapshot.data[first].relate =
+                                                              !snapshot.data[first].relate;
                                                           ScaffoldMessenger.of(context)
                                                               .showSnackBar(
                                                             SnackBar(
@@ -563,7 +554,7 @@ class _HomeViewState extends State<HomeView> {
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        snapshot.data.data[first].relate == false
+                                                        snapshot.data[first].relate == false
                                                             ? SvgPicture.asset(
                                                                 'assets/svg/relate_hand.svg',
                                                                 height: 20,
@@ -580,8 +571,7 @@ class _HomeViewState extends State<HomeView> {
                                                         Text(
                                                           'I Relate',
                                                           style: TextStyle(
-                                                              color: snapshot.data.data[first]
-                                                                          .relate ==
+                                                              color: snapshot.data[first].relate ==
                                                                       false
                                                                   ? Colors.black
                                                                   : Colors.pink),
@@ -608,7 +598,7 @@ class _HomeViewState extends State<HomeView> {
                                                     } else {
                                                       setState(() {
                                                         model.navigateToCommentScreen(
-                                                            snapshot.data.data[first].id, context);
+                                                            snapshot.data[first].id, context);
                                                       });
                                                     }
                                                   },
@@ -664,8 +654,8 @@ class _HomeViewState extends State<HomeView> {
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                snapshot.data.data[first].details
-                                                            .authordetails[second].user.userImage ==
+                                                snapshot.data[first].details.authordetails[second]
+                                                            .user.userImage ==
                                                         null
                                                     ? SvgPicture.asset(
                                                         'assets/svg/anyonmans.svg',
@@ -681,7 +671,6 @@ class _HomeViewState extends State<HomeView> {
                                                             fit: BoxFit.fill,
                                                             image: NetworkImage(
                                                               snapshot
-                                                                  .data
                                                                   .data[first]
                                                                   .details
                                                                   .authordetails[second]
@@ -702,8 +691,8 @@ class _HomeViewState extends State<HomeView> {
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
-                                                          '${snapshot.data.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.firstName}' +
-                                                              ' ${snapshot.data.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data.data[first].details.authordetails[second].user?.lastName}',
+                                                          '${snapshot.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data[first].details.authordetails[second].user.firstName}' +
+                                                              ' ${snapshot.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data[first].details.authordetails[second].user?.lastName}',
                                                           style: TextStyle(
                                                               fontSize: 18.0,
                                                               fontWeight: FontWeight.bold),
@@ -712,7 +701,7 @@ class _HomeViewState extends State<HomeView> {
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
-                                                          '${snapshot.data.data[first].details.authordetails[second].user.authordetails[second].introduction}',
+                                                          '${snapshot.data[first].details.authordetails[second].user.authordetails[second].introduction}',
                                                           softWrap: true,
                                                           style: TextStyle(
                                                               fontSize: 14.0, color: Colors.grey),
@@ -722,7 +711,7 @@ class _HomeViewState extends State<HomeView> {
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
                                                           DateTimeAgo.timeAgoSinceDate(
-                                                              '${snapshot.data.data[first].feedDate}'),
+                                                              '${snapshot.data[first].feedDate}'),
                                                           style: TextStyle(
                                                             fontSize: 14.0,
                                                           ),
@@ -738,7 +727,7 @@ class _HomeViewState extends State<HomeView> {
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                model.launchUrl(snapshot.data.data[first].feedUrl);
+                                                model.launchUrl(snapshot.data[first].feedUrl);
                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
@@ -758,7 +747,7 @@ class _HomeViewState extends State<HomeView> {
                                                         image: DecorationImage(
                                                           fit: BoxFit.fill,
                                                           image: NetworkImage(
-                                                            snapshot.data.data[first].media[second]
+                                                            snapshot.data[first].media[second]
                                                                 .mediaPath,
                                                           ),
                                                         ),
@@ -778,25 +767,25 @@ class _HomeViewState extends State<HomeView> {
                                                             MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text(
-                                                            '${snapshot.data.data[first].categorymapping[second].category.category}',
+                                                            '${snapshot.data[first].categorymapping[second].category.category}',
                                                           ),
                                                           Container(
                                                             height: 20,
                                                             width: 20,
                                                             child: GestureDetector(
-                                                              child: snapshot.data.data[first]
-                                                                          .bookmarked ==
-                                                                      false
-                                                                  ? SvgPicture.asset(
-                                                                      "assets/svg/tag_inactive.svg",
-                                                                      width: 10.0,
-                                                                      height: 16.0,
-                                                                    )
-                                                                  : SvgPicture.asset(
-                                                                      "assets/svg/tag_active.svg",
-                                                                      width: 10.0,
-                                                                      height: 16.0,
-                                                                    ),
+                                                              child:
+                                                                  snapshot.data[first].bookmarked ==
+                                                                          false
+                                                                      ? SvgPicture.asset(
+                                                                          "assets/svg/tag_inactive.svg",
+                                                                          width: 10.0,
+                                                                          height: 16.0,
+                                                                        )
+                                                                      : SvgPicture.asset(
+                                                                          "assets/svg/tag_active.svg",
+                                                                          width: 10.0,
+                                                                          height: 16.0,
+                                                                        ),
                                                               onTap: () {
                                                                 if (sptoken.data == null) {
                                                                   ScaffoldMessenger.of(context)
@@ -811,11 +800,10 @@ class _HomeViewState extends State<HomeView> {
                                                                     ),
                                                                   );
                                                                 } else {
-                                                                  if (snapshot.data.data[first]
-                                                                          .bookmarked ==
+                                                                  if (snapshot
+                                                                          .data[first].bookmarked ==
                                                                       false) {
-                                                                    snapshot.data.data
-                                                                        .forEach((datum) {
+                                                                    snapshot.data.forEach((datum) {
                                                                       var book = datum.bookmarked;
                                                                       var id = datum.id;
                                                                       if (book) {
@@ -830,12 +818,12 @@ class _HomeViewState extends State<HomeView> {
                                                                             "Query card else condition : $id");
                                                                       }
                                                                     });
-                                                                    model.postBookmark(snapshot
-                                                                        .data.data[first].id);
-                                                                    snapshot.data.data[first]
+                                                                    model.postBookmark(
+                                                                        snapshot.data[first].id);
+                                                                    snapshot.data[first]
                                                                             .bookmarked =
-                                                                        !snapshot.data.data[first]
-                                                                            .bookmarked;
+                                                                        !snapshot
+                                                                            .data[first].bookmarked;
                                                                     ScaffoldMessenger.of(context)
                                                                         .showSnackBar(
                                                                       SnackBar(
@@ -850,8 +838,7 @@ class _HomeViewState extends State<HomeView> {
                                                                     print(
                                                                         "Query card if condition :");
                                                                   } else {
-                                                                    snapshot.data.data
-                                                                        .forEach((datum) {
+                                                                    snapshot.data.forEach((datum) {
                                                                       var book = datum.bookmarked;
                                                                       var id = datum.id;
                                                                       if (book) {
@@ -866,12 +853,12 @@ class _HomeViewState extends State<HomeView> {
                                                                             "Query card else condition : $id");
                                                                       }
                                                                     });
-                                                                    model.postBookmark(snapshot
-                                                                        .data.data[first].id);
-                                                                    snapshot.data.data[first]
+                                                                    model.postBookmark(
+                                                                        snapshot.data[first].id);
+                                                                    snapshot.data[first]
                                                                             .bookmarked =
-                                                                        !snapshot.data.data[first]
-                                                                            .bookmarked;
+                                                                        !snapshot
+                                                                            .data[first].bookmarked;
                                                                     ScaffoldMessenger.of(context)
                                                                         .showSnackBar(
                                                                       SnackBar(
@@ -897,7 +884,7 @@ class _HomeViewState extends State<HomeView> {
                                                       padding: const EdgeInsets.fromLTRB(
                                                           10.0, 0.0, 35.0, 25.0),
                                                       child: Text(
-                                                        '${snapshot.data.data[first].feedTitle}',
+                                                        '${snapshot.data[first].feedTitle}',
                                                         textAlign: TextAlign.left,
                                                         softWrap: true,
                                                       ),
@@ -914,7 +901,7 @@ class _HomeViewState extends State<HomeView> {
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 children: <Widget>[
                                                   Text(
-                                                    ' ${snapshot.data.data[first].feedLikeCnt} like this',
+                                                    ' ${snapshot.data[first].feedLikeCnt} like this',
                                                   ),
                                                   Padding(
                                                     padding: const EdgeInsets.only(
@@ -924,7 +911,7 @@ class _HomeViewState extends State<HomeView> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '${snapshot.data.data[first].feedCommentCnt} comments',
+                                                    '${snapshot.data[first].feedCommentCnt} comments',
                                                   ),
                                                 ],
                                               ),
@@ -952,12 +939,11 @@ class _HomeViewState extends State<HomeView> {
                                                           ),
                                                         );
                                                       } else {
-                                                        if (snapshot.data.data[first].liked ==
-                                                            false) {
-                                                          model.likeArticle(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].liked =
-                                                              !snapshot.data.data[first].liked;
+                                                        if (snapshot.data[first].liked == false) {
+                                                          model
+                                                              .likeArticle(snapshot.data[first].id);
+                                                          snapshot.data[first].liked =
+                                                              !snapshot.data[first].liked;
                                                           ScaffoldMessenger.of(context)
                                                               .showSnackBar(
                                                             SnackBar(
@@ -969,10 +955,10 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                           );
                                                         } else {
-                                                          model.likeArticle(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].liked =
-                                                              !snapshot.data.data[first].liked;
+                                                          model
+                                                              .likeArticle(snapshot.data[first].id);
+                                                          snapshot.data[first].liked =
+                                                              !snapshot.data[first].liked;
                                                           ScaffoldMessenger.of(context)
                                                               .showSnackBar(
                                                             SnackBar(
@@ -988,7 +974,7 @@ class _HomeViewState extends State<HomeView> {
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        snapshot.data.data[first].liked == false
+                                                        snapshot.data[first].liked == false
                                                             ? SvgPicture.asset(
                                                                 'assets/svg/like_gray.svg',
                                                                 height: 20,
@@ -1006,8 +992,7 @@ class _HomeViewState extends State<HomeView> {
                                                           'Like',
                                                           style: TextStyle(
                                                             color:
-                                                                snapshot.data.data[first].liked ==
-                                                                        false
+                                                                snapshot.data[first].liked == false
                                                                     ? Colors.black
                                                                     : Colors.pink,
                                                           ),
@@ -1036,7 +1021,7 @@ class _HomeViewState extends State<HomeView> {
                                                         );
                                                       } else {
                                                         model.navigateToCommentScreen(
-                                                            snapshot.data.data[first].id, context);
+                                                            snapshot.data[first].id, context);
                                                       }
                                                     },
                                                     child: Row(
@@ -1105,7 +1090,7 @@ class _HomeViewState extends State<HomeView> {
               );
             } else if (!sptoken.hasData) {
               // Without Login part
-              return FutureBuilder<FeedItemModel>(
+              return FutureBuilder<List<Datum>>(
                 future: feedModel,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
@@ -1113,14 +1098,14 @@ class _HomeViewState extends State<HomeView> {
                       return ListView.builder(
                         physics: ScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: snapshot.data.data?.length ?? 0,
+                        itemCount: snapshot.data?.length ?? 0,
                         itemBuilder: (context, first) {
                           return ListView.builder(
                             physics: ScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: snapshot.data.data[first].details.authordetails?.length ?? 0,
+                            itemCount: snapshot.data[first].details.authordetails?.length ?? 0,
                             itemBuilder: (context, second) {
-                              if (snapshot.data.data[first].feedType == FeedType.QUERY) {
+                              if (snapshot.data[first].feedType == FeedType.QUERY) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                                   child: Card(
@@ -1147,7 +1132,7 @@ class _HomeViewState extends State<HomeView> {
                                                               fontSize: 14.0, color: Colors.grey),
                                                         ),
                                                         Text(
-                                                          '${snapshot.data.data[first].categorymapping[second].category.category}',
+                                                          '${snapshot.data[first].categorymapping[second].category.category}',
                                                           style: TextStyle(
                                                             fontSize: 14.0,
                                                             fontWeight: FontWeight.bold,
@@ -1157,7 +1142,6 @@ class _HomeViewState extends State<HomeView> {
                                                           width: 10.0,
                                                         ),
                                                         snapshot
-                                                                    .data
                                                                     .data[first]
                                                                     .feedqueryassigned[second]
                                                                     .feedStatus ==
@@ -1188,7 +1172,7 @@ class _HomeViewState extends State<HomeView> {
                                                     ),
                                                     Text(
                                                       DateTimeAgo.timeAgoSinceDate(
-                                                          '${snapshot.data.data[first].feedDate}'),
+                                                          '${snapshot.data[first].feedDate}'),
                                                       style: TextStyle(
                                                         fontSize: 12.0,
                                                       ),
@@ -1219,7 +1203,7 @@ class _HomeViewState extends State<HomeView> {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    '${snapshot.data.data[first].feedTitle}',
+                                                    '${snapshot.data[first].feedTitle}',
                                                     overflow: TextOverflow.ellipsis,
                                                     softWrap: false,
                                                     maxLines: 3,
@@ -1232,21 +1216,21 @@ class _HomeViewState extends State<HomeView> {
                                                     height: 20,
                                                     width: 20,
                                                     child: GestureDetector(
-                                                      child: snapshot.data.data[first].bookmarked ==
+                                                      child: snapshot.data[first].bookmarked ==
                                                               false
                                                           ? SvgPicture.asset(
                                                               "assets/svg/tag_inactive.svg",
                                                               width: 10.0,
                                                               height: 16.0,
-                                                              key: ValueKey(snapshot
-                                                                  .data.data[first].bookmarked),
+                                                              key: ValueKey(
+                                                                  snapshot.data[first].bookmarked),
                                                             )
                                                           : SvgPicture.asset(
                                                               "assets/svg/tag_active.svg",
                                                               width: 10.0,
                                                               height: 16.0,
-                                                              key: ValueKey(snapshot
-                                                                  .data.data[first].bookmarked),
+                                                              key: ValueKey(
+                                                                  snapshot.data[first].bookmarked),
                                                             ),
                                                       onTap: () {
                                                         if (sptoken.data == null) {
@@ -1261,14 +1245,12 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                           );
                                                         } else {
-                                                          if (snapshot
-                                                                  .data.data[first].bookmarked ==
+                                                          if (snapshot.data[first].bookmarked ==
                                                               false) {
                                                             model.postBookmark(
-                                                                snapshot.data.data[first].id);
-                                                            snapshot.data.data[first].bookmarked =
-                                                                !snapshot
-                                                                    .data.data[first].bookmarked;
+                                                                snapshot.data[first].id);
+                                                            snapshot.data[first].bookmarked =
+                                                                !snapshot.data[first].bookmarked;
                                                             ScaffoldMessenger.of(context)
                                                                 .showSnackBar(
                                                               SnackBar(
@@ -1281,10 +1263,9 @@ class _HomeViewState extends State<HomeView> {
                                                             );
                                                           } else {
                                                             model.postBookmark(
-                                                                snapshot.data.data[first].id);
-                                                            snapshot.data.data[first].bookmarked =
-                                                                !snapshot
-                                                                    .data.data[first].bookmarked;
+                                                                snapshot.data[first].id);
+                                                            snapshot.data[first].bookmarked =
+                                                                !snapshot.data[first].bookmarked;
                                                             ScaffoldMessenger.of(context)
                                                                 .showSnackBar(
                                                               SnackBar(
@@ -1307,7 +1288,7 @@ class _HomeViewState extends State<HomeView> {
                                             Padding(
                                               padding: const EdgeInsets.only(),
                                               child: Text(
-                                                '${snapshot.data.data[first].feedDetail}',
+                                                '${snapshot.data[first].feedDetail}',
                                                 maxLines: descTextShowFlag ? 8 : 2,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -1359,7 +1340,6 @@ class _HomeViewState extends State<HomeView> {
                                                             height: 10.0,
                                                           ),
                                                           snapshot
-                                                                      .data
                                                                       .data[first]
                                                                       .details
                                                                       .authordetails[second]
@@ -1380,7 +1360,6 @@ class _HomeViewState extends State<HomeView> {
                                                                       fit: BoxFit.fill,
                                                                       image: NetworkImage(
                                                                         snapshot
-                                                                            .data
                                                                             .data[first]
                                                                             .details
                                                                             .authordetails[second]
@@ -1400,8 +1379,8 @@ class _HomeViewState extends State<HomeView> {
                                                                   CrossAxisAlignment.start,
                                                               children: [
                                                                 Text(
-                                                                  '${snapshot.data.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.firstName}' +
-                                                                      ' ${snapshot.data.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data.data[first].details.authordetails[second].user?.lastName}',
+                                                                  '${snapshot.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data[first].details.authordetails[second].user.firstName}' +
+                                                                      ' ${snapshot.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data[first].details.authordetails[second].user?.lastName}',
                                                                   style: TextStyle(
                                                                       fontWeight: FontWeight.bold,
                                                                       fontSize: 16),
@@ -1410,7 +1389,7 @@ class _HomeViewState extends State<HomeView> {
                                                                   padding: const EdgeInsets.only(
                                                                       top: 4.0),
                                                                   child: Text(
-                                                                    '${snapshot.data.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName}',
+                                                                    '${snapshot.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName == null ? '' : snapshot.data[first].details.authordetails[second].user.expertexpertisemapping[second].parentexpertise.expertiseName}',
                                                                     style: TextStyle(
                                                                         color: Colors.grey,
                                                                         fontSize: 14.0),
@@ -1508,7 +1487,7 @@ class _HomeViewState extends State<HomeView> {
                                                                 );
                                                               },
                                                               child: Text(
-                                                                'Ask ${snapshot.data.data[first].details.authordetails[second].user.firstName} ${snapshot.data.data[first].details.authordetails[second].user.lastName}',
+                                                                'Ask ${snapshot.data[first].details.authordetails[second].user.firstName} ${snapshot.data[first].details.authordetails[second].user.lastName}',
                                                                 style: TextStyle(fontSize: 13.0),
                                                               ),
                                                             ),
@@ -1539,14 +1518,14 @@ class _HomeViewState extends State<HomeView> {
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                    '${snapshot.data.data[first].feedRelateCnt} Relate with this'),
+                                                    '${snapshot.data[first].feedRelateCnt} Relate with this'),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(left: 8.0, right: 8.0),
                                                   child: Text('.'),
                                                 ),
                                                 Text(
-                                                    '${snapshot.data.data[first].feedCommentCnt} Comment'),
+                                                    '${snapshot.data[first].feedCommentCnt} Comment'),
                                               ],
                                             ),
                                             SizedBox(height: 15.0),
@@ -1573,12 +1552,11 @@ class _HomeViewState extends State<HomeView> {
                                                           ),
                                                         );
                                                       } else {
-                                                        if (snapshot.data.data[first].relate ==
-                                                            false) {
-                                                          model.relateQuery(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].relate =
-                                                              !snapshot.data.data[first].relate;
+                                                        if (snapshot.data[first].relate == false) {
+                                                          model
+                                                              .relateQuery(snapshot.data[first].id);
+                                                          snapshot.data[first].relate =
+                                                              !snapshot.data[first].relate;
                                                           ScaffoldMessenger.of(context)
                                                               .showSnackBar(
                                                             SnackBar(
@@ -1591,10 +1569,10 @@ class _HomeViewState extends State<HomeView> {
                                                           );
                                                           print("Query card if condition :");
                                                         } else {
-                                                          model.relateQuery(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].relate =
-                                                              !snapshot.data.data[first].relate;
+                                                          model
+                                                              .relateQuery(snapshot.data[first].id);
+                                                          snapshot.data[first].relate =
+                                                              !snapshot.data[first].relate;
                                                           ScaffoldMessenger.of(context)
                                                               .showSnackBar(
                                                             SnackBar(
@@ -1611,7 +1589,7 @@ class _HomeViewState extends State<HomeView> {
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        snapshot.data.data[first].relate == false
+                                                        snapshot.data[first].relate == false
                                                             ? SvgPicture.asset(
                                                                 'assets/svg/relate_hand.svg',
                                                                 height: 20,
@@ -1628,8 +1606,7 @@ class _HomeViewState extends State<HomeView> {
                                                         Text(
                                                           'I Relate',
                                                           style: TextStyle(
-                                                              color: snapshot.data.data[first]
-                                                                          .relate ==
+                                                              color: snapshot.data[first].relate ==
                                                                       false
                                                                   ? Colors.black
                                                                   : Colors.pink),
@@ -1710,8 +1687,8 @@ class _HomeViewState extends State<HomeView> {
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                snapshot.data.data[first].details
-                                                            .authordetails[second].user.userImage ==
+                                                snapshot.data[first].details.authordetails[second]
+                                                            .user.userImage ==
                                                         null
                                                     ? SvgPicture.asset(
                                                         'assets/svg/anyonmans.svg',
@@ -1727,7 +1704,6 @@ class _HomeViewState extends State<HomeView> {
                                                             fit: BoxFit.fill,
                                                             image: NetworkImage(
                                                               snapshot
-                                                                  .data
                                                                   .data[first]
                                                                   .details
                                                                   .authordetails[second]
@@ -1748,8 +1724,8 @@ class _HomeViewState extends State<HomeView> {
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
-                                                          '${snapshot.data.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data.data[first].details.authordetails[second].user.firstName}' +
-                                                              ' ${snapshot.data.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data.data[first].details.authordetails[second].user?.lastName}',
+                                                          '${snapshot.data[first].details.authordetails[second].user.firstName == null ? '' : snapshot.data[first].details.authordetails[second].user.firstName}' +
+                                                              ' ${snapshot.data[first].details.authordetails[second].user?.lastName == null ? '' : snapshot.data[first].details.authordetails[second].user?.lastName}',
                                                           style: TextStyle(
                                                               fontSize: 18.0,
                                                               fontWeight: FontWeight.bold),
@@ -1758,7 +1734,7 @@ class _HomeViewState extends State<HomeView> {
                                                       Padding(
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
-                                                          '${snapshot.data.data[first].details.authordetails[second].user.authordetails[second].introduction}',
+                                                          '${snapshot.data[first].details.authordetails[second].user.authordetails[second].introduction}',
                                                           softWrap: true,
                                                           style: TextStyle(
                                                               fontSize: 14.0, color: Colors.grey),
@@ -1768,7 +1744,7 @@ class _HomeViewState extends State<HomeView> {
                                                         padding: const EdgeInsets.only(bottom: 4.0),
                                                         child: Text(
                                                           DateTimeAgo.timeAgoSinceDate(
-                                                              '${snapshot.data.data[first].feedDate}'),
+                                                              '${snapshot.data[first].feedDate}'),
                                                           style: TextStyle(
                                                             fontSize: 14.0,
                                                           ),
@@ -1802,7 +1778,7 @@ class _HomeViewState extends State<HomeView> {
                                                         image: DecorationImage(
                                                           fit: BoxFit.fill,
                                                           image: NetworkImage(
-                                                            snapshot.data.data[first].media[second]
+                                                            snapshot.data[first].media[second]
                                                                 .mediaPath,
                                                           ),
                                                         ),
@@ -1822,25 +1798,25 @@ class _HomeViewState extends State<HomeView> {
                                                             MainAxisAlignment.spaceBetween,
                                                         children: [
                                                           Text(
-                                                            '${snapshot.data.data[first].categorymapping[second].category.category}',
+                                                            '${snapshot.data[first].categorymapping[second].category.category}',
                                                           ),
                                                           Container(
                                                             height: 20,
                                                             width: 20,
                                                             child: GestureDetector(
-                                                              child: snapshot.data.data[first]
-                                                                          .bookmarked ==
-                                                                      false
-                                                                  ? SvgPicture.asset(
-                                                                      "assets/svg/tag_inactive.svg",
-                                                                      width: 10.0,
-                                                                      height: 16.0,
-                                                                    )
-                                                                  : SvgPicture.asset(
-                                                                      "assets/svg/tag_active.svg",
-                                                                      width: 10.0,
-                                                                      height: 16.0,
-                                                                    ),
+                                                              child:
+                                                                  snapshot.data[first].bookmarked ==
+                                                                          false
+                                                                      ? SvgPicture.asset(
+                                                                          "assets/svg/tag_inactive.svg",
+                                                                          width: 10.0,
+                                                                          height: 16.0,
+                                                                        )
+                                                                      : SvgPicture.asset(
+                                                                          "assets/svg/tag_active.svg",
+                                                                          width: 10.0,
+                                                                          height: 16.0,
+                                                                        ),
                                                               onTap: () {
                                                                 if (sptoken.data == null) {
                                                                   ScaffoldMessenger.of(context)
@@ -1855,15 +1831,15 @@ class _HomeViewState extends State<HomeView> {
                                                                     ),
                                                                   );
                                                                 } else {
-                                                                  if (snapshot.data.data[first]
-                                                                          .bookmarked ==
+                                                                  if (snapshot
+                                                                          .data[first].bookmarked ==
                                                                       false) {
-                                                                    model.postBookmark(snapshot
-                                                                        .data.data[first].id);
-                                                                    snapshot.data.data[first]
+                                                                    model.postBookmark(
+                                                                        snapshot.data[first].id);
+                                                                    snapshot.data[first]
                                                                             .bookmarked =
-                                                                        !snapshot.data.data[first]
-                                                                            .bookmarked;
+                                                                        !snapshot
+                                                                            .data[first].bookmarked;
                                                                     ScaffoldMessenger.of(context)
                                                                         .showSnackBar(
                                                                       SnackBar(
@@ -1878,12 +1854,12 @@ class _HomeViewState extends State<HomeView> {
                                                                     print(
                                                                         "Query card if condition :");
                                                                   } else {
-                                                                    model.postBookmark(snapshot
-                                                                        .data.data[first].id);
-                                                                    snapshot.data.data[first]
+                                                                    model.postBookmark(
+                                                                        snapshot.data[first].id);
+                                                                    snapshot.data[first]
                                                                             .bookmarked =
-                                                                        !snapshot.data.data[first]
-                                                                            .bookmarked;
+                                                                        !snapshot
+                                                                            .data[first].bookmarked;
                                                                     ScaffoldMessenger.of(context)
                                                                         .showSnackBar(
                                                                       SnackBar(
@@ -1909,7 +1885,7 @@ class _HomeViewState extends State<HomeView> {
                                                       padding: const EdgeInsets.fromLTRB(
                                                           10.0, 0.0, 35.0, 25.0),
                                                       child: Text(
-                                                        '${snapshot.data.data[first].feedTitle}',
+                                                        '${snapshot.data[first].feedTitle}',
                                                         textAlign: TextAlign.left,
                                                         softWrap: true,
                                                       ),
@@ -1926,7 +1902,7 @@ class _HomeViewState extends State<HomeView> {
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 children: <Widget>[
                                                   Text(
-                                                    ' ${snapshot.data.data[first].feedLikeCnt} like this',
+                                                    ' ${snapshot.data[first].feedLikeCnt} like this',
                                                   ),
                                                   Padding(
                                                     padding: const EdgeInsets.only(
@@ -1936,7 +1912,7 @@ class _HomeViewState extends State<HomeView> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '${snapshot.data.data[first].feedCommentCnt} comments',
+                                                    '${snapshot.data[first].feedCommentCnt} comments',
                                                   ),
                                                 ],
                                               ),
@@ -1964,12 +1940,11 @@ class _HomeViewState extends State<HomeView> {
                                                           ),
                                                         );
                                                       } else {
-                                                        if (snapshot.data.data[first].liked ==
-                                                            false) {
-                                                          model.likeArticle(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].liked =
-                                                              !snapshot.data.data[first].liked;
+                                                        if (snapshot.data[first].liked == false) {
+                                                          model
+                                                              .likeArticle(snapshot.data[first].id);
+                                                          snapshot.data[first].liked =
+                                                              !snapshot.data[first].liked;
                                                           ScaffoldMessenger.of(context)
                                                               .showSnackBar(
                                                             SnackBar(
@@ -1981,10 +1956,10 @@ class _HomeViewState extends State<HomeView> {
                                                             ),
                                                           );
                                                         } else {
-                                                          model.likeArticle(
-                                                              snapshot.data.data[first].id);
-                                                          snapshot.data.data[first].liked =
-                                                              !snapshot.data.data[first].liked;
+                                                          model
+                                                              .likeArticle(snapshot.data[first].id);
+                                                          snapshot.data[first].liked =
+                                                              !snapshot.data[first].liked;
                                                           ScaffoldMessenger.of(context)
                                                               .showSnackBar(
                                                             SnackBar(
@@ -2000,7 +1975,7 @@ class _HomeViewState extends State<HomeView> {
                                                     },
                                                     child: Row(
                                                       children: [
-                                                        snapshot.data.data[first].liked == false
+                                                        snapshot.data[first].liked == false
                                                             ? SvgPicture.asset(
                                                                 'assets/svg/like_gray.svg',
                                                                 height: 20,
@@ -2018,8 +1993,7 @@ class _HomeViewState extends State<HomeView> {
                                                           'Like',
                                                           style: TextStyle(
                                                             color:
-                                                                snapshot.data.data[first].liked ==
-                                                                        false
+                                                                snapshot.data[first].liked == false
                                                                     ? Colors.black
                                                                     : Colors.pink,
                                                           ),
